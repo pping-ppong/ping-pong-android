@@ -8,3 +8,18 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//allprojects {
+//    repositories {
+//        google()
+//        mavenCentral()
+//        jcenter()
+//    }
+//}
+
+ext{
+    retrofit2Version = '2.9.0'
+    rx2FastAndroidNetworking = '1.0.2'
+    scalableVersion = '2.1.6'
+    lifecycle = '1.1.1'
+}
