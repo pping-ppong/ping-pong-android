@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|horizontal"
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ic_pop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pop1"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/pop_color"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="4dp"
+            android:layout_marginBottom="7dp"
+            android:visibility="visible"
+            android:background="@drawable/circle_0" />
+
+        <TextView
+            android:id="@+id/day_tv"
+            style="@style/textBlack12"
+            android:text="1" />
+    </LinearLayout>
+</layout>
