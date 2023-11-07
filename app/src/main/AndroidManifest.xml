@@ -28,12 +28,10 @@
             </intent-filter>
         </activity>
 
-
-
         <activity
-            android:name=".view.login.LoginActivity"
+            android:name=".view.intro.IntroActivity"
             android:exported="true"
-            android:theme="@style/Login_theme">
+            android:theme="@style/DefaultTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -41,12 +39,15 @@
         </activity>
 
         <activity
+            android:name=".view.login.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Login_theme">
+        </activity>
+
+        <activity
             android:name=".view.main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            android:exported="true"
+            android:theme="@style/DefaultTheme">
         </activity>
 
         <activity android:name=".view.join.JoinActivity"
@@ -54,21 +55,24 @@
             android:exported="false"/>
 
         <activity android:name=".view.myPageActivity.MyPageActivity"
-            android:exported="false"/>
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
 
         <activity android:name=".view.search.SearchActivity"
-            android:theme="@style/JoinTheme"
+            android:theme="@style/DefaultTheme"
             android:exported="false"/>
 
         <activity android:name=".view.notice.NoticeActivity"
+            android:theme="@style/DefaultTheme"
             android:exported="false"/>
 
         <activity android:name=".view.editProfile.EditProfileActivity"
-            android:theme="@style/JoinTheme"
+            android:theme="@style/DefaultTheme"
             android:exported="false"/>
 
 
         <activity android:name=".view.friends.FriendActivity"
+            android:theme="@style/DefaultTheme"
             android:exported="false"/>
     </application>
 

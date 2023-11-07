@@ -51,6 +51,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+
     // kakao
     implementation 'com.kakao.sdk:v2-user:2.11.0'
 
@@ -67,13 +71,16 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
 
     // network
-//    implementation "com.amitshekhar.android:rx2-android-networking:$rootProject.ext.rx2FastAndroidNetworking"
+    implementation "com.amitshekhar.android:rx2-android-networking:$rootProject.ext.rx2FastAndroidNetworking"
 
 
     //////////// FOR MVVM
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.6.1'
 
+    // Rxjava
+//    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+//    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 
     // Design
     implementation 'com.google.android.material:material:1.7.0'

@@ -13,26 +13,26 @@
         <item name="android:background">@color/transparent</item> <!--입력창에서 커서 배경 투명하게 -->
         <!--Status Bar 아이콘의 색상 true:검은 아이콘, false:흰 아이콘-->
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
+
     <style name="Login_theme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!-- 액션바 색상 -->
-        <!-- 상태바 색상 -->
-        <item name="colorPrimaryDark">@color/main_yellow</item>
-        <!-- 강조 색상 -->
-        <item name="colorAccent">@color/main_yellow</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:background">@color/transparent</item> <!--입력창에서 커서 배경 투명하게 -->
-        <!--Status Bar 아이콘의 색상 true:검은 아이콘, false:흰 아이콘-->
+        <item name="android:statusBarColor" >@color/main_yellow</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="JoinTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/white</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="DefaultTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/white</item>
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -41,7 +41,7 @@
     <style name="textBlackBold14">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -49,14 +49,14 @@
     <style name="textBlack14">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="textBlackBold12">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -64,7 +64,7 @@
     <style name="textBlack12">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">12</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 </resources>
