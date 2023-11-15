@@ -4,23 +4,24 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
-import com.pingpong_android.model.ResultDTO
+import com.pingpong_android.model.result.UserResultDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.network.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class JoinViewModel : BaseViewModel(){
 
-    private val instance = RetrofitClient.getClient(false)
-
-    private val _userData = MutableLiveData<ResultDTO>()
-    private val _nickNameCheckResult = MutableLiveData<ResultDTO>()
+    private val _userData = MutableLiveData<UserResultDTO>()
+    private val _nickNameCheckResult = MutableLiveData<UserResultDTO>()
     var isReady : MutableLiveData<Boolean> = MutableLiveData(false)
-    val userData : LiveData<ResultDTO>
+    val userData : LiveData<UserResultDTO>
         get() = _userData
-    val nickNameCheckResult : LiveData<ResultDTO>
+    val nickNameCheckResult : LiveData<UserResultDTO>
         get() = _nickNameCheckResult
+
+    private val _reissueResult = MutableLiveData<UserResultDTO>()
+    val reissueResult : LiveData<UserResultDTO>
+        get() = _reissueResult
 
     fun requestNickNameValidation(nickNm : String) {
         addDisposable(
@@ -42,6 +43,19 @@ class JoinViewModel : BaseViewModel(){
                 _userData.postValue(it)
             },{
                 Log.e("Error", "requestJoin")} )
+        )
+    }
+
+    // 액세스토큰 재발행
+    fun requestReissue(userDTO: UserDTO) {
+        addDisposable(
+            instance!!.requestReissue(userDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _reissueResult.postValue(it)
+                },{
+                    Log.e("Error", "requestController")} )
         )
     }
 }

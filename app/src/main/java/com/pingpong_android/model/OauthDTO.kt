@@ -6,19 +6,17 @@ import java.io.Serializable
 
 data class OauthDTO(
     @SerializedName("socialType") var socialType : String,
-    var kakaoToken : OAuthToken
+    var code : String
     ) : Serializable {
-    init {
-        kakaoToken.also {
-            this.code = it.idToken.toString()
-            this.accessToken = it.accessToken
-            this.refreshToken = it.refreshToken
-        }
+
+    constructor(socialType: String, code : String, _accessToken : String, _refreshToken: String) : this (socialType, code) {
+        accessToken = _accessToken
+        refreshToken = _refreshToken
     }
 
-    @SerializedName("code") var code : String
+    @SerializedName("accessToken")
+    var accessToken : String = ""
 
-    @SerializedName("accessToken") var accessToken : String
-
-    @SerializedName("refreshToken") var refreshToken : String
+    @SerializedName("refreshToken")
+    var refreshToken : String = ""
 }

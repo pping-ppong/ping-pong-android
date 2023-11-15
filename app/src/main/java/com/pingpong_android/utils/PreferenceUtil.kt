@@ -2,6 +2,7 @@ package com.pingpong_android.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
 
 class PreferenceUtil(context: Context) {
@@ -16,7 +17,7 @@ class PreferenceUtil(context: Context) {
         prefs.edit().putString(key, str).apply()
     }
 
-    fun saveUser(user: UserDTO){
+    fun saveUser(user: UserDTO) {
         if (user.socialId.isNotEmpty())
             prefs.edit().putString("socialId", user.socialId).apply()
         if (user.email.isNotEmpty())
@@ -29,16 +30,24 @@ class PreferenceUtil(context: Context) {
             prefs.edit().putString("memberId", user.memberId).apply()
         if (user.socialType.isNotEmpty())
             prefs.edit().putString("socialType", user.socialType).apply()
+        if (user.code.isNotEmpty())
+            prefs.edit().putString("code", user.code).apply()
+        if (user.accessToken.isNotEmpty())
+            prefs.edit().putString("accessToken", user.accessToken).apply()
+        if (user.refreshToken.isNotEmpty())
+            prefs.edit().putString("refreshToken", user.refreshToken).apply()
     }
 
-    fun getUser(): UserDTO{
+    fun getUser(): UserDTO {
         return UserDTO(prefs.getString("socialId", null).toString()).apply {
             email = prefs.getString("email", null).toString()
             nickName = prefs.getString("nickName", null).toString()
             profileImage = prefs.getString("profileImage", null).toString()
             memberId = prefs.getString("memberId", null).toString()
             socialType = prefs.getString("socialType", null).toString()
-
+            code = prefs.getString("code", null).toString()
+            accessToken = prefs.getString("accessToken", null).toString()
+            refreshToken = prefs.getString("refreshToken", null).toString()
         }
     }
 }

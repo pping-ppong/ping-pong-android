@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.OauthDTO
-import com.pingpong_android.model.ResultDTO
+import com.pingpong_android.model.result.UserResultDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.network.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -17,11 +16,15 @@ class LoginViewModel : BaseViewModel() {
     val userOauth : LiveData<UserDTO>
         get() = _userOauth
 
-    private val _userData = MutableLiveData<ResultDTO>()
-    val userData : LiveData<ResultDTO>
+    private val _userData = MutableLiveData<UserResultDTO>()
+    val userData : LiveData<UserResultDTO>
         get() = _userData
+    private val _reissueResult = MutableLiveData<UserResultDTO>()
+    val reissueResult : LiveData<UserResultDTO>
+        get() = _reissueResult
 
-    fun requestSocialInfo(oauthDTO: UserDTO) {
+    // 가입된 유저인지 확인
+    fun requestSocialInfo(oauthDTO: OauthDTO) {
         addDisposable(
             instance!!.getSocialInfo(oauthDTO)
                 .subscribeOn(Schedulers.io())
@@ -33,6 +36,7 @@ class LoginViewModel : BaseViewModel() {
         )
     }
 
+    // 로그인 요청
     fun requestLogin(userDTO: UserDTO) {
         addDisposable(
             instance!!.requestLogin(userDTO)
@@ -40,6 +44,19 @@ class LoginViewModel : BaseViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _userData.postValue(it)
+                },{
+                    Log.e("Error", "requestController")} )
+        )
+    }
+
+    // 액세스토큰 재발행
+    fun requestReissue(userDTO: UserDTO) {
+        addDisposable(
+            instance!!.requestReissue(userDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _reissueResult.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )

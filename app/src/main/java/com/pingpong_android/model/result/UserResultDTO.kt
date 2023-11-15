@@ -1,8 +1,9 @@
-package com.pingpong_android.model
+package com.pingpong_android.model.result
 
 import com.google.gson.annotations.SerializedName
+import com.pingpong_android.model.UserDTO
 
-data class ResultDTO(
+data class UserResultDTO(
     @SerializedName("isSuccess")
     var isSuccess : Boolean,
 

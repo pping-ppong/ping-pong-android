@@ -102,6 +102,17 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         })
     }
 
+    private fun subscribeReissue() {
+        binding.viewModel!!.reissueResult.observe(this, Observer {
+            if (it.isSuccess) {
+                // 토큰 재발행 성공 시
+            } else {
+                // 토큰 재발행 실패 시
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     fun goToMain(userDTO: UserDTO) {
         prefs.saveUser(userDTO)
         val intent = Intent(this, MainActivity::class.java)
