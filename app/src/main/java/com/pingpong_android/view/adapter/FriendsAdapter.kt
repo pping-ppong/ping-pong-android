@@ -9,13 +9,19 @@ import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.friends.FriendActivity
+import com.pingpong_android.view.search.SearchActivity
 
 class FriendsAdapter(private var friendList : List<UserDTO>) : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 
-    private lateinit var activity : FriendActivity
+    private lateinit var friendActivity: FriendActivity
+    private lateinit var searchActivity: SearchActivity
 
-    fun setActivity(activity: FriendActivity) {
-        this.activity = activity
+    fun setFriendActivity(friendActivity: FriendActivity) {
+        this.friendActivity = friendActivity
+    }
+
+    fun setSearchActivity(searchActivity: SearchActivity) {
+        this.searchActivity = searchActivity
     }
 
     override fun onCreateViewHolder(

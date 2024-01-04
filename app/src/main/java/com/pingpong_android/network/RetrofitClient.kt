@@ -19,13 +19,21 @@ class RetrofitClient() {
         private var Base_Url = BASE_URL
         private var Flag = false
 
+        private val okHttpClient: OkHttpClient by lazy {
+            val httpLoggingInterceptor = HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY)
+            OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build()
+        }
+
         fun getClient(isLogin : Boolean): RetrofitService?{
             if (isLogin) {
                 retrofitClient = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(provideOkHttpClient(AppInterceptor()))
+                    .client(okHttpClient)  // provideOkHttpClient(AppInterceptor())
                     .build().create(RetrofitService::class.java)
 
             } else if (Flag || retrofitClient == null) {
@@ -33,7 +41,7 @@ class RetrofitClient() {
                     .baseUrl(Base_Url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(provideOkHttpClient(AppInterceptor()))
+                    .client(okHttpClient)  // provideOkHttpClient(AppInterceptor())
                     .build().create(RetrofitService::class.java)
 
                 setFlag(false)

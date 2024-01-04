@@ -13,6 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface RetrofitService {
@@ -81,4 +82,9 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String
     ) : Single<FriendListResultDTO>
 
+    @GET("/api/members/search")
+    fun searchUserWithNickNm(
+        @Header("Authorization") accessToken : String,
+        @Query("nickname") nickName : String
+    ) : Single<FriendListResultDTO>
 }

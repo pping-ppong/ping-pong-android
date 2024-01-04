@@ -49,7 +49,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         }
     }
 
-    fun checkNickNameValidation() {
+    private fun checkNickNameValidation() {
         binding.nickNmEt.addTextChangedListener(textWatcher)
     }
 

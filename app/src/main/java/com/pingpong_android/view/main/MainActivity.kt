@@ -6,13 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.base.Constants
 import com.pingpong_android.databinding.ActivityMainBinding
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.join.JoinActivity
 import com.pingpong_android.view.main.adapter.CalendarAdapter
-import com.pingpong_android.view.myPageActivity.MyPageActivity
+import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.notice.NoticeActivity
 import com.pingpong_android.view.search.SearchActivity
 
