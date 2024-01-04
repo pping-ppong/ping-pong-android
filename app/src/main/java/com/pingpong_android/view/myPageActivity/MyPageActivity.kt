@@ -55,7 +55,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     private fun subscribeUserInfo() {
         binding.viewModel!!.UserData.observe(this, Observer {
-            if (it.isSuccess && it.userDTO != null) {
+            if (it.isSuccess) {
                 // 유저 정보 조회 성공
                 friendView(it.userDTO)
             } else {

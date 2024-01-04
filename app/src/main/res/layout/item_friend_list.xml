@@ -45,6 +45,7 @@
             android:textStyle="bold"
             android:paddingVertical="4dp"
             android:paddingHorizontal="21.5dp"
+            android:visibility="gone"
             android:background="@drawable/back_white_stroke_gray_30dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
