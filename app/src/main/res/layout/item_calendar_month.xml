@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/month_info"
+            style="@style/textBlackBold14"
+            android:text="2023년 2월"
+            android:layout_marginStart="8dp"
+            android:layout_marginVertical="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/last_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/ic_arrow_left" />
+
+            <ImageView
+                android:id="@+id/next_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/month_info">
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:text="@string/sun"/>
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:text="@string/mon"/>
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:text="@string/tue"/>
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:text="@string/wed"/>
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:text="@string/thu"/>
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:text="@string/fri"/>
+            <TextView
+                style="@style/textBlack12"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/sat"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/date_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_calendar_date"
+            app:layout_constraintTop_toBottomOf="@+id/date_layout"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
