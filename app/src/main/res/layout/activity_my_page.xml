@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pingpong_android.view.myPageActivity.MyPageViewModel" />
+            type="com.pingpong_android.view.myPage.MyPageViewModel" />
         <variable
             name="activity"
-            type="com.pingpong_android.view.myPageActivity.MyPageActivity" />
+            type="com.pingpong_android.view.myPage.MyPageActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

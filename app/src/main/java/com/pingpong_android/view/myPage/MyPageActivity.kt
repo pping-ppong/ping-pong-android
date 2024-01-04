@@ -1,4 +1,4 @@
-package com.pingpong_android.view.myPageActivity
+package com.pingpong_android.view.myPage
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,6 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
-import com.pingpong_android.view.myPageActivity.adapter.TeamAdapter
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
 
@@ -55,12 +54,12 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     private fun subscribeUserInfo() {
         binding.viewModel!!.UserData.observe(this, Observer {
-            if (it.isSuccess && it.userDTO != null) {
+            if (it.isSuccess) {
                 // 유저 정보 조회 성공
                 friendView(it.userDTO)
             } else {
                 // 유저 정보 조회 실패
-
+                friendView(user)
             }
         })
     }

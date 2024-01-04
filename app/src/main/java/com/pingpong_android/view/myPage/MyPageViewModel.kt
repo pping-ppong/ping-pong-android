@@ -1,4 +1,4 @@
-package com.pingpong_android.view.myPageActivity
+package com.pingpong_android.view.myPage
 
 import android.util.Log
 import androidx.lifecycle.LiveData

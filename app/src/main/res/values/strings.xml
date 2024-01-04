@@ -29,6 +29,7 @@
     <string name="recent_search">최근 검색</string>
     <string name="delete_all">전체삭제</string>
     <string name="no_recent_search">검색한 기록이 없습니다.</string>
+    <string name="no_friend_list">아직 등록된 친구가 없어요.</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 알림 -->
