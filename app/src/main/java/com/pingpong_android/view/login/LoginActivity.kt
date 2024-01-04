@@ -119,6 +119,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 userDTO.memberId = it.userDTO.memberId
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveBearerToken(it.userDTO.accessToken)
 //                binding.viewModel!!.requestReissue(userDTO)
             } else {
                 goToJoin()

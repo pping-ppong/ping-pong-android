@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="teamDTO"
+            type="com.pingpong_android.model.TeamDTO" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
@@ -12,7 +19,7 @@
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="group"
+            android:text="@{teamDTO.teamName}"
             android:textSize="14sp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
@@ -32,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/group_name">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notice_list"
+                android:id="@+id/member_rv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -42,7 +49,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_etc_small"/>
+                android:src="@drawable/ic_etc_small"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

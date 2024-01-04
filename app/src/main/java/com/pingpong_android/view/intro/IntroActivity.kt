@@ -35,8 +35,13 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
     }
 
     private fun reqeustSocialInfo() {
-        val oauthDTO = OauthDTO(userDTO.socialType, userDTO.code)
-        binding.viewModel!!.requestSocialInfo(oauthDTO)
+        // 소셜 로그인 사용자 정보 가져오기
+        // 안됨;;;;;
+//        val oauthDTO = OauthDTO(userDTO.socialType, userDTO.code)
+//        binding.viewModel!!.requestSocialInfo(oauthDTO)
+
+        if (userDTO != null)
+            binding.viewModel!!.requestLogin(userDTO)
     }
 
     private fun subscribeSocialInfo() {
@@ -63,7 +68,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
                 userDTO.memberId = it.userDTO.memberId
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
-                binding.viewModel!!.requestReissue(userDTO)
+                prefs.saveBearerToken(it.userDTO.accessToken)
+                goToMain()
+//                binding.viewModel!!.requestReissue(userDTO)
             } else {
                 // 로그인 요청 실패
                 // 로그인 화면으로 이동
@@ -76,6 +83,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         binding.viewModel!!.reissueResult.observe(this, Observer {
             if (it.isSuccess) {
                 // 토큰 재발행 성공 시
+                userDTO.accessToken = it.userDTO.accessToken
+                userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveBearerToken(it.userDTO.accessToken)
                 goToMain()
             } else {
                 // 토큰 재발행 실패 시

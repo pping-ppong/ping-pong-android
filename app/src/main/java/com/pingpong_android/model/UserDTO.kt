@@ -45,4 +45,6 @@ data class UserDTO(
     @SerializedName("refreshToken")
     var refreshToken : String = ""
 
+    @SerializedName("friendCount")
+    var friendCnt : Int = 0
 }

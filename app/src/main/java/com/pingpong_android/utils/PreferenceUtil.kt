@@ -50,4 +50,12 @@ class PreferenceUtil(context: Context) {
             refreshToken = prefs.getString("refreshToken", null).toString()
         }
     }
+
+    fun saveBearerToken(token : String) {
+        prefs.edit().putString("bearerToken", "Bearer $token").apply()
+    }
+
+    fun getBearerToken() : String {
+        return prefs.getString("bearerToken", null).toString()
+    }
 }

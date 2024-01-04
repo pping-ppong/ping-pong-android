@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.kakao.sdk.common.KakaoSdk
 import com.pingpong_android.R
+import com.pingpong_android.network.RetrofitClient
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity <B: ViewDataBinding>(@LayoutRes val layoutId: Int) : AppCompatActivity(){

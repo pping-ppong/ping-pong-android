@@ -33,11 +33,11 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/userNm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="밍쯔밍쯔"
+                tools:text="밍쯔밍쯔"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -69,10 +69,11 @@
             android:id="@+id/btn_friend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="친구 0명"
+            tools:text="@string/friend_num"
             android:textSize="12sp"
             android:textColor="@color/black"
             android:layout_marginTop="6dp"
+            android:onClickListener="@{v -> activity.goToFriend()}"
             app:layout_constraintTop_toBottomOf="@+id/image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -88,6 +89,7 @@
             android:background="@drawable/back_yellow_30dp"
             android:paddingVertical="4dp"
             android:paddingHorizontal="8dp"
+            android:onClickListener="@{v -> activity.goToEditProfile()}"
             app:layout_constraintTop_toBottomOf="@+id/btn_friend"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -120,7 +122,7 @@
             android:id="@+id/todo_group_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/collecting_popcorn"
+            android:text="@string/my_todo_group"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -128,18 +130,32 @@
             app:layout_constraintTop_toBottomOf="@+id/popcorn_list"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/team_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_group"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/todo_group_title"/>
+
         <LinearLayout
+            android:id="@+id/no_team_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todo_group_title">
 
             <TextView
-                android:id="@+id/group_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -157,6 +173,7 @@
                 android:textSize="14sp"
                 android:paddingVertical="10dp"
                 android:paddingHorizontal="48dp"
+                android:onClickListener="@{v -> activity.goToMakeTeam()}"
                 android:background="@drawable/back_white_stroke_gray_26dp"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
