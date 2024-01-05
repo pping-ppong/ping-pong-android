@@ -34,6 +34,12 @@ class FriendsAdapter(private var friendList : List<UserDTO>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: FriendsAdapter.FriendsViewHolder, position: Int) {
         holder.bind(friendList.get(position), position)
+
+        if (friendActivity != null) {
+
+        } else if (searchActivity != null) {
+            holder.itemView.setOnClickListener { v -> searchActivity.addSearchLog(friendList.get(position).memberId) }
+        }
     }
 
     override fun getItemCount(): Int {

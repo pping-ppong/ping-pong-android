@@ -1,10 +1,8 @@
 package com.pingpong_android.network
 
 import com.pingpong_android.model.OauthDTO
-import com.pingpong_android.model.result.UserResultDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.model.result.FriendListResultDTO
-import com.pingpong_android.model.result.TeamListResultDTO
+import com.pingpong_android.model.result.*
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -82,9 +80,23 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String
     ) : Single<FriendListResultDTO>
 
+    // 닉네임으로 유저 검색
     @GET("/api/members/search")
     fun searchUserWithNickNm(
         @Header("Authorization") accessToken : String,
         @Query("nickname") nickName : String
     ) : Single<FriendListResultDTO>
+
+    // 검색 로그 저장
+    @POST("/api/members/search-log")
+    fun addSearchLog(
+        @Header("Authorization") accessToken : String,
+        @Body id : Long
+    ) : Single<ResultDTO>
+
+    // 검색 로그 불러오기
+    @GET("/api/members/search-log")
+    fun requestSearchLog(
+        @Header("Authorization") accessToken : String
+    ) : Single<LogResultDTO>
 }
