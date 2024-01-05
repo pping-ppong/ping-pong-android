@@ -24,12 +24,18 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
         prefsUtil = PreferenceUtil(applicationContext)
 
-        subscribeSearchResult()
+        initSubscribe()
         initAdapter()
         searchEvent()
+
+        requestSearchLog()  // 검색 기록 로그
     }
 
     private fun initAdapter() {
+        // log Adapter
+        // todo : log adapter
+
+        // search Adapter
         val friendLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         friendsAdapter.setSearchActivity(this)
 
@@ -42,7 +48,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private fun searchEvent() {
         binding.nickNmEt.addTextChangedListener(textWatcher)
     }
-
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
@@ -55,15 +60,74 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         }
     }
 
+    private fun initSubscribe() {
+        subscribeSearchLog()
+        subscribeSearchResult()
+    }
+
+    private fun subscribeSearchLog() {
+        binding.viewModel!!.logList.observe(this, Observer {
+            if (it.isSuccess && it.logList.isNotEmpty()) {
+                setViewType(beforeSearch = true, hasResult = true)
+                // todo
+            } else {
+                setViewType(beforeSearch = true, hasResult = true)
+                // todo
+            }
+        })
+    }
+
     private fun subscribeSearchResult() {
         binding.viewModel!!.userList.observe(this, Observer {
             if (it.isSuccess && it.friendList.isNotEmpty()) {
-                binding.friendRv.visibility = View.VISIBLE
+                setViewType(beforeSearch = false, hasResult = true)
 
                 friendsAdapter.addList(it.friendList)
             } else {
-                binding.friendRv.visibility = View.GONE
+                setViewType(beforeSearch = false, hasResult = true)
+                // todo
             }
         })
+    }
+
+    private fun setViewType(beforeSearch : Boolean, hasResult : Boolean) {
+        if (beforeSearch) {
+            binding.friendRv.visibility = View.GONE
+            binding.noUserList.visibility = View.GONE
+
+            binding.searchLogLayout.visibility = View.VISIBLE
+            if (hasResult) {
+                binding.noRecentSearch.visibility = View.GONE
+                binding.logRv.visibility = View.VISIBLE
+            } else {
+                binding.noRecentSearch.visibility = View.VISIBLE
+                binding.logRv.visibility = View.GONE
+            }
+        } else {
+            binding.searchLogLayout.visibility = View.GONE
+            binding.noRecentSearch.visibility = View.GONE
+            binding.logRv.visibility = View.GONE
+
+            if (hasResult) {
+                binding.friendRv.visibility = View.VISIBLE
+                binding.noUserList.visibility = View.GONE
+            } else {
+                binding.friendRv.visibility = View.GONE
+                binding.noUserList.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    fun addSearchLog(id: String) {
+        binding.viewModel!!.addSearchLog(prefsUtil.getBearerToken(), id.toLong())
+    }
+
+    private fun requestSearchLog() {
+        // 검색 로그 조회
+        binding.viewModel!!.requestSearchLog(prefsUtil.getBearerToken())
+    }
+
+    fun deleteAllSearchLog() {
+
     }
 }
