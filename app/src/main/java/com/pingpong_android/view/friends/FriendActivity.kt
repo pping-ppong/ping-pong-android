@@ -8,7 +8,6 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityFriendBinding
 import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.adapter.FriendsAdapter
 
 class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_friend) {
 

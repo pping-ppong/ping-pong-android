@@ -14,5 +14,5 @@ data class LogDTO(
     var profileImage: String = ""
 
     @SerializedName("memberId")
-    var memberId: String = ""
+    var memberId: Long = 0
 }

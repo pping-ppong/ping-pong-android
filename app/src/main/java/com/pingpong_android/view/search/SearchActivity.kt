@@ -10,12 +10,11 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivitySearchBinding
 import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.adapter.FriendsAdapter
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
 
     private lateinit var prefsUtil : PreferenceUtil
-    private var friendsAdapter = FriendsAdapter(emptyList())
+    private var searchAdapter = SearchAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +36,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
         // search Adapter
         val friendLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        friendsAdapter.setSearchActivity(this)
+        searchAdapter.setSearchActivity(this)
 
         binding.friendRv.apply {
             layoutManager = friendLayoutManager
-            adapter = friendsAdapter
+            adapter = searchAdapter
         }
     }
 
@@ -81,8 +80,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         binding.viewModel!!.userList.observe(this, Observer {
             if (it.isSuccess && it.friendList.isNotEmpty()) {
                 setViewType(beforeSearch = false, hasResult = true)
-
-                friendsAdapter.addList(it.friendList)
+                searchAdapter.addList(it.friendList)
             } else {
                 setViewType(beforeSearch = false, hasResult = true)
                 // todo
@@ -92,6 +90,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
     private fun setViewType(beforeSearch : Boolean, hasResult : Boolean) {
         if (beforeSearch) {
+            // 검색 전 뷰
             binding.friendRv.visibility = View.GONE
             binding.noUserList.visibility = View.GONE
 
@@ -104,6 +103,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 binding.logRv.visibility = View.GONE
             }
         } else {
+            // 검색 중 뷰
             binding.searchLogLayout.visibility = View.GONE
             binding.noRecentSearch.visibility = View.GONE
             binding.logRv.visibility = View.GONE
@@ -120,6 +120,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
     fun addSearchLog(id: String) {
         binding.viewModel!!.addSearchLog(prefsUtil.getBearerToken(), id.toLong())
+
     }
 
     private fun requestSearchLog() {
@@ -129,5 +130,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
     fun deleteAllSearchLog() {
 
+    }
+
+    fun goToUserProfile(memberId : Long) {
+        // todo : 타인 프로필 조회 페이지
     }
 }
