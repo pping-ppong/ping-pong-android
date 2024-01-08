@@ -58,6 +58,8 @@
             android:id="@+id/image"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             android:background="@drawable/back_gray_circle_with_gray_outline"
             android:padding="4dp"
             android:src="@drawable/ic_profile_popcorn"

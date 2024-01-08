@@ -1,15 +1,15 @@
 package com.pingpong_android.view.friends
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemFriendListBinding
+import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.UserDTO
 
-class FriendsAdapter(private var friendList : List<UserDTO>) : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
+class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 
     private lateinit var friendActivity: FriendActivity
 
@@ -37,14 +37,13 @@ class FriendsAdapter(private var friendList : List<UserDTO>) : RecyclerView.Adap
         return friendList.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addList(friends : List<UserDTO>) {
+    fun addList(friends : List<MemberDTO>) {
         friendList = friends
         notifyDataSetChanged()
     }
 
     inner class FriendsViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user : UserDTO, position : Int) {
+        fun bind(user : MemberDTO, position : Int) {
             binding.nickNmEt.text = user.nickName
             Glide.with(binding.image).load(user.profileImage)
                 .error(R.drawable.ic_profile_popcorn)   // 오류일 경우

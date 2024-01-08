@@ -1,8 +1,11 @@
 package com.pingpong_android.view.search
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.LogDTO
 
@@ -21,16 +24,39 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
 
     override fun onBindViewHolder(holder: LogAdapter.LogViewHolder, position: Int) {
         holder.bind(logList.get(position), position)
-        holder.itemView.setOnClickListener{v -> activity.goToUserProfile(logList.get(position).memberId)}
+        holder.itemView.setOnClickListener{v -> activity.addSearchLog(logList.get(position).memberId)}
     }
 
     override fun getItemCount(): Int {
         return logList.size
     }
 
-    inner class LogViewHolder(binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(logDTO: LogDTO, position: Int) {
+    fun addList(logList : List<LogDTO>) {
+        this.logList = logList
+        notifyDataSetChanged()
+    }
 
+    inner class LogViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(logDTO: LogDTO, position: Int) {
+            if (logDTO.keyword.isEmpty()) {
+                binding.icSearch.visibility = View.VISIBLE
+                binding.image.visibility = View.GONE
+                binding.nickNmEt.text = logDTO.keyword
+
+                binding.itemView.setOnClickListener { v -> activity.searchKeyword(logDTO.keyword) }
+            } else {
+                binding.icSearch.visibility = View.GONE
+                binding.image.visibility = View.VISIBLE
+
+                binding.nickNmEt.text = logDTO.nickName
+                Glide.with(binding.image).load(logDTO.profileImage)
+                    .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
+                    .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
+                    .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+                    .into(binding.image)
+
+                binding.itemView.setOnClickListener { v -> activity.addSearchLog(logList.get(position).memberId) }
+            }
         }
     }
 }

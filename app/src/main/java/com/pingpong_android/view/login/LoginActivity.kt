@@ -65,8 +65,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                     if (error != null) {
-                        Toast.makeText(this@LoginActivity, "카카오 로그인 시도에 실패 했습니다.", Toast.LENGTH_SHORT).show()
-                        Log.e("LOGIN", "카카오톡으로 로그인 실패", error)
+                        Log.e("HTTP-LOGIN", "카카오톡으로 로그인 실패", error)
 
                         if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                             return@loginWithKakaoTalk

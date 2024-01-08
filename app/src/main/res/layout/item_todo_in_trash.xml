@@ -58,6 +58,8 @@
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:background="@drawable/back_gray_circle_with_gray_outline"
                 android:padding="4dp"
                 android:layout_marginStart="8dp"

@@ -76,6 +76,8 @@
                         android:layout_centerVertical="true"
                         android:background="@drawable/back_gray_circle_with_gray_outline"
                         android:padding="4dp"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
                         android:src="@drawable/ic_profile_popcorn"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>

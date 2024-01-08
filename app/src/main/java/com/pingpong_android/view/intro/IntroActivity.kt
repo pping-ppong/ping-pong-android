@@ -2,7 +2,9 @@ package com.pingpong_android.view.intro
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
+import com.kakao.sdk.common.util.Utility
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityIntroBinding

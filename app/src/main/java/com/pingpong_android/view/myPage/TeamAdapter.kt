@@ -1,6 +1,5 @@
 package com.pingpong_android.view.myPage
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +30,6 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
         // todo : teamData click-event
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun addList(teams : List<TeamDTO>) {
         teamList = teams
         notifyDataSetChanged()

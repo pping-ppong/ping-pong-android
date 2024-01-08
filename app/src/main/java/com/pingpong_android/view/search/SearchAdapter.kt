@@ -1,15 +1,15 @@
 package com.pingpong_android.view.search
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemFriendListBinding
-import com.pingpong_android.model.UserDTO
+import com.pingpong_android.model.MemberDTO
 
-class SearchAdapter (private var friendList : List<UserDTO>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+class SearchAdapter (private var friendList : List<MemberDTO>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
     private lateinit var searchActivity: SearchActivity
 
@@ -34,20 +34,27 @@ class SearchAdapter (private var friendList : List<UserDTO>) : RecyclerView.Adap
         return friendList.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addList(friends : List<UserDTO>) {
+    fun addList(friends : List<MemberDTO>) {
         friendList = friends
         notifyDataSetChanged()
     }
 
     inner class SearchViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user : UserDTO, position : Int) {
+        fun bind(user : MemberDTO, position : Int) {
             binding.nickNmEt.text = user.nickName
-            Glide.with(binding.image).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                .into(binding.image)
+
+            if (user.profileImage.isNullOrEmpty()) {
+                binding.defaultImage.visibility = View.VISIBLE
+            } else {
+                binding.defaultImage.visibility = View.GONE
+
+                Glide.with(binding.image).load(user.profileImage)
+                    .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
+                    .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
+                    .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+                    .into(binding.image)
+                binding.image.clipToOutline = true
+            }
         }
     }
 }
