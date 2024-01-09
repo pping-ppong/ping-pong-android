@@ -5,6 +5,7 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -58,6 +59,21 @@ interface RetrofitService {
         @Path("id") userId : String
     ) : Single<UserResultDTO>
 
+    /////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    // Notice
+
+    // 알림 전체 조회 (30일 이내)
+    @GET("/api/notifications")
+    fun requestAllNotice(
+        @Header("Authorization") accessToken : String
+    ) : Single<NoticeResultDTO>
+
+    // 안읽은 알림 조회
+    @GET("/api/notifications/un-read")
+    fun requestNotReadNotice(
+        @Header("Authorization") accessToken : String
+    ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
@@ -68,7 +84,6 @@ interface RetrofitService {
     fun requestUserTeams(
         @Header("Authorization") accessToken : String
         ) : Single<TeamListResultDTO>
-
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
@@ -87,7 +102,7 @@ interface RetrofitService {
         @Query("nickname") nickName : String
     ) : Single<FriendListResultDTO>
 
-    // 검색 로그 저장
+    // 유저 검색 로그 저장
     @POST("/api/members/search-log")
     fun addSearchLog(
         @Header("Authorization") accessToken : String,
@@ -99,4 +114,33 @@ interface RetrofitService {
     fun requestSearchLog(
         @Header("Authorization") accessToken : String
     ) : Single<LogResultDTO>
+
+    // 친구 신청 승인
+    @POST("/api/friends/accept")
+    fun acceptFriendShip(
+        @Header("Authorization") accessToken : String,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+    // 친구 신청 거절
+    @POST("/api/friends/refuse")
+    fun refuseFriendShip(
+        @Header("Authorization") accessToken : String,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+    // 친구 신청하기
+    @POST("/api/friends/apply")
+    fun requestFriendShip(
+        @Header("Authorization") accessToken : String,
+        @Body applicantId : Long,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+    // 친구 신청 끊기
+    @DELETE("/api/friends/unfollow?memberId=")
+    fun deleteFriendShip (
+        @Header("Authorization") accessToken : String,
+        @Field("memberId") memberId : Long
+    )
 }

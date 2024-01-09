@@ -50,17 +50,4 @@ class IntroViewModel : BaseViewModel() {
                     Log.e("Error", "requestController")} )
         )
     }
-
-    // 액세스토큰 재발행
-    fun requestReissue(userDTO: UserDTO) {
-        addDisposable(
-            instance!!.requestReissue(userDTO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _reissueResult.postValue(it)
-                },{
-                    Log.e("Error", "requestController")} )
-        )
-    }
 }

@@ -38,12 +38,12 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
 
     inner class LogViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(logDTO: LogDTO, position: Int) {
-            if (logDTO.keyword.isEmpty()) {
+            if (logDTO.keyword.isNotEmpty()) {
                 binding.icSearch.visibility = View.VISIBLE
-                binding.image.visibility = View.GONE
+                binding.defaultImage.visibility = View.GONE
                 binding.nickNmEt.text = logDTO.keyword
 
-                binding.itemView.setOnClickListener { v -> activity.searchKeyword(logDTO.keyword) }
+                binding.itemView.setOnClickListener { activity.searchKeyword(logDTO.keyword) }
             } else {
                 binding.icSearch.visibility = View.GONE
                 binding.image.visibility = View.VISIBLE
@@ -55,7 +55,7 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
                     .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
                     .into(binding.image)
 
-                binding.itemView.setOnClickListener { v -> activity.addSearchLog(logList.get(position).memberId) }
+                binding.itemView.setOnClickListener { activity.addSearchLog(logList.get(position).memberId) }
             }
         }
     }

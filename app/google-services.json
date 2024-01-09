@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "382876464425",
+    "project_id": "ping-pong-410702",
+    "storage_bucket": "ping-pong-410702.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382876464425:android:437861113e4a7efedfb338",
+        "android_client_info": {
+          "package_name": "com.pingpong_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382876464425-9d20ieg1rrh4869927i4abehd4jc0t3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pingpong_android",
+            "certificate_hash": "7905eb8bc0dc4cb98210f7d73f8a728be79133de"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUuKN2zgR9h0yrdAtA4zzbckpiYbbx3MA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

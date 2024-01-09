@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMyPageBinding
@@ -12,6 +13,7 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
+import com.pingpong_android.view.main.MainActivity
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
 
@@ -83,6 +85,19 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     private fun friendView(user : UserDTO) {
         binding.userNm.text = user.nickName
         binding.btnFriend.text = String.format(getString(R.string.friend_num), user.friendCnt)
+
+        if (user.profileImage.isNotEmpty()) {
+            binding.defaultImage.visibility = View.GONE
+            Glide.with(binding.image).load(user.profileImage)
+                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
+                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
+                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+                .into(binding.image)
+            binding.image.clipToOutline = true
+        } else {
+            binding.defaultImage.visibility = View.VISIBLE
+            Glide.with(binding.image).clear(binding.image)
+        }
     }
 
     fun goToEditProfile() {
