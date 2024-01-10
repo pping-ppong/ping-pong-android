@@ -36,7 +36,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initAdapter()
 
         setClickListener()
-        binding.viewModel!!.requestNotReadNotice(prefs.getBearerToken())
+        initRequest()
     }
 
     private fun initUserDTO() {
@@ -78,8 +78,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.btnAlarm.setOnClickListener { goToNotice() }
     }
 
+    private fun initRequest() {
+        binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), userDTO)
+        binding.viewModel!!.requestUnReadNotice(prefs.getBearerToken())
+    }
+
     private fun initSubscribe() {
         subscribeNoticeState()
+        subscribeUserInfo()
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -96,6 +102,33 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
             }
         })
+    }
+
+    private fun subscribeUserInfo() {
+        binding.viewModel!!.userData.observe(this, Observer {
+            if (it.isSuccess) {
+                // 유저 정보 조회 성공
+                friendView(it.userDTO)
+            } else {
+                // 유저 정보 조회 실패
+                friendView(userDTO)
+            }
+        })
+    }
+
+    private fun friendView(user : UserDTO) {
+        if (user.profileImage.isNotEmpty()) {
+            binding.defaultImage.visibility = View.GONE
+            Glide.with(binding.btnMypage).load(user.profileImage)
+                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
+                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
+                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+                .into(binding.btnMypage)
+            binding.btnMypage.clipToOutline = true
+        } else {
+            binding.defaultImage.visibility = View.VISIBLE
+            Glide.with(binding.btnMypage).clear(binding.btnMypage)
+        }
     }
 
     private fun goToMyPage() {

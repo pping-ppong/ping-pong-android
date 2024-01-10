@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:382876464425:android:437861113e4a7efedfb338",
+        "mobilesdk_app_id": "1:382876464425:android:27179c547b810b42dfb338",
         "android_client_info": {
           "package_name": "com.pingpong_android"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "382876464425-1fpcfd1a8chu33qum69vkjcmuksf1hjs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pingpong_android",
+            "certificate_hash": "8ef406e2fd676e74c39a92add0ae600e91964ca4"
+          }
+        },
         {
           "client_id": "382876464425-9d20ieg1rrh4869927i4abehd4jc0t3v.apps.googleusercontent.com",
           "client_type": 1,
@@ -20,6 +28,10 @@
             "package_name": "com.pingpong_android",
             "certificate_hash": "7905eb8bc0dc4cb98210f7d73f8a728be79133de"
           }
+        },
+        {
+          "client_id": "382876464425-2v60oimorgovg58qaiv97do34lnc8rgc.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -29,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382876464425-2v60oimorgovg58qaiv97do34lnc8rgc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

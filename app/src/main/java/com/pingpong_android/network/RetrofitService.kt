@@ -21,12 +21,6 @@ interface RetrofitService {
     /////////////////////////////////////////////////
     // UserDTO
 
-    // 소셜 로그인 사용자 정보 불러오기
-    @POST("/api/oauth/info")
-    fun getSocialInfo(
-        @Body oauthDTO: OauthDTO
-    ) : Single<UserResultDTO>
-
     // 로그인
     @POST("/api/oauth/login")
     fun requestLogin(
@@ -71,7 +65,7 @@ interface RetrofitService {
 
     // 안읽은 알림 조회
     @GET("/api/notifications/un-read")
-    fun requestNotReadNotice(
+    fun requestUnReadNotice(
         @Header("Authorization") accessToken : String
     ) : Single<ResultDTO>
 

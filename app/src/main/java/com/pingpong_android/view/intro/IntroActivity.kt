@@ -37,7 +37,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         userDTO = prefs.getUser()
 
 
-        subscribeSocialInfo()
+        /* temp */
+        userDTO.socialId = "3277875718"
+        userDTO.email = "minji.7754.7754@kakao.com"
+
         subscribeLogin()
         subscribeReissue()
 
@@ -72,9 +75,11 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
             /* 1. 권한 확인이 다 끝난 후 동의하지 않은 것이 있다면 종료 */
             var count = grantResults.count { it == PackageManager.PERMISSION_DENIED } // 동의 안한 권한의 개수
             if(count != 0) {
+                requestSocialInfo()
+            } else {
                 Toast.makeText(applicationContext, "권한 미동의로 어플 이용이 어려운 서비스가 있을 수 있습니다.", Toast.LENGTH_SHORT).show()
             }
-            reqeustSocialInfo()
+
 
             /* 2. 권한 요청을 거부했다면 안내 메시지 보여주며 앱 종료
             grantResults.forEach {
@@ -86,25 +91,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         }
     }
 
-    private fun reqeustSocialInfo() {
+    private fun requestSocialInfo() {
         if (userDTO != null)
             binding.viewModel!!.requestLogin(userDTO)
-    }
-
-    private fun subscribeSocialInfo() {
-        binding.viewModel!!.userOauth.observe(this, Observer {
-            if (it.socialId != null && it.email != null) {
-                // 회원정보가 불러와진 경우
-                // 로그인 요청
-                userDTO.socialId = it.socialId
-                userDTO.email = it.email
-                binding.viewModel!!.requestLogin(userDTO)
-            } else {
-                // 회원정보가 없는 경우
-                // 로그인 화면으로 이동
-                goToLogin()
-            }
-        })
     }
 
     private fun subscribeLogin() {

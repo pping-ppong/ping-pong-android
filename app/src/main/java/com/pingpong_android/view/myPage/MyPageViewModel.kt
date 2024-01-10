@@ -13,9 +13,10 @@ import io.reactivex.schedulers.Schedulers
 class MyPageViewModel : BaseViewModel(){
 
     private val _userData = MutableLiveData<UserResultDTO>()
-    private val _teamListData = MutableLiveData<TeamListResultDTO>()
     val UserData : LiveData<UserResultDTO>
         get() = _userData
+
+    private val _teamListData = MutableLiveData<TeamListResultDTO>()
     val TeamList : LiveData<TeamListResultDTO>
         get() = _teamListData
     fun requestUserInfo(token : String, user : UserDTO) {

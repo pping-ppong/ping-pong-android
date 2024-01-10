@@ -11,7 +11,7 @@ import com.pingpong_android.utils.PreferenceUtil
 
 class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_friend) {
 
-    private lateinit var prefsUtil : PreferenceUtil
+    private lateinit var prefs : PreferenceUtil
     private var friendsAdapter = FriendsAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +19,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
         binding.viewModel = FriendViewModel()
         binding.activity = this
 
-        prefsUtil = PreferenceUtil(applicationContext)
+        prefs = PreferenceUtil(applicationContext)
 
         initAdapter()
         initRequest()
@@ -37,7 +37,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
 
     private fun initRequest() {
         subscribeFriendList()
-        binding.viewModel!!.requestUserFriendList(prefsUtil.getBearerToken())
+        binding.viewModel!!.requestUserFriendList(prefs.getBearerToken())
     }
 
     private fun subscribeFriendList() {

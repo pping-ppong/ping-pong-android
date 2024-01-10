@@ -36,6 +36,7 @@
     <string name="alarm">알림</string>
     <string name="confirm">수락</string>
     <string name="reject">거절</string>
+    <string name="no_notice_list">알림이 없어요 :D</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 그룹 -->

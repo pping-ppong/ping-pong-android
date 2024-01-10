@@ -13,6 +13,9 @@ data class NoticeDTO (
     @SerializedName("profileImage")
     var profileImage : String? = null
 
+    @SerializedName("memberId")
+    var memberId : Long = 0
+
     @SerializedName("isClicked")
     var isClicked : Boolean = false
 

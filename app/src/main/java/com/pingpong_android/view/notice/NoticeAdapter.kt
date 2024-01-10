@@ -66,7 +66,8 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
                         .into(binding.image)
                 }
 
-                // todo : 버튼 클릭 이벤트
+                binding.btnConfirm.setOnClickListener { activity.acceptFriendShip(notice.memberId) }
+                binding.btnReject.setOnClickListener { activity.refuseFriendShip(notice.memberId) }
             } else if (notice.type == TODO) {
                 // 할일 관련 알림
                 binding.btnConfirm.visibility = View.GONE

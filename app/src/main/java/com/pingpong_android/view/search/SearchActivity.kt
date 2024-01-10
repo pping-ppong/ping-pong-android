@@ -17,7 +17,7 @@ import kotlin.math.log
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
 
-    private lateinit var prefsUtil : PreferenceUtil
+    private lateinit var prefs : PreferenceUtil
     private var searchAdapter = SearchAdapter(emptyList())
     private var logAdapter = LogAdapter(emptyList())
 
@@ -26,7 +26,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         binding.viewModel = SearchViewModel()
         binding.activity = this
 
-        prefsUtil = PreferenceUtil(applicationContext)
+        prefs = PreferenceUtil(applicationContext)
 
         initSubscribe()
         initAdapter()
@@ -131,17 +131,17 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     }
 
     fun searchKeyword(keyword : String) {
-        binding.viewModel!!.searchUserWithNickNm(prefsUtil.getBearerToken(), keyword)
+        binding.viewModel!!.searchUserWithNickNm(prefs.getBearerToken(), keyword)
     }
 
     fun addSearchLog(memberId : Long) {
-        binding.viewModel!!.addSearchLog(prefsUtil.getBearerToken(), memberId)
+        binding.viewModel!!.addSearchLog(prefs.getBearerToken(), memberId)
         goToUserProfile(memberId)
     }
 
     private fun requestSearchLog() {
         // 검색 로그 조회
-        binding.viewModel!!.requestSearchLog(prefsUtil.getBearerToken())
+        binding.viewModel!!.requestSearchLog(prefs.getBearerToken())
     }
 
     fun deleteAllSearchLog() {

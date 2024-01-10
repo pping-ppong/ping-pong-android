@@ -54,7 +54,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun initSubscribe() {
         subscribeLogin()
-        subscribeUserInfo()
         subscribeReissue()
     }
 
@@ -81,7 +80,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     } else if (token != null) {
                         // 카카오 로그인 정보 요청 성공
                         UserApiClient.instance.me { user, error ->
-                            userDTO = UserDTO(user!!.id.toString())
+                            userDTO = UserDTO(user!!.id.toString()) // socialId
                             userDTO.email = user!!.kakaoAccount!!.email!!
                             userDTO.socialType = "KAKAO"
                             userDTO.code = token.accessToken
@@ -94,10 +93,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                             prefs.saveUser(userDTO)
 
                             // 가입된 회원인지 확인
-                            val oauthDTO = OauthDTO("KAKAO", token.accessToken)
-                            oauthDTO.refreshToken = token.refreshToken
-                            oauthDTO.accessToken = token.accessToken
-                            binding.viewModel!!.requestSocialInfo(oauthDTO)
+                            binding.viewModel!!.requestLogin(userDTO)
                         }
                     }
                 }
@@ -105,18 +101,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
             }
         }
-    }
-
-    private fun subscribeUserInfo() {
-        binding.viewModel!!.userOauth.observe(this, Observer {
-            if (it.socialId != null) {
-                userDTO.socialId = it.socialId
-                userDTO.email = it.email
-                binding.viewModel!!.requestLogin(userDTO)
-            } else {
-                goToJoin()
-            }
-        })
     }
 
     private fun loginGoogle() {
@@ -181,7 +165,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
                 prefs.saveBearerToken(it.userDTO.accessToken)
-//                binding.viewModel!!.requestReissue(userDTO)
+                binding.viewModel!!.requestReissue(userDTO)
             } else {
                 goToJoin()
             }

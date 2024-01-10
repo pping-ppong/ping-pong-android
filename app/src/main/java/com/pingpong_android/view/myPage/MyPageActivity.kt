@@ -13,11 +13,10 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
-import com.pingpong_android.view.main.MainActivity
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
 
-    private lateinit var prefsUtil : PreferenceUtil
+    private lateinit var prefs : PreferenceUtil
     private lateinit var user: UserDTO
     private var teamAdapter = TeamAdapter(emptyList())
 
@@ -26,8 +25,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
         binding.viewModel = MyPageViewModel()
         binding.activity = this
 
-        prefsUtil = PreferenceUtil(applicationContext)
-        user = prefsUtil.getUser()
+        prefs = PreferenceUtil(applicationContext)
+        user = prefs.getUser()
 
         initAdapter()
         initSubscribe()
@@ -35,8 +34,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     private fun requestMyPageInfo() {
-        binding.viewModel!!.requestUserInfo(prefsUtil.getBearerToken(), user)
-        binding.viewModel!!.requestUserTeamList(prefsUtil.getBearerToken())
+        binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), user)
+        binding.viewModel!!.requestUserTeamList(prefs.getBearerToken())
     }
 
     private fun initSubscribe() {
@@ -103,6 +102,11 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     fun goToEditProfile() {
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
+    }
+
+    fun goToSetting() {
+//        val intent = Intent(this, EditProfileActivity::class.java)
+//        startActivity(intent)
     }
 
     fun goToFriend() {
