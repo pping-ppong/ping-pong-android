@@ -24,7 +24,6 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
 
     override fun onBindViewHolder(holder: LogAdapter.LogViewHolder, position: Int) {
         holder.bind(logList.get(position), position)
-        holder.itemView.setOnClickListener{v -> activity.addSearchLog(logList.get(position).memberId)}
     }
 
     override fun getItemCount(): Int {
@@ -38,7 +37,7 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
 
     inner class LogViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(logDTO: LogDTO, position: Int) {
-            if (logDTO.keyword.isNotEmpty()) {
+            if (logDTO.keyword != null && logDTO.keyword.isNotEmpty()) {
                 binding.icSearch.visibility = View.VISIBLE
                 binding.defaultImage.visibility = View.GONE
                 binding.nickNmEt.text = logDTO.keyword
@@ -47,13 +46,20 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
             } else {
                 binding.icSearch.visibility = View.GONE
                 binding.image.visibility = View.VISIBLE
-
                 binding.nickNmEt.text = logDTO.nickName
-                Glide.with(binding.image).load(logDTO.profileImage)
-                    .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                    .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                    .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                    .into(binding.image)
+
+                if (logDTO.profileImage.isNotEmpty()) {
+                    binding.defaultImage.visibility = View.GONE
+                    Glide.with(binding.image).load(logDTO.profileImage)
+                        .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
+                        .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
+                        .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+                        .into(binding.image)
+                    binding.image.clipToOutline = true
+                } else {
+                    binding.defaultImage.visibility = View.VISIBLE
+                    Glide.with(binding.image).clear(binding.image)
+                }
 
                 binding.itemView.setOnClickListener { activity.addSearchLog(logList.get(position).memberId) }
             }

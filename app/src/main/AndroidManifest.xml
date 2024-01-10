@@ -80,6 +80,10 @@
         <activity android:name=".view.friends.FriendActivity"
             android:theme="@style/DefaultTheme"
             android:exported="false"/>
+
+        <activity android:name=".view.profile.ProfileActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
     </application>
 
 </manifest>

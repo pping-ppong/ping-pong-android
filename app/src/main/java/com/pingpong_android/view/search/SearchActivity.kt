@@ -1,6 +1,7 @@
 package com.pingpong_android.view.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,8 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivitySearchBinding
 import com.pingpong_android.utils.PreferenceUtil
+import com.pingpong_android.view.editProfile.EditProfileActivity
+import com.pingpong_android.view.profile.ProfileActivity
 import kotlin.math.log
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
@@ -148,7 +152,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
     }
 
-    fun goToUserProfile(memberId : Long) {
-        // todo : 타인 프로필 조회 페이지
+    private fun goToUserProfile(memberId : Long) {
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(INTENT_EXTRA_MEMBER_ID, memberId)
+        startActivity(intent)
     }
 }

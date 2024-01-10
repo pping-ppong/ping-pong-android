@@ -4,15 +4,7 @@ import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface RetrofitService {
@@ -103,11 +95,18 @@ interface RetrofitService {
         @Body id : Long
     ) : Single<ResultDTO>
 
-    // 검색 로그 불러오기
+    // 유저 검색 로그 불러오기
     @GET("/api/members/search-log")
     fun requestSearchLog(
         @Header("Authorization") accessToken : String
     ) : Single<LogResultDTO>
+
+    // 타 유저의 프로필 불러오기
+    @GET("/api/members/{id}/profile")
+    fun requestOthersProfile(
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: Long
+    ) : Single<UserResultDTO>
 
     // 친구 신청 승인
     @POST("/api/friends/accept")
@@ -127,8 +126,7 @@ interface RetrofitService {
     @POST("/api/friends/apply")
     fun requestFriendShip(
         @Header("Authorization") accessToken : String,
-        @Body applicantId : Long,
-        @Body respondentId : Long
+        @Body params: HashMap<String, Long>
     ) : Single<ResultDTO>
 
     // 친구 신청 끊기
