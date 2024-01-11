@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pingpong_android.view.friends.FriendViewModel" />
+            type="com.pingpong_android.view.setting.SettingViewModel" />
         <variable
             name="activity"
-            type="com.pingpong_android.view.friends.FriendActivity" />
+            type="com.pingpong_android.view.setting.SettingActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

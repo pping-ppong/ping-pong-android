@@ -4,7 +4,7 @@
     <!-- todo : buildConfig로 변경 -->
     <string name="kakao_app_key">kakao3e5405729c12a33398cbc5a5e0c9daf8</string>
     <string name="kakao_login_app_key">3e5405729c12a33398cbc5a5e0c9daf8</string>
-    <string name="google_request_id_token">382876464425-9d20ieg1rrh4869927i4abehd4jc0t3v.apps.googleusercontent.com</string>
+    <string name="google_request_id_token">680648046678-qgh8jc6su2iqlgenrb0l9e53nkib8h7u.apps.googleusercontent.com</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 회원가입 -->

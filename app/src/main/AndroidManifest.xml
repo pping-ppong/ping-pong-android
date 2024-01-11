@@ -61,6 +61,10 @@
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
+        <activity android:name=".view.setting.SettingActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
         <activity android:name=".view.search.SearchActivity"
             android:theme="@style/DefaultTheme"
             android:exported="false"/>

@@ -38,8 +38,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
 
 
         /* temp */
-        userDTO.socialId = "3277875718"
-        userDTO.email = "minji.7754.7754@kakao.com"
+//        userDTO.socialId = "3277875718"
+//        userDTO.email = "minji.7754.7754@kakao.com"
 
         subscribeLogin()
         subscribeReissue()

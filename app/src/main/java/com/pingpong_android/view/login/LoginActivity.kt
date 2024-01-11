@@ -145,6 +145,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
         } catch (e: ApiException) {
             Log.e(LoginActivity::class.java.simpleName, e.stackTraceToString())
+            Toast.makeText(this, e.statusCode.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
