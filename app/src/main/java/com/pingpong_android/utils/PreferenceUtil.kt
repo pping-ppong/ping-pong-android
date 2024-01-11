@@ -62,4 +62,12 @@ class PreferenceUtil(context: Context) {
     fun getId() : String {
         return prefs.getString("memberId", null).toString()
     }
+
+    fun getNickName() : String {
+        return prefs.getString("nickName", null).toString()
+    }
+
+    fun getProfileImg() : String {
+        return prefs.getString("profileImage", null).toString()
+    }
 }

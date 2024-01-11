@@ -55,7 +55,12 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
 
     private fun subscribeApplyFriendShip() {
         binding.viewModel!!.result.observe(this, Observer {
-
+            if (it.isSuccess && it.code == 200) {
+                binding.viewModel!!.requestAlarmFriend(prefs.getBearerToken(), memberId)
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            }
         })
     }
 

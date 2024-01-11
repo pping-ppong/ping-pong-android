@@ -13,6 +13,7 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
+import com.pingpong_android.view.makeGroup.MakeGroupActivity
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
 
@@ -115,6 +116,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     fun goToMakeTeam() {
-        // todo : 팀 그룹 만들기 페이지로 이동
+        val intent = Intent(this, MakeGroupActivity::class.java)
+        startActivity(intent)
     }
 }

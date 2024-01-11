@@ -41,10 +41,11 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
     }
 
     private fun initView() {
-        if (userDTO.profileImage != null) {
+        if (userDTO.profileImage.isEmpty()) {
             Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
             binding.defaultPhoto.visibility = View.INVISIBLE
         } else {
+            Glide.with(this).clear(binding.profileImg)
             binding.profileImg.visibility = View.INVISIBLE
             binding.defaultPhoto.visibility = View.INVISIBLE
         }

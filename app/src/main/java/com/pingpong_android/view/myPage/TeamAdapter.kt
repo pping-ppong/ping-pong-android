@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pingpong_android.databinding.ItemGroupBinding
 import com.pingpong_android.model.TeamDTO
-import com.pingpong_android.view.adapter.MembersAdapter
+import com.pingpong_android.view.adapter.MemberHorizontalAdapter
 
 class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 
@@ -40,11 +40,11 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
             binding.groupName.text = teamDTO.teamName
             
             val membersLayoutManager = LinearLayoutManager(activity)
-            val membersAdapter = MembersAdapter(teamDTO.memberList)
+            val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList)
 
             binding.memberRv.apply {
                 layoutManager = membersLayoutManager
-                adapter = membersAdapter
+                adapter = memberHorizontalAdapter
             }
         }
     }

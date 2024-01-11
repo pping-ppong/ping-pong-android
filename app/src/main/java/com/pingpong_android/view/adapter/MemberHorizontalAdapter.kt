@@ -8,7 +8,7 @@ import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemImageWithTextBinding
 import com.pingpong_android.model.MemberDTO
 
-class MembersAdapter(private val memberList: List<MemberDTO>) : RecyclerView.Adapter<MembersAdapter.MembersViewHolder>() {
+class MemberHorizontalAdapter(private val memberList: List<MemberDTO>) : RecyclerView.Adapter<MemberHorizontalAdapter.MembersViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         var binding = ItemImageWithTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)

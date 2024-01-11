@@ -23,6 +23,9 @@ class RetrofitClient() {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY)
             OkHttpClient.Builder()
+                .connectTimeout(60,TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor)
                 .build()
         }
@@ -47,26 +50,6 @@ class RetrofitClient() {
                 setFlag(false)
             }
             return retrofitClient
-        }
-
-        private fun provideOkHttpClient(interceptor: AppInterceptor): OkHttpClient
-                = OkHttpClient.Builder().run {
-            connectTimeout(10, TimeUnit.SECONDS)
-            writeTimeout(60, TimeUnit.SECONDS)
-            readTimeout(60, TimeUnit.SECONDS)
-            addInterceptor(interceptor)
-            build()
-        }
-
-        class AppInterceptor : Interceptor {
-            @Throws(IOException::class)
-            override fun intercept(chain: Interceptor.Chain) : Response = with(chain) {
-                val newRequest = request().newBuilder()
-                    .addHeader("Content-Type", "application/json; charset=UTF-8")
-                    .addHeader("Accept", "application/json; charset=utf-8")
-                    .build()
-                proceed(newRequest)
-            }
         }
 
         private fun setFlag(flag : Boolean) {

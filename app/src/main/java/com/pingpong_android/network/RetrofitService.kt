@@ -61,6 +61,14 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String
     ) : Single<ResultDTO>
 
+    // 친구 신청 알림 요청
+    @POST ("/api/notifications/friends")
+    fun requestAlarmFriend(
+        @Header("Authorization") accessToken : String,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // Team

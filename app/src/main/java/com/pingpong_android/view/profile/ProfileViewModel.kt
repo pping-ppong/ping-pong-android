@@ -49,4 +49,17 @@ class ProfileViewModel : BaseViewModel() {
                     Log.e("Error", "requestController")} )
         )
     }
+
+    // 친구 신청 알림
+    fun requestAlarmFriend(token : String, memberId : Long) {
+        addDisposable(
+            instance!!.requestAlarmFriend(token, memberId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                },{
+                    Log.e("Error", "requestController")} )
+        )
+    }
 }
