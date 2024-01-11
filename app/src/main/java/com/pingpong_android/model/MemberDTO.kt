@@ -8,7 +8,7 @@ data class MemberDTO(
 ) : Serializable {
 
     @SerializedName("nickname")
-    var nickname : String = ""
+    var nickName : String = ""
 
     @SerializedName("profileImage")
     var profileImage : String? = null

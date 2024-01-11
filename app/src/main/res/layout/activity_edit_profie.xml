@@ -30,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back"
+                android:onClickListener="@{v -> activity.onBackPressed()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -62,6 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:onClickListener="@{v -> activity.goToGallery()}"
                 android:src="@drawable/ic_profile_popcorn" />
             <ImageView
                 android:layout_width="wrap_content"

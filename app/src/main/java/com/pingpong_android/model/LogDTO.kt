@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class LogDTO(
-    @SerializedName("key") var key : String
+    @SerializedName("keyword") var keyword : String
 ) : Serializable {
 
     @SerializedName("nickname")
@@ -14,5 +14,5 @@ data class LogDTO(
     var profileImage: String = ""
 
     @SerializedName("memberId")
-    var memberId: String = ""
+    var memberId: Long = 0
 }

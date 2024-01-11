@@ -54,11 +54,22 @@
                 android:id="@+id/btn_mypage"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/back_gray_circle_with_gray_outline"
+                android:background="@drawable/back_gray_circle_with_gray_outline" />
+
+            <ImageView
+                android:id="@+id/default_image"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:padding="4dp"
-                android:src="@drawable/ic_profile_popcorn" />
+                android:src="@drawable/ic_profile_popcorn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -25,7 +25,7 @@ class MembersAdapter(private val memberList: List<MemberDTO>) : RecyclerView.Ada
 
     inner class MembersViewHolder(val binding : ItemImageWithTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memberDTO: MemberDTO, position : Int) {
-            binding.title.text = memberDTO.nickname
+            binding.title.text = memberDTO.nickName
             Glide.with(binding.image).load(memberDTO.profileImage)
                 .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
                 .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우

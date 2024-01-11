@@ -1,51 +1,46 @@
-package com.pingpong_android.view.notice
+package com.pingpong_android.view.profile
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
-import com.pingpong_android.model.result.NoticeResultDTO
 import com.pingpong_android.model.result.ResultDTO
+import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class NoticeViewModel : BaseViewModel(){
+class ProfileViewModel : BaseViewModel() {
 
-    private val _noticeList = MutableLiveData<NoticeResultDTO>()
-    val noticeList : LiveData<NoticeResultDTO>
-        get() = _noticeList
+    private val _userResult = MutableLiveData<UserResultDTO>()
+    val userResult : LiveData<UserResultDTO>
+        get() = _userResult
 
     private val _result = MutableLiveData<ResultDTO>()
     val result : LiveData<ResultDTO>
         get() = _result
 
-    fun requestAllNotice(token : String) {
+
+    // 프로필 조회
+    fun requestOthersProfile(token : String, memberId : Long) {
         addDisposable(
-            instance!!.requestAllNotice(token)
+            instance!!.requestOthersProfile(token, memberId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _noticeList.postValue(it)
+                    _userResult.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )
     }
 
-    fun acceptFriendShip(token : String, respondentId : Long) {
-        addDisposable(
-            instance!!.acceptFriendShip(token, respondentId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _result.postValue(it)
-                },{
-                    Log.e("Error", "requestController")} )
-        )
-    }
+    // 친구 신청
+    fun requestFriendShip(token : String, applicantId : Long, respondentId : Long) {
+        val body = HashMap<String, Long>()
+        body.put("applicantId", applicantId)
+        body.put("respondentId", respondentId)
 
-    fun refuseFriendShip(token : String, respondentId : Long) {
         addDisposable(
-            instance!!.refuseFriendShip(token, respondentId)
+            instance!!.requestFriendShip(token, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -54,5 +49,4 @@ class NoticeViewModel : BaseViewModel(){
                     Log.e("Error", "requestController")} )
         )
     }
-
 }

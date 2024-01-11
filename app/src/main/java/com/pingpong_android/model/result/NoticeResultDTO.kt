@@ -2,9 +2,9 @@ package com.pingpong_android.model.result
 
 import com.google.gson.annotations.SerializedName
 import com.pingpong_android.model.MemberDTO
-import com.pingpong_android.model.UserDTO
+import com.pingpong_android.model.NoticeDTO
 
-data class FriendListResultDTO (
+data class NoticeResultDTO (
     @SerializedName("isSuccess")
     var isSuccess : Boolean,
 
@@ -15,5 +15,5 @@ data class FriendListResultDTO (
     var message : String,
 
     @SerializedName("result")
-    var friendList : List<MemberDTO>
+    var noticeList : List<NoticeDTO>
 )

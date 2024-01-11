@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -16,6 +17,7 @@ import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
 import com.pingpong_android.databinding.ActivityJoinBinding
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
+import com.pingpong_android.view.intro.IntroActivity
 import com.pingpong_android.view.main.MainActivity
 
 class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
@@ -34,8 +36,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         userDTO = intent.getSerializableExtra(INTENT_EXTRA_USERDTO) as UserDTO
 
         checkNickNameValidation()
-        subscribeJoin()
-        subscribeNickNmCheck()
+        initSubscribe()
         initView()
     }
 
@@ -65,6 +66,16 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         }
     }
 
+    fun requestJoin() {
+        binding.viewModel!!.requestJoin(userDTO)
+    }
+
+    private fun initSubscribe() {
+        subscribeJoin()
+        subscribeNickNmCheck()
+        subscribeReissue()
+    }
+
     private fun subscribeNickNmCheck() {
         binding.viewModel!!.nickNameCheckResult.observe(this, Observer {
             if (it.isSuccess) {
@@ -83,10 +94,6 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         })
     }
 
-    fun requestJoin() {
-        binding.viewModel!!.requestJoin(userDTO)
-    }
-
     private fun subscribeJoin() {
         binding.viewModel!!.userData.observe(this, Observer {
             if (it.isSuccess) {
@@ -94,7 +101,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
                     userDTO.memberId = it.userDTO.memberId
                     userDTO.nickName = it.userDTO.nickName
                     userDTO.profileImage = it.userDTO.profileImage
-                    goToMain(userDTO)
+                    binding.viewModel!!.requestReissue(userDTO)
                 } else
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             } else
@@ -106,14 +113,18 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         binding.viewModel!!.reissueResult.observe(this, Observer {
             if (it.isSuccess) {
                 // 토큰 재발행 성공 시
+                userDTO.accessToken = it.userDTO.accessToken
+                userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveBearerToken(it.userDTO.accessToken)
+                goToMain(userDTO)
             } else {
                 // 토큰 재발행 실패 시
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                Log.d("Reissue", it.message)
             }
         })
     }
 
-    fun goToMain(userDTO: UserDTO) {
+    private fun goToMain(userDTO: UserDTO) {
         prefs.saveUser(userDTO)
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

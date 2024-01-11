@@ -4,11 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.kakao.sdk.user.model.User
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
@@ -16,10 +23,8 @@ import com.pingpong_android.databinding.ActivityLoginBinding
 import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.intro.IntroActivity
 import com.pingpong_android.view.join.JoinActivity
 import com.pingpong_android.view.main.MainActivity
-import java.io.Serializable
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
@@ -27,6 +32,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         lateinit var prefs: PreferenceUtil
         private lateinit var userDTO: UserDTO
     }
+
+    private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +49,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun setClickListener() {
         loginKakao()
-        // 다른 SNS 로그인
+        loginGoogle()
     }
 
     private fun initSubscribe() {
         subscribeLogin()
-        subscribeUserInfo()
         subscribeReissue()
     }
 
@@ -65,8 +71,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                     if (error != null) {
-                        Toast.makeText(this@LoginActivity, "카카오 로그인 시도에 실패 했습니다.", Toast.LENGTH_SHORT).show()
-                        Log.e("LOGIN", "카카오톡으로 로그인 실패", error)
+                        Log.e("HTTP-LOGIN", "카카오톡으로 로그인 실패", error)
 
                         if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                             return@loginWithKakaoTalk
@@ -75,7 +80,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     } else if (token != null) {
                         // 카카오 로그인 정보 요청 성공
                         UserApiClient.instance.me { user, error ->
-                            userDTO = UserDTO(user!!.id.toString())
+                            userDTO = UserDTO(user!!.id.toString()) // socialId
                             userDTO.email = user!!.kakaoAccount!!.email!!
                             userDTO.socialType = "KAKAO"
                             userDTO.code = token.accessToken
@@ -88,10 +93,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                             prefs.saveUser(userDTO)
 
                             // 가입된 회원인지 확인
-                            val oauthDTO = OauthDTO("KAKAO", token.accessToken)
-                            oauthDTO.refreshToken = token.refreshToken
-                            oauthDTO.accessToken = token.accessToken
-                            binding.viewModel!!.requestSocialInfo(oauthDTO)
+                            binding.viewModel!!.requestLogin(userDTO)
                         }
                     }
                 }
@@ -101,26 +103,69 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
-    fun subscribeUserInfo() {
-        binding.viewModel!!.userOauth.observe(this, Observer {
-            if (it.socialId != null) {
-                userDTO.socialId = it.socialId
-                userDTO.email = it.email
-                binding.viewModel!!.requestLogin(userDTO)
-            } else {
-                goToJoin()
-            }
-        })
+    private fun loginGoogle() {
+        binding.googleLogin.setOnClickListener {
+            requestGoogleLogin()
+        }
     }
 
-    fun subscribeLogin() {
+    private fun requestGoogleLogin() {
+        googleSignInClient.signOut()
+        val signInIntent = googleSignInClient.signInIntent
+        googleAuthLauncher.launch(signInIntent)
+    }
+
+    private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+        try {
+            val account = task.getResult(ApiException::class.java)
+
+            // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
+            val userName = account.givenName
+            val serverAuth = account.serverAuthCode
+
+//            userDTO = UserDTO(account.id)
+//            userDTO.email = user!!.kakaoAccount!!.email!!
+//            userDTO.socialType = "KAKAO"
+//            userDTO.code = token.accessToken
+//            userDTO.accessToken = token.accessToken
+//            userDTO.refreshToken = token.refreshToken
+//            if (!user.kakaoAccount!!.profile!!.nickname.isNullOrEmpty())
+//                userDTO.nickName = user.kakaoAccount!!.profile!!.nickname!!
+//            if(!user.kakaoAccount!!.profile!!.profileImageUrl.isNullOrEmpty())
+//                userDTO.profileImage = user.kakaoAccount!!.profile!!.profileImageUrl!!
+//            prefs.saveUser(userDTO)
+//
+//            // 가입된 회원인지 확인
+//            val oauthDTO = OauthDTO("KAKAO", token.accessToken)
+//            oauthDTO.refreshToken = token.refreshToken
+//            oauthDTO.accessToken = token.accessToken
+//            binding.viewModel!!.requestSocialInfo(oauthDTO)
+
+        } catch (e: ApiException) {
+            Log.e(LoginActivity::class.java.simpleName, e.stackTraceToString())
+        }
+    }
+
+    private fun getGoogleClient(): GoogleSignInClient {
+        val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
+            .requestServerAuthCode(getString(R.string.google_request_id_token)) // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
+            .requestEmail() // 이메일도 요청할 수 있다.
+            .build()
+
+        return GoogleSignIn.getClient(this, googleSignInOption)
+    }
+
+    private fun subscribeLogin() {
         binding.viewModel!!.userData.observe(this, Observer {
             if (it.isSuccess && it.userDTO != null) {
                 userDTO.memberId = it.userDTO.memberId
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
                 prefs.saveBearerToken(it.userDTO.accessToken)
-//                binding.viewModel!!.requestReissue(userDTO)
+                binding.viewModel!!.requestReissue(userDTO)
             } else {
                 goToJoin()
             }

@@ -4,6 +4,7 @@
     <!-- todo : buildConfig로 변경 -->
     <string name="kakao_app_key">kakao3e5405729c12a33398cbc5a5e0c9daf8</string>
     <string name="kakao_login_app_key">3e5405729c12a33398cbc5a5e0c9daf8</string>
+    <string name="google_request_id_token">382876464425-9d20ieg1rrh4869927i4abehd4jc0t3v.apps.googleusercontent.com</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 회원가입 -->
@@ -14,7 +15,6 @@
 
     <!-- ///////////////////////////////// -->
     <!-- 메인 홈 -->
-
     <string name="mon">월</string>
     <string name="tue">화</string>
     <string name="wed">수</string>
@@ -36,6 +36,7 @@
     <string name="alarm">알림</string>
     <string name="confirm">수락</string>
     <string name="reject">거절</string>
+    <string name="no_notice_list">알림이 없어요 :D</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 그룹 -->
@@ -54,6 +55,7 @@
     <string name="friend">친구</string>
     <string name="trash">휴지통</string>
     <string name="setting">설정</string>
+    <string name="photo">사진</string>
 
     <string name="more">더보기</string>
     <string name="add_todo">할 일 추가</string>
@@ -66,6 +68,7 @@
     <string name="make_group">그룹 만들기</string>
     <string name="no_popcorn">모은 팝콘이 아직 없네요</string>
     <string name="no_group">그룹이 아직 없네요</string>
+    <string name="no_image">사진이 없어요ㅜ_ㅜ</string>
 
     <string name="account">계정</string>
     <string name="notice">공지사항</string>

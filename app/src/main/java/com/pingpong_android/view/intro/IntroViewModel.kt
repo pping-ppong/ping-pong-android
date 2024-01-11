@@ -12,10 +12,6 @@ import io.reactivex.schedulers.Schedulers
 
 class IntroViewModel : BaseViewModel() {
 
-    private val _userOauth = MutableLiveData<UserDTO>()
-    val userOauth : LiveData<UserDTO>
-        get() = _userOauth
-
     private val _loginResult = MutableLiveData<UserResultDTO>()
     val loginResult : LiveData<UserResultDTO>
         get() = _loginResult
@@ -25,19 +21,6 @@ class IntroViewModel : BaseViewModel() {
         get() = _reissueResult
 
 
-    // 가입된 유저인지 확인
-    fun requestSocialInfo(oauthDTO: OauthDTO) {
-        addDisposable(
-            instance!!.getSocialInfo(oauthDTO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _userOauth.postValue(it.userDTO)
-                },{
-                    Log.e("Error", "requestController")} )
-        )
-    }
-
     // 로그인 요청
     fun requestLogin(userDTO: UserDTO) {
         addDisposable(
@@ -46,19 +29,6 @@ class IntroViewModel : BaseViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _loginResult.postValue(it)
-                },{
-                    Log.e("Error", "requestController")} )
-        )
-    }
-
-    // 액세스토큰 재발행
-    fun requestReissue(userDTO: UserDTO) {
-        addDisposable(
-            instance!!.requestReissue(userDTO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _reissueResult.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )

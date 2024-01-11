@@ -58,4 +58,8 @@ class PreferenceUtil(context: Context) {
     fun getBearerToken() : String {
         return prefs.getString("bearerToken", null).toString()
     }
+
+    fun getId() : String {
+        return prefs.getString("memberId", null).toString()
+    }
 }

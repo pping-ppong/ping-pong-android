@@ -4,14 +4,7 @@ import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface RetrofitService {
@@ -19,12 +12,6 @@ interface RetrofitService {
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // UserDTO
-
-    // 소셜 로그인 사용자 정보 불러오기
-    @POST("/api/oauth/info")
-    fun getSocialInfo(
-        @Body oauthDTO: OauthDTO
-    ) : Single<UserResultDTO>
 
     // 로그인
     @POST("/api/oauth/login")
@@ -58,17 +45,31 @@ interface RetrofitService {
         @Path("id") userId : String
     ) : Single<UserResultDTO>
 
+    /////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    // Notice
+
+    // 알림 전체 조회 (30일 이내)
+    @GET("/api/notifications")
+    fun requestAllNotice(
+        @Header("Authorization") accessToken : String
+    ) : Single<NoticeResultDTO>
+
+    // 안읽은 알림 조회
+    @GET("/api/notifications/un-read")
+    fun requestUnReadNotice(
+        @Header("Authorization") accessToken : String
+    ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
-    // Member
+    // Team
 
     // 유저가 속한 팀 전체 조회
     @GET("/api/members/teams")
     fun requestUserTeams(
         @Header("Authorization") accessToken : String
         ) : Single<TeamListResultDTO>
-
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
@@ -87,16 +88,51 @@ interface RetrofitService {
         @Query("nickname") nickName : String
     ) : Single<FriendListResultDTO>
 
-    // 검색 로그 저장
+    // 유저 검색 로그 저장
     @POST("/api/members/search-log")
     fun addSearchLog(
         @Header("Authorization") accessToken : String,
         @Body id : Long
     ) : Single<ResultDTO>
 
-    // 검색 로그 불러오기
+    // 유저 검색 로그 불러오기
     @GET("/api/members/search-log")
     fun requestSearchLog(
         @Header("Authorization") accessToken : String
     ) : Single<LogResultDTO>
+
+    // 타 유저의 프로필 불러오기
+    @GET("/api/members/{id}/profile")
+    fun requestOthersProfile(
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: Long
+    ) : Single<UserResultDTO>
+
+    // 친구 신청 승인
+    @POST("/api/friends/accept")
+    fun acceptFriendShip(
+        @Header("Authorization") accessToken : String,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+    // 친구 신청 거절
+    @POST("/api/friends/refuse")
+    fun refuseFriendShip(
+        @Header("Authorization") accessToken : String,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+    // 친구 신청하기
+    @POST("/api/friends/apply")
+    fun requestFriendShip(
+        @Header("Authorization") accessToken : String,
+        @Body params: HashMap<String, Long>
+    ) : Single<ResultDTO>
+
+    // 친구 신청 끊기
+    @DELETE("/api/friends/unfollow?memberId=")
+    fun deleteFriendShip (
+        @Header("Authorization") accessToken : String,
+        @Field("memberId") memberId : Long
+    )
 }
