@@ -29,6 +29,18 @@ class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adap
         notifyDataSetChanged()
     }
 
+    fun getMemberId() : List<Long> {
+        if (memberList.size > 1) {
+            val memberIdList : MutableList<Long> = mutableListOf()
+            for (memberDTO : MemberDTO in memberList.subList(1, memberList.size)) {
+                memberIdList.add(memberDTO.memberId)
+            }
+            return memberIdList
+        } else {
+            return emptyList()
+        }
+    }
+
     inner class MembersViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memberDTO: MemberDTO, position : Int) {
             // 주인장 아이콘
@@ -43,10 +55,8 @@ class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adap
             // 유저 사진
             if (memberDTO.profileImage.isNotEmpty()) {
                 binding.defaultImage.visibility = View.GONE
-                Glide.with(binding.profileImg).load(memberDTO.profileImage)
-                    .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                    .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                    .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+                Glide.with(binding.profileImg)
+                    .load(memberDTO.profileImage)
                     .into(binding.profileImg)
                 binding.image.clipToOutline = true
             } else {

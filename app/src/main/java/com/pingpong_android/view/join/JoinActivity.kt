@@ -7,8 +7,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
@@ -16,23 +14,18 @@ import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
 import com.pingpong_android.databinding.ActivityJoinBinding
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.intro.IntroActivity
 import com.pingpong_android.view.main.MainActivity
 
 class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
+    private lateinit var userDTO: UserDTO
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = JoinViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         userDTO = intent.getSerializableExtra(INTENT_EXTRA_USERDTO) as UserDTO
 
         checkNickNameValidation()

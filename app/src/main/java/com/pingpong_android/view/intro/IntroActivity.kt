@@ -22,20 +22,14 @@ import com.pingpong_android.view.main.MainActivity
 class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro)  {
 
     private val REQUEST_PERMISSIONS = 1
-
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
+    private lateinit var userDTO: UserDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = IntroViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         userDTO = prefs.getUser()
-
 
         /* temp */
 //        userDTO.socialId = "3277875718"
@@ -104,6 +98,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
                 userDTO.memberId = it.userDTO.memberId
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveUser(userDTO)
                 prefs.saveBearerToken(it.userDTO.accessToken)
                 goToMain()
             } else {

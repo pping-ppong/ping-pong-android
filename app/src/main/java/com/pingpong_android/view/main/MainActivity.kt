@@ -21,10 +21,7 @@ import com.pingpong_android.view.search.SearchActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
+    private lateinit var userDTO: UserDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +37,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun initUserDTO() {
-        prefs = PreferenceUtil(applicationContext)
         userDTO = prefs.getUser()
         prefs.saveBearerToken(userDTO.accessToken)
 

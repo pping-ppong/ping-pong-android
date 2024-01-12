@@ -77,7 +77,14 @@ interface RetrofitService {
     @GET("/api/members/teams")
     fun requestUserTeams(
         @Header("Authorization") accessToken : String
-        ) : Single<TeamListResultDTO>
+    ) : Single<TeamListResultDTO>
+
+    // 팀 생성
+    @POST("/api/teams")
+    fun requestMakeGroup(
+        @Header("Authorization") accessToken : String,
+        @Body team : HashMap<String, String>
+    ) : Single<TeamResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////

@@ -14,14 +14,10 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivitySearchBinding
-import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.profile.ProfileActivity
-import kotlin.math.log
 
 class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
 
-    private lateinit var prefs : PreferenceUtil
     private var searchAdapter = SearchAdapter(emptyList())
     private var logAdapter = LogAdapter(emptyList())
 
@@ -29,8 +25,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         super.onCreate(savedInstanceState)
         binding.viewModel = SearchViewModel()
         binding.activity = this
-
-        prefs = PreferenceUtil(applicationContext)
 
         initSubscribe()
         initAdapter()

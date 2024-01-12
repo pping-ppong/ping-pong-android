@@ -28,11 +28,7 @@ import com.pingpong_android.view.main.MainActivity
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
-
+    private lateinit var userDTO: UserDTO
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +36,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.viewModel = LoginViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         userDTO = prefs.getUser()
 
         initSubscribe()

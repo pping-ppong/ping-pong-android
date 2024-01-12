@@ -10,21 +10,16 @@ import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivityOthersProfileBinding
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
 
 class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.activity_others_profile) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        var memberId : Long = -1
-    }
+    var memberId : Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = ProfileViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         memberId = intent.getLongExtra(INTENT_EXTRA_MEMBER_ID, -1)
 
         initView()

@@ -10,14 +10,12 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMyPageBinding
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
 import com.pingpong_android.view.makeGroup.MakeGroupActivity
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
 
-    private lateinit var prefs : PreferenceUtil
     private lateinit var user: UserDTO
     private var teamAdapter = TeamAdapter(emptyList())
 
@@ -26,7 +24,6 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
         binding.viewModel = MyPageViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         user = prefs.getUser()
 
         initAdapter()
@@ -58,6 +55,10 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
         binding.viewModel!!.UserData.observe(this, Observer {
             if (it.isSuccess) {
                 // 유저 정보 조회 성공
+                user.nickName = it.userDTO.nickName
+                user.profileImage = it.userDTO.profileImage
+                prefs.saveUser(user)
+
                 friendView(it.userDTO)
             } else {
                 // 유저 정보 조회 실패
