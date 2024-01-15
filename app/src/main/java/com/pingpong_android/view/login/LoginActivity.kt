@@ -1,5 +1,6 @@
 package com.pingpong_android.view.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -112,36 +113,25 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     }
 
     private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
 
-        try {
-            val account = task.getResult(ApiException::class.java)
+            try {
+                val account = task.getResult(ApiException::class.java)
 
-            // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
-            val userName = account.givenName
-            val serverAuth = account.serverAuthCode
+                // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
+                userDTO = UserDTO(account.email.toString()) // socialId
+                userDTO.email = account.email.toString()
+                userDTO.socialType = "GOOGLE"
+                userDTO.nickName = account.givenName!!
+                prefs.saveUser(userDTO)
 
-//            userDTO = UserDTO(account.id)
-//            userDTO.email = user!!.kakaoAccount!!.email!!
-//            userDTO.socialType = "KAKAO"
-//            userDTO.code = token.accessToken
-//            userDTO.accessToken = token.accessToken
-//            userDTO.refreshToken = token.refreshToken
-//            if (!user.kakaoAccount!!.profile!!.nickname.isNullOrEmpty())
-//                userDTO.nickName = user.kakaoAccount!!.profile!!.nickname!!
-//            if(!user.kakaoAccount!!.profile!!.profileImageUrl.isNullOrEmpty())
-//                userDTO.profileImage = user.kakaoAccount!!.profile!!.profileImageUrl!!
-//            prefs.saveUser(userDTO)
-//
-//            // 가입된 회원인지 확인
-//            val oauthDTO = OauthDTO("KAKAO", token.accessToken)
-//            oauthDTO.refreshToken = token.refreshToken
-//            oauthDTO.accessToken = token.accessToken
-//            binding.viewModel!!.requestSocialInfo(oauthDTO)
-
-        } catch (e: ApiException) {
-            Log.e(LoginActivity::class.java.simpleName, e.stackTraceToString())
-            Toast.makeText(this, e.statusCode.toString(), Toast.LENGTH_SHORT).show()
+                // 가입된 회원인지 확인
+                binding.viewModel!!.requestLogin(userDTO)
+            } catch (e: ApiException) {
+                Log.e(LoginActivity::class.java.simpleName, e.stackTraceToString())
+                Toast.makeText(this, e.statusCode.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

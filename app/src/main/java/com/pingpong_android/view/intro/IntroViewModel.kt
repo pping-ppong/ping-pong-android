@@ -30,6 +30,7 @@ class IntroViewModel : BaseViewModel() {
                 .subscribe({
                     _loginResult.postValue(it)
                 },{
+
                     Log.e("Error", "requestController")} )
         )
     }
