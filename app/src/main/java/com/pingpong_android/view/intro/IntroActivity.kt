@@ -5,17 +5,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.kakao.sdk.common.util.Utility
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityIntroBinding
-import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.login.LoginActivity
 import com.pingpong_android.view.main.MainActivity
 

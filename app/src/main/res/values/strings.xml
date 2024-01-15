@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">핑퐁</string>
 
-    <!-- todo : buildConfig로 변경 -->
-    <string name="kakao_app_key">kakao3e5405729c12a33398cbc5a5e0c9daf8</string>
-    <string name="kakao_login_app_key">3e5405729c12a33398cbc5a5e0c9daf8</string>
-    <string name="google_request_id_token">680648046678-tc0qg1j98s58uobt5viegaabomo03e47.apps.googleusercontent.com</string>
-
     <!-- ///////////////////////////////// -->
     <!-- 회원가입 -->
     <string name="join_title">회원가입</string>

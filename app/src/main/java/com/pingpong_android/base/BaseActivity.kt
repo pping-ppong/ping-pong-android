@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.kakao.sdk.common.KakaoSdk
+import com.pingpong_android.BuildConfig
 import com.pingpong_android.R
 import com.pingpong_android.utils.PreferenceUtil
 import io.reactivex.disposables.CompositeDisposable
@@ -23,7 +24,7 @@ abstract class BaseActivity <B: ViewDataBinding>(@LayoutRes val layoutId: Int) :
         binding = DataBindingUtil.setContentView(this,layoutId)
         binding.lifecycleOwner = this
 
-        KakaoSdk.init(this, appKey = getString(R.string.kakao_login_app_key))
+        KakaoSdk.init(this, appKey = BuildConfig.KAKAO_LOGIN_APP_KEY)
         prefs = PreferenceUtil(applicationContext)
     }
 

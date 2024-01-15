@@ -16,6 +16,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.User
+import com.pingpong_android.BuildConfig
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
@@ -147,7 +148,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun getGoogleClient(): GoogleSignInClient {
         val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
-            .requestServerAuthCode(getString(R.string.google_request_id_token)) // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
+            .requestServerAuthCode(BuildConfig.GOOGLE_REQUEST_ID_TOKEN) // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
             .requestEmail() // 이메일도 요청할 수 있다.
             .build()
 
