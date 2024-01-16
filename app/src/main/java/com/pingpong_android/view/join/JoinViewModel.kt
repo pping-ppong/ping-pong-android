@@ -12,16 +12,16 @@ import io.reactivex.schedulers.Schedulers
 class JoinViewModel : BaseViewModel(){
 
     private val _userData = MutableLiveData<UserResultDTO>()
+    private val _userLogin = MutableLiveData<UserResultDTO>()
     private val _nickNameCheckResult = MutableLiveData<UserResultDTO>()
     var isReady : MutableLiveData<Boolean> = MutableLiveData(false)
     val userData : LiveData<UserResultDTO>
         get() = _userData
     val nickNameCheckResult : LiveData<UserResultDTO>
         get() = _nickNameCheckResult
+    val userLogin : LiveData<UserResultDTO>
+        get() = _userLogin
 
-    private val _reissueResult = MutableLiveData<UserResultDTO>()
-    val reissueResult : LiveData<UserResultDTO>
-        get() = _reissueResult
 
     fun requestNickNameValidation(nickNm : String) {
         addDisposable(
@@ -46,14 +46,14 @@ class JoinViewModel : BaseViewModel(){
         )
     }
 
-    // 액세스토큰 재발행
-    fun requestReissue(userDTO: UserDTO) {
+    // 로그인 요청
+    fun requestLogin(userDTO: UserDTO) {
         addDisposable(
-            instance!!.requestReissue(userDTO)
+            instance!!.requestLogin(userDTO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _reissueResult.postValue(it)
+                    _userLogin.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )

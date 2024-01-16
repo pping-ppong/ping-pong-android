@@ -54,6 +54,7 @@
             android:layout_marginTop="32dp"
             android:paddingVertical="12dp"
             android:layout_marginBottom="16dp"
+            android:onClickListener="@{v -> activity.goToAccount()}"
             app:layout_constraintTop_toBottomOf="@+id/topPanel"
             app:layout_constraintStart_toStartOf="parent">
             <ImageView
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
             android:layout_marginBottom="16dp"
+            android:onClickListener="@{v -> activity.goToAlarm()}"
             app:layout_constraintTop_toBottomOf="@+id/btn_account"
             app:layout_constraintStart_toStartOf="parent">
             <ImageView
@@ -94,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/alarm"
+                android:text="@string/alarm_setting"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -103,11 +105,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/btn_notice"
+            android:id="@+id/btn_announcement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
             android:layout_marginBottom="16dp"
+            android:onClickListener="@{v -> activity.goToAnnouncement()}"
             app:layout_constraintTop_toBottomOf="@+id/btn_alarm"
             app:layout_constraintStart_toStartOf="parent">
             <ImageView
@@ -121,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/notice"
+                android:text="@string/announcement"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +138,8 @@
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/btn_notice"
+            android:onClickListener="@{v -> activity.goToInformation()}"
+            app:layout_constraintTop_toBottomOf="@+id/btn_announcement"
             app:layout_constraintStart_toStartOf="parent">
             <ImageView
                 android:layout_width="wrap_content"
@@ -163,6 +167,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
             android:layout_marginBottom="16dp"
+            android:onClickListener="@{v -> activity.requestLogout()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
             <TextView

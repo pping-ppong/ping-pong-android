@@ -7,7 +7,7 @@ import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityGroupListBinding
 import com.pingpong_android.view.main.MainActivity
 
-class GroupListActivity : BaseActivity<ActivityGroupListBinding>(R.layout.activity_group_list) {
+class GroupListActivity : BaseActivity<ActivityGroupListBinding>(R.layout.activity_group_list, TransitionMode.RIGHT) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

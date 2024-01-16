@@ -45,6 +45,19 @@ interface RetrofitService {
         @Path("id") userId : String
     ) : Single<UserResultDTO>
 
+    // 로그아웃
+    @POST("/api/oauth/logout")
+    fun requestLogout(
+        @Body userDTO: UserDTO
+    ) : Single<UserResultDTO>
+
+    // 회원탈퇴
+    @DELETE("/api/members/{id}")
+    fun requestDeleteAccount(
+        @Header("Authorization") accessToken : String,
+        @Path("id") userId : String
+    ) : Single<ResultDTO>
+
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // Notice
@@ -145,7 +158,7 @@ interface RetrofitService {
     ) : Single<ResultDTO>
 
     // 친구 신청 끊기
-    @DELETE("/api/friends/unfollow?memberId=")
+    @DELETE("/api/friends/unfollow")
     fun deleteFriendShip (
         @Header("Authorization") accessToken : String,
         @Field("memberId") memberId : Long

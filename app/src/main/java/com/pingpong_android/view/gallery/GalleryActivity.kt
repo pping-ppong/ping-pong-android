@@ -12,7 +12,7 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityGalleryBinding
 
-class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_gallery) {
+class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_gallery, TransitionMode.RIGHT) {
 
     private var galleryAdapter = GalleryAdapter(emptyList())
 

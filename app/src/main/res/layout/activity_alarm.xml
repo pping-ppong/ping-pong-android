@@ -6,16 +6,15 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pingpong_android.view.trash.TrashViewModel" />
+            type="com.pingpong_android.view.setting.alarm.AlarmViewModel" />
         <variable
             name="activity"
-            type="com.pingpong_android.view.trash.TrashActivity" />
+            type="com.pingpong_android.view.setting.alarm.AlarmActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="32dp"
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
+            android:paddingHorizontal="32dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent">
             <ImageView
@@ -30,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back"
+                android:onClickListener="@{v -> activity.onBackPressed()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -38,32 +39,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="@string/trash"
+                android:text="@string/alarm_setting"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btn_back"
-                app:layout_constraintEnd_toStartOf="@+id/btn_setting"/>
-
-            <ImageView
-                android:id="@+id/btn_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_trash"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notice_list"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_todo_in_trash"
-            tools:itemCount="7"
-            android:orientation="vertical"
-            android:layout_marginTop="28dp"
-            app:layout_constraintTop_toBottomOf="@+id/topPanel"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginTop="32dp"
+            android:paddingHorizontal="32dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/topPanel">
+            <TextView
+                style="@style/textBlack16"
+                android:text="@string/push_alarm"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:thumbTint="@color/main_yellow"
+                app:trackTint="@color/black"
+                android:background="@null"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

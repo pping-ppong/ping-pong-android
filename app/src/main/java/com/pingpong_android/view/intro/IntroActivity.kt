@@ -32,8 +32,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
 //        userDTO.email = "minji.7754.7754@kakao.com"
 
         subscribeLogin()
-        subscribeReissue()
-
         checkPermission()
     }
 
@@ -41,8 +39,11 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         var permission = mutableMapOf<String, String>()
 
         permission["storageWrite"] =  Manifest.permission.WRITE_EXTERNAL_STORAGE
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        // 저장공간 읽기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permission["storageRead"] = Manifest.permission.READ_MEDIA_IMAGES
+            permission["storageRead"] = Manifest.permission.POST_NOTIFICATIONS
+        }
         else
             permission["storageRead"] = Manifest.permission.READ_EXTERNAL_STORAGE
 
@@ -100,21 +101,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
             } else {
                 // 로그인 요청 실패
                 // 로그인 화면으로 이동
-                goToLogin()
-            }
-        })
-    }
-
-    private fun subscribeReissue() {
-        binding.viewModel!!.reissueResult.observe(this, Observer {
-            if (it.isSuccess) {
-                // 토큰 재발행 성공 시
-                userDTO.accessToken = it.userDTO.accessToken
-                userDTO.refreshToken = it.userDTO.refreshToken
-                prefs.saveBearerToken(it.userDTO.accessToken)
-                goToMain()
-            } else {
-                // 토큰 재발행 실패 시
                 goToLogin()
             }
         })

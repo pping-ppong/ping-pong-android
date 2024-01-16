@@ -16,7 +16,7 @@ import com.pingpong_android.databinding.ActivityJoinBinding
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.main.MainActivity
 
-class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
+class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, TransitionMode.VERTICAL) {
 
     private lateinit var userDTO: UserDTO
 
@@ -95,7 +95,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
                     userDTO.memberId = it.userDTO.memberId
                     userDTO.nickName = it.userDTO.nickName
                     userDTO.profileImage = it.userDTO.profileImage
-                    binding.viewModel!!.requestReissue(userDTO)
+                    binding.viewModel!!.requestLogin(userDTO)
                 } else
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             } else
@@ -104,16 +104,18 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
     }
 
     private fun subscribeReissue() {
-        binding.viewModel!!.reissueResult.observe(this, Observer {
+        binding.viewModel!!.userLogin.observe(this, Observer {
             if (it.isSuccess) {
-                // 토큰 재발행 성공 시
+                // 로그인 성공 시
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveUser(userDTO)
                 prefs.saveBearerToken(it.userDTO.accessToken)
                 goToMain(userDTO)
             } else {
-                // 토큰 재발행 실패 시
-                Log.d("Reissue", it.message)
+                // 로그인 실패 시
+                Log.d("Join-Login", it.message)
+                finish()
             }
         })
     }

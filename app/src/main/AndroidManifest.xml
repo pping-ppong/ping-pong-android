@@ -6,6 +6,9 @@
     <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        android:minSdkVersion="33" />
 
     <application
         android:allowBackup="true"
@@ -65,6 +68,26 @@
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
+        <activity android:name=".view.setting.account.AccountActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.alarm.AlarmActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.announcement.AnnouncementActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.information.InformationActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.trash.TrashActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
         <activity android:name=".view.search.SearchActivity"
             android:theme="@style/DefaultTheme"
             android:exported="false"/>
@@ -92,6 +115,11 @@
         <activity android:name=".view.makeGroup.MakeGroupActivity"
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
+
+        <activity
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
     </application>
 
 </manifest>

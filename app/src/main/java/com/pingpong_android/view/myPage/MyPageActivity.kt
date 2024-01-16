@@ -13,8 +13,9 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
 import com.pingpong_android.view.makeGroup.MakeGroupActivity
+import com.pingpong_android.view.setting.SettingActivity
 
-class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
+class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page, TransitionMode.RIGHT) {
 
     private lateinit var user: UserDTO
     private var teamAdapter = TeamAdapter(emptyList())
@@ -89,10 +90,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
         if (user.profileImage.isNotEmpty()) {
             binding.defaultImage.visibility = View.GONE
-            Glide.with(binding.image).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+            Glide.with(binding.image)
+                .load(user.profileImage)
                 .into(binding.image)
             binding.image.clipToOutline = true
         } else {
@@ -107,8 +106,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     fun goToSetting() {
-//        val intent = Intent(this, EditProfileActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
     }
 
     fun goToFriend() {

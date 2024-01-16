@@ -42,10 +42,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         if (userDTO.profileImage.isNotEmpty()) {
             binding.defaultImage.visibility = View.GONE
-            Glide.with(binding.btnMypage).load(userDTO.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+            Glide.with(binding.btnMypage)
+                .load(userDTO.profileImage)
                 .into(binding.btnMypage)
             binding.btnMypage.clipToOutline = true
         } else {
@@ -104,21 +102,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.viewModel!!.userData.observe(this, Observer {
             if (it.isSuccess) {
                 // 유저 정보 조회 성공
-                friendView(it.userDTO)
+                initView(it.userDTO)
             } else {
                 // 유저 정보 조회 실패
-                friendView(userDTO)
+                initView(userDTO)
             }
         })
     }
 
-    private fun friendView(user : UserDTO) {
+    private fun initView(user : UserDTO) {
         if (user.profileImage.isNotEmpty()) {
             binding.defaultImage.visibility = View.GONE
-            Glide.with(binding.btnMypage).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+            Glide.with(binding.btnMypage)
+                .load(user.profileImage)
                 .into(binding.btnMypage)
             binding.btnMypage.clipToOutline = true
         } else {

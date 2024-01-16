@@ -18,7 +18,7 @@ import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.friends.FriendActivity
 import com.pingpong_android.view.gallery.GalleryActivity
 
-class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activity_make_group) {
+class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activity_make_group, TransitionMode.RIGHT) {
 
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var memberAdapter = MemberAdapter(emptyList())

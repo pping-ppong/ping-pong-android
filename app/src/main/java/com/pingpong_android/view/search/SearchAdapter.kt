@@ -49,9 +49,6 @@ class SearchAdapter (private var friendList : List<MemberDTO>) : RecyclerView.Ad
                 binding.defaultImage.visibility = View.GONE
 
                 Glide.with(binding.profileImg).load(user.profileImage)
-                    .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                    .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                    .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
                     .into(binding.profileImg)
                 binding.image.clipToOutline = true
             }

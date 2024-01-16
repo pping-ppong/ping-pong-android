@@ -11,7 +11,7 @@ import com.pingpong_android.base.Constants
 import com.pingpong_android.databinding.ActivityFriendBinding
 import com.pingpong_android.view.profile.ProfileActivity
 
-class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_friend) {
+class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_friend, TransitionMode.RIGHT) {
 
     private var friendsAdapter = FriendsAdapter(emptyList())
 

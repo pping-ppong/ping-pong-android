@@ -51,7 +51,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun initSubscribe() {
         subscribeLogin()
-        subscribeReissue()
     }
 
     private fun loginKakao() {
@@ -120,7 +119,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 val account = task.getResult(ApiException::class.java)
 
                 // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
-                userDTO = UserDTO(account.email.toString()) // socialId
+                userDTO = UserDTO(account.id.toString()) // socialId
                 userDTO.email = account.email.toString()
                 userDTO.socialType = "GOOGLE"
                 userDTO.nickName = account.givenName!!
@@ -152,33 +151,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
                 prefs.saveBearerToken(it.userDTO.accessToken)
-                binding.viewModel!!.requestReissue(userDTO)
+                goToMain()
             } else {
                 goToJoin()
             }
         })
     }
 
-    private fun subscribeReissue() {
-        binding.viewModel!!.reissueResult.observe(this, Observer {
-            if (it.isSuccess) {
-                // 토큰 재발행 성공 시
-                goToMain()
-            } else {
-                // 토큰 재발행 실패 시
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    fun goToJoin() {
+    private fun goToJoin() {
         prefs.saveUser(userDTO)
         val intent = Intent(this, JoinActivity::class.java)
         intent.putExtra(INTENT_EXTRA_USERDTO, userDTO)
         startActivity(intent)
     }
 
-    fun goToMain() {
+    private fun goToMain() {
         prefs.saveUser(userDTO)
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

@@ -51,9 +51,6 @@ class LogAdapter(private var logList : List<LogDTO>) : RecyclerView.Adapter<LogA
                 if (logDTO.profileImage.isNotEmpty()) {
                     binding.defaultImage.visibility = View.GONE
                     Glide.with(binding.profileImg).load(logDTO.profileImage)
-                        .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                        .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                        .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
                         .into(binding.profileImg)
                     binding.image.clipToOutline = true
                 } else {

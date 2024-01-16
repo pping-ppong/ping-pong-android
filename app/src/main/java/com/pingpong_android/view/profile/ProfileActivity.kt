@@ -11,7 +11,7 @@ import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivityOthersProfileBinding
 import com.pingpong_android.model.UserDTO
 
-class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.activity_others_profile) {
+class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.activity_others_profile, TransitionMode.RIGHT) {
 
     var memberId : Long = -1
 
@@ -66,9 +66,6 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
         if (user.profileImage.isNotEmpty()) {
             binding.defaultImage.visibility = View.GONE
             Glide.with(binding.image).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
                 .into(binding.image)
             binding.image.clipToOutline = true
         } else {

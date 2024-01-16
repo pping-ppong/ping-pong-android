@@ -10,7 +10,7 @@ import com.pingpong_android.databinding.ActivityEditProfieBinding
 import com.pingpong_android.view.gallery.GalleryActivity
 import com.pingpong_android.view.main.MainActivity
 
-class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.activity_edit_profie) {
+class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.activity_edit_profie, TransitionMode.RIGHT) {
 
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 

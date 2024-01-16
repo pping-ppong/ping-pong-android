@@ -60,9 +60,6 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
                     binding.defaultImage.visibility = View.GONE
 
                     Glide.with(binding.image).load(notice.profileImage)
-                        .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                        .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                        .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
                         .into(binding.image)
                 }
 
