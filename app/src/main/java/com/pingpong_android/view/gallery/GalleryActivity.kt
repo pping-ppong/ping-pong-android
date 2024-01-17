@@ -23,6 +23,7 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_g
 
         initAdapter()
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.viewModel!!.fetchImageItemList(this)
     }
 

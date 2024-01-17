@@ -22,6 +22,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
 
         initAdapter()
         initRequest()
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
     }
 
     private fun initAdapter() {

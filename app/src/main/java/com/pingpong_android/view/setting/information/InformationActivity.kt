@@ -17,6 +17,7 @@ class InformationActivity : BaseActivity<ActivityInformationBinding>(R.layout.ac
     }
 
     private fun initView() {
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.appVersion.text = BuildConfig.VERSION_NAME
     }
 }

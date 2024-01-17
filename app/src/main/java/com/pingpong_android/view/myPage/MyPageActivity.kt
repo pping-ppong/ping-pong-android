@@ -85,7 +85,10 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     private fun friendView(user : UserDTO) {
-        binding.userNm.text = user.nickName
+        binding.topPanel.setTitle(user.nickName)
+        binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
+        binding.topPanel.setRightClickListener(listener = { goToSetting() })
+
         binding.btnFriend.text = String.format(getString(R.string.friend_num), user.friendCnt)
 
         if (user.profileImage.isNotEmpty()) {

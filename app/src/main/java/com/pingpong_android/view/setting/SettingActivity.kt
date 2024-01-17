@@ -24,6 +24,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
         binding.activity = this
 
         subscribeLogout()
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
     }
 
     private fun subscribeLogout() {

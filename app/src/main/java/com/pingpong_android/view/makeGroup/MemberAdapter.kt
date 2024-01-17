@@ -11,6 +11,12 @@ import com.pingpong_android.model.MemberDTO
 
 class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adapter<MemberAdapter.MembersViewHolder>() {
 
+    private lateinit var activity : MakeGroupActivity
+
+    fun setActivity(activity: MakeGroupActivity) {
+        this.activity = activity
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         var binding = ItemFriendListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MembersViewHolder(binding)

@@ -12,6 +12,7 @@ class AnnouncementActivity : BaseActivity<ActivityAnnouncementBinding>(R.layout.
         binding.viewModel = AnnouncementViewModel()
         binding.activity = this
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         // todo : 공지사항 api 필요
     }
 }

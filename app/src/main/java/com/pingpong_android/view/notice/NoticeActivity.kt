@@ -22,6 +22,7 @@ class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_not
         subscribeNotice()
         subscribeResult()
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.viewModel!!.requestAllNotice(prefs.getBearerToken())
     }
 

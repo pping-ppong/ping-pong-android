@@ -17,6 +17,7 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
     }
 
     private fun initView() {
+        binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
         val user = prefs.getUser()
 
         binding.emailTxt.text = user.email

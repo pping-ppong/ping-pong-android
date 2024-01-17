@@ -19,6 +19,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
         binding.viewModel = EditProfileViewModel()
         binding.activity = this
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
 //                val return = it.data?.getStringExtra("return") ?: ""

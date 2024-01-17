@@ -18,6 +18,7 @@ class GroupListActivity : BaseActivity<ActivityGroupListBinding>(R.layout.activi
     }
 
     private fun setClickListener() {
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
     }
 
     private fun goToMain() {

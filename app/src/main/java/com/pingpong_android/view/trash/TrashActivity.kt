@@ -12,5 +12,6 @@ class TrashActivity : BaseActivity<ActivityTrashBinding>(R.layout.activity_trash
         binding.viewModel = TrashViewModel()
         binding.activity = this
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
     }
 }

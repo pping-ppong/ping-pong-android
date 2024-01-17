@@ -12,9 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivityMakeGroupBinding
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.utils.PreferenceUtil
+import com.pingpong_android.view.addMember.AddMemberActivity
 import com.pingpong_android.view.friends.FriendActivity
 import com.pingpong_android.view.gallery.GalleryActivity
 
@@ -32,9 +34,13 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
         initAdapter()
         nameEtEvent()
 
+        binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-//                val return = it.data?.getStringExtra("return") ?: ""
+                if (it.data != null) {
+                    memberList.add(it.data!!.getSerializableExtra(INTENT_EXTRA_MEMBER_ID) as MemberDTO)
+                    memberAdapter.addList(memberList)
+                }
             }
         }
     }
@@ -46,6 +52,7 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
         memberList = mutableListOf(host)
 
         val memberLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        memberAdapter.setActivity(this)
         memberAdapter.addList(memberList)
 
         binding.memberRv.apply {
@@ -90,7 +97,7 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
     }
 
     fun goToFriendList() {
-        val intent = Intent(this, FriendActivity::class.java)
+        val intent = Intent(this, AddMemberActivity::class.java)
         activityResultLauncher.launch(intent)
     }
 }

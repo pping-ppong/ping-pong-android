@@ -28,6 +28,7 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     }
 
     private fun initView() {
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.btnFriend.setOnClickListener {
             binding.viewModel!!.requestFriendShip(prefs.getBearerToken(), prefs.getId().toLong(), memberId)
         }
@@ -60,7 +61,7 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     }
 
     private fun friendView(user : UserDTO) {
-        binding.userNm.text = user.nickName
+        binding.topPanel.setTitle(user.nickName)
         binding.cnt.text = String.format(getString(R.string.friend_num), user.friendCnt)
 
         if (user.profileImage.isNotEmpty()) {

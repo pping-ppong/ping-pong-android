@@ -16,6 +16,7 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>(R.layout.activity_alarm
     }
 
     private fun initAlarm() {
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         // todo : alarm 초기 세팅
     }
 }

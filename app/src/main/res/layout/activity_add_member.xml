@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--    <data>-->
-    <!--        <variable-->
-    <!--            name="viewModel"-->
-    <!--            type="com.pingpong_android.view.main.MainViewModel" />-->
-    <!--        <variable-->
-    <!--            name="activity"-->
-    <!--            type="com.pingpong_android.view.main.MainActivity" />-->
-    <!--    </data>-->
+        <data>
+            <variable
+                name="viewModel"
+                type="com.pingpong_android.view.addMember.AddMemberViewModel" />
+            <variable
+                name="activity"
+                type="com.pingpong_android.view.addMember.AddMemberActivity" />
+        </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,41 +18,15 @@
         android:paddingHorizontal="32dp"
         android:background="@color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.pingpong_android.layout.TopPanel
             android:id="@+id/topPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
+            app:topPanelClose="true"
+            app:topPanelTitle="@string/invite_member"
+            app:topPanelRightBtnImage="@drawable/ic_confirm"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-            <ImageView
-                android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_back"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/invite_member"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_back"
-                app:layout_constraintEnd_toStartOf="@+id/btn_confirm"/>
-
-            <ImageView
-                android:id="@+id/btn_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_confirm"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_bar"
