@@ -1,5 +1,6 @@
 package com.pingpong_android.view.makeGroup
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,14 +31,17 @@ class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adap
         holder.bind(memberList.get(position), position)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addList(memberList: List<MemberDTO>) {
         this.memberList = memberList
         notifyDataSetChanged()
     }
 
     fun getMemberId() : List<Long> {
-        if (memberList.size > 1) {
+        if (memberList.size > 1) {  // 유저 자신을 제외한 멤버가 있는지
             val memberIdList : MutableList<Long> = mutableListOf()
+
+            // 자신 제외 멤버들의 id만
             for (memberDTO : MemberDTO in memberList.subList(1, memberList.size)) {
                 memberIdList.add(memberDTO.memberId)
             }

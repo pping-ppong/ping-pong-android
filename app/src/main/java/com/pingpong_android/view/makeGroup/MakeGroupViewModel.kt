@@ -18,9 +18,9 @@ class MakeGroupViewModel : BaseViewModel() {
 
     // 팀 생성
     fun requestMakeGroup(token : String, name : String, idList: List<Long>) {
-        val body = HashMap<String, String>()
+        val body = HashMap<String, Any>()
         body.put("name", name)
-        body.put("memberId", idList.toString())
+        body.put("memberId", idList)
 
         addDisposable(
             instance!!.requestMakeGroup(token, body)

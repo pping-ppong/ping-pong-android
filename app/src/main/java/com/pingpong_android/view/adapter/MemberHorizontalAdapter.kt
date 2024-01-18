@@ -1,6 +1,7 @@
 package com.pingpong_android.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,11 +27,16 @@ class MemberHorizontalAdapter(private val memberList: List<MemberDTO>) : Recycle
     inner class MembersViewHolder(val binding : ItemImageWithTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memberDTO: MemberDTO, position : Int) {
             binding.title.text = memberDTO.nickName
-            Glide.with(binding.image).load(memberDTO.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                .into(binding.image)
+
+            if (memberDTO.profileImage.isNotEmpty()) {
+                binding.defaultImage.visibility = View.GONE
+                Glide.with(binding.image)
+                    .load(memberDTO.profileImage)
+                    .into(binding.image)
+            } else {
+                binding.defaultImage.visibility = View.VISIBLE
+                Glide.with(binding.image).clear(binding.image)
+            }
         }
     }
 }

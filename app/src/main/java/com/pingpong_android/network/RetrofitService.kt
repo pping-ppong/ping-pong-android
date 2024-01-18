@@ -96,7 +96,7 @@ interface RetrofitService {
     @POST("/api/teams")
     fun requestMakeGroup(
         @Header("Authorization") accessToken : String,
-        @Body team : HashMap<String, String>
+        @Body team : HashMap<String, Any>
     ) : Single<TeamResultDTO>
 
     /////////////////////////////////////////////////

@@ -16,11 +16,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/back_white_stroke_gray_16dp">
         <TextView
+            style="@style/textBlack14"
             android:id="@+id/group_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{teamDTO.teamName}"
-            android:textSize="14sp"
+            tools:text="title"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="8dp"

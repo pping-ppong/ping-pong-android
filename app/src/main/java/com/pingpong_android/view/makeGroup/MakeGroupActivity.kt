@@ -7,12 +7,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_LIST
 import com.pingpong_android.databinding.ActivityMakeGroupBinding
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.utils.PreferenceUtil
@@ -24,22 +27,23 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
 
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var memberAdapter = MemberAdapter(emptyList())
-    private lateinit var memberList : MutableList<MemberDTO>
+    private var memberList : MutableList<MemberDTO> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = MakeGroupViewModel()
         binding.activity = this
 
+        subscribeTeamData()
         initAdapter()
         nameEtEvent()
 
         binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
+                if (it.resultCode == RESULT_OK) {
                 if (it.data != null) {
-                    memberList.add(it.data!!.getSerializableExtra(INTENT_EXTRA_MEMBER_ID) as MemberDTO)
-                    memberAdapter.addList(memberList)
+                    memberList.addAll(it.data!!.getSerializableExtra(INTENT_EXTRA_MEMBER_LIST) as MutableList<MemberDTO>)
+                    memberAdapter.addList(memberList.toSet().toList())
                 }
             }
         }
@@ -49,11 +53,11 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
         val host = MemberDTO(prefs.getId().toLong())
         host.nickName = prefs.getNickName()
         host.profileImage = prefs.getProfileImg()
-        memberList = mutableListOf(host)
+        memberList.add(host)
 
-        val memberLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val memberLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         memberAdapter.setActivity(this)
-        memberAdapter.addList(memberList)
+        memberAdapter.addList(memberList.toList())
 
         binding.memberRv.apply {
             layoutManager = memberLayoutManager
@@ -90,6 +94,15 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
             else
                 binding.viewModel!!.isReady.postValue(false)
         }
+    }
+
+    private fun subscribeTeamData() {
+        binding.viewModel!!.teamData.observe(this, Observer {
+            if (it.isSuccess)
+                finish()
+            else
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+        })
     }
 
     fun makeGroup() {

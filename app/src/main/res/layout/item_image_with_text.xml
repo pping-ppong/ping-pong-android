@@ -14,9 +14,20 @@
             android:layout_height="32dp"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
+            android:clipToOutline="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@drawable/back_gray_circle_with_gray_outline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/default_image"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:padding="4dp"
             android:src="@drawable/ic_profile_popcorn"
             app:layout_constraintStart_toStartOf="parent"
