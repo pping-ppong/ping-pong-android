@@ -10,5 +10,6 @@ class Constants {
         const val INTENT_EXTRA_USERDTO = "INTENT_EXTRA_USERDTO"
         const val INTENT_EXTRA_MEMBER_ID = "INTENT_EXTRA_MEMBER_ID"
         const val INTENT_EXTRA_MEMBER_LIST = "INTENT_EXTRA_MEMBER_LIST"
+        const val INTENT_EXTRA_WEB_URL = "INTENT_EXTRA_WEB_URL"
     }
 }

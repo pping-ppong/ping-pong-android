@@ -1,19 +1,22 @@
-package com.pingpong_android.view.myPage
+package com.pingpong_android.view.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pingpong_android.databinding.ItemGroupBinding
 import com.pingpong_android.model.TeamDTO
-import com.pingpong_android.view.adapter.MemberHorizontalAdapter
+import com.pingpong_android.view.main.MainActivity
+import com.pingpong_android.view.myPage.MyPageActivity
 
 class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 
-    private lateinit var activity: MyPageActivity
+    private lateinit var context: Context
 
-    fun setActivity(activity : MyPageActivity) {
-        this.activity = activity
+    fun setContext(context: Context) {
+        this.context = context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
@@ -27,7 +30,10 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
         holder.bind(teamList.get(position), position)
-        // todo : teamData click-event
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, MainActivity::class.java)  // todo : 그룹 할일 페이지로 변경
+            context.startActivity(intent)
+        }
     }
 
     fun addList(teams : List<TeamDTO>) {
@@ -39,7 +45,7 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
         fun bind(teamDTO: TeamDTO, position : Int) {
             binding.groupName.text = teamDTO.teamName
             
-            val membersLayoutManager = LinearLayoutManager(activity)
+            val membersLayoutManager = LinearLayoutManager(context)
             val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList)
 
             binding.memberRv.apply {

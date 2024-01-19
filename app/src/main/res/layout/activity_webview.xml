@@ -6,16 +6,15 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pingpong_android.view.groupList.GroupListViewModel" />
+            type="com.pingpong_android.view.webView.WebViewViewModel" />
         <variable
             name="activity"
-            type="com.pingpong_android.view.groupList.GroupListActivity" />
+            type="com.pingpong_android.view.webView.WebViewActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="32dp"
         android:background="@color/white">
 
         <com.pingpong_android.layout.TopPanel
@@ -23,21 +22,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:topPanelClose="true"
-            app:topPanelTitle="@string/attending_group"
-            app:topPanelRightBtnImage="@drawable/ic_etc_big"
+            android:paddingHorizontal="32dp"
+            android:paddingBottom="13dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/team_rv"
+        <WebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_group"
-            tools:itemCount="3"
-            android:orientation="vertical"
-            android:layout_marginTop="28dp"
+            android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/topPanel"
-            app:layout_constraintStart_toStartOf="parent"/>
-
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
