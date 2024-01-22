@@ -101,14 +101,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun loginGoogle() {
         binding.googleLogin.setOnClickListener {
-            requestGoogleLogin()
+            googleSignInClient.signOut()
+            val signInIntent = googleSignInClient.signInIntent
+            googleAuthLauncher.launch(signInIntent)
         }
-    }
-
-    private fun requestGoogleLogin() {
-        googleSignInClient.signOut()
-        val signInIntent = googleSignInClient.signInIntent
-        googleAuthLauncher.launch(signInIntent)
     }
 
     private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

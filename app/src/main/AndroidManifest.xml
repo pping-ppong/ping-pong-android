@@ -52,8 +52,8 @@
 
         <activity
             android:name=".view.webView.WebViewActivity"
-            android:exported="true"
-            android:theme="@style/Login_theme">
+            android:exported="false"
+            android:theme="@style/DefaultTheme">
         </activity>
 
         <activity

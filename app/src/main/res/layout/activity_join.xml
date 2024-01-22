@@ -106,6 +106,74 @@
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <LinearLayout
+            android:id="@+id/term_user_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/term_service_layout">
+            <CheckBox
+                android:id="@+id/check_user_info"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/selector_check"/>
+            <TextView
+                style="@style/textBlack14"
+                android:layout_marginStart="8dp"
+                android:text="@string/term_personal_information"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/btn_personal_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/more_detail"
+                android:onClickListener="@{v -> activity.goToWebView(1)}"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:drawableTint="@color/system_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/term_service_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/btn_done">
+            <CheckBox
+                android:id="@+id/check_service"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/selector_check"/>
+            <TextView
+                style="@style/textBlack14"
+                android:layout_marginStart="8dp"
+                android:text="@string/term_service"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/btn_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/more_detail"
+                android:onClickListener="@{v -> activity.goToWebView(2)}"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:drawableTint="@color/system_gray" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/btn_done"
             android:layout_width="match_parent"
@@ -114,8 +182,8 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:background="@{viewModel.isReady ? @drawable/back_yellow_18dp : @drawable/back_gray_18dp}"
-            android:clickable="@{viewModel.isReady ? true : false}"
+            android:background="@{viewModel.isReadyAll ? @drawable/back_yellow_18dp : @drawable/back_gray_18dp}"
+            android:clickable="@{viewModel.isReadyAll ? true : false}"
             android:gravity="center"
             android:paddingVertical="16dp"
             android:layout_marginHorizontal="32dp"
@@ -124,8 +192,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

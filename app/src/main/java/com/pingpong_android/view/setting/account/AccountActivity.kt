@@ -29,5 +29,6 @@ class AccountActivity : BaseActivity<ActivityAccountBinding>(R.layout.activity_a
 
     fun requestDeleteAccount() {
         binding.viewModel!!.requestLogout(prefs.getBearerToken(), prefs.getId())
+        prefs.clearAll()
     }
 }

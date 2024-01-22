@@ -14,7 +14,9 @@ class JoinViewModel : BaseViewModel(){
     private val _userData = MutableLiveData<UserResultDTO>()
     private val _userLogin = MutableLiveData<UserResultDTO>()
     private val _nickNameCheckResult = MutableLiveData<UserResultDTO>()
-    var isReady : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isReadyNickname : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isReadyTerms : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isReadyAll : MutableLiveData<Boolean> = MutableLiveData(false)
     val userData : LiveData<UserResultDTO>
         get() = _userData
     val nickNameCheckResult : LiveData<UserResultDTO>

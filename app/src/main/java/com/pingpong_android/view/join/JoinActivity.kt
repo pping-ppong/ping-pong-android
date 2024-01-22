@@ -12,9 +12,11 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_WEB_URL
 import com.pingpong_android.databinding.ActivityJoinBinding
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.main.MainActivity
+import com.pingpong_android.view.webView.WebViewActivity
 
 class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, TransitionMode.VERTICAL) {
 
@@ -29,6 +31,8 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         userDTO = intent.getSerializableExtra(INTENT_EXTRA_USERDTO) as UserDTO
 
         checkNickNameValidation()
+        checkTerms()
+
         initSubscribe()
         initView()
     }
@@ -60,6 +64,22 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         }
     }
 
+    private fun checkTerms() {
+        binding.checkService.setOnCheckedChangeListener { button, isChecked ->
+            binding.viewModel!!.isReadyTerms.value = isChecked && binding.checkUserInfo.isChecked
+            checkAll()
+        }
+
+        binding.checkUserInfo.setOnCheckedChangeListener { button, isChecked ->
+            binding.viewModel!!.isReadyTerms.value = isChecked && binding.checkService.isChecked
+            checkAll()
+        }
+    }
+
+    private fun checkAll() {
+        binding.viewModel!!.isReadyAll.value = binding.viewModel!!.isReadyNickname.value!! && binding.viewModel!!.isReadyTerms.value!!
+    }
+
     fun requestJoin() {
         binding.viewModel!!.requestJoin(userDTO)
     }
@@ -76,14 +96,16 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
                 if (it.code == 200) {
                     binding.nickNmEtLayout.error = null
                     userDTO.nickName = binding.nickNmEt.text.toString()
-                    binding.viewModel!!.isReady.value = true
+                    binding.viewModel!!.isReadyNickname.value = true
+                    checkAll()
                 }
             } else {
                 if (it.message != null) {
                     binding.nickNmEtLayout.error = it.message
-                    binding.viewModel!!.isReady.value = false
+                    binding.viewModel!!.isReadyNickname.value = false
                 } else
-                    binding.viewModel!!.isReady.value = false
+                    binding.viewModel!!.isReadyNickname.value = false
+                checkAll()
             }
         })
     }
@@ -126,5 +148,16 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()
+    }
+
+    fun goToWebView(type : Int) {
+        var url = if (type == 1)
+            getString(R.string.url_term_personal_information)
+        else
+            getString(R.string.url_term_service)
+
+        val intent = Intent(this, WebViewActivity::class.java)
+        intent.putExtra(INTENT_EXTRA_WEB_URL, url)
+        startActivity(intent)
     }
 }
