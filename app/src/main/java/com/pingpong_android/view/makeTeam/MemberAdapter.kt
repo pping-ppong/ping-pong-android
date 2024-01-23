@@ -1,4 +1,4 @@
-package com.pingpong_android.view.makeGroup
+package com.pingpong_android.view.makeTeam
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.MemberDTO
 
 class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adapter<MemberAdapter.MembersViewHolder>() {
 
-    private lateinit var activity : MakeGroupActivity
+    private lateinit var activity : MakeTeamActivity
 
-    fun setActivity(activity: MakeGroupActivity) {
+    fun setActivity(activity: MakeTeamActivity) {
         this.activity = activity
     }
 

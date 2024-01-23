@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USER_DTO
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_WEB_URL
 import com.pingpong_android.databinding.ActivityJoinBinding
 import com.pingpong_android.model.UserDTO
@@ -28,7 +28,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         binding.viewModel = JoinViewModel()
         binding.activity = this
 
-        userDTO = intent.getSerializableExtra(INTENT_EXTRA_USERDTO) as UserDTO
+        userDTO = intent.getSerializableExtra(INTENT_EXTRA_USER_DTO) as UserDTO
 
         checkNickNameValidation()
         checkTerms()

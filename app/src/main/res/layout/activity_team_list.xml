@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pingpong_android.view.groupList.GroupListViewModel" />
+            type="com.pingpong_android.view.teamList.TeamListViewModel" />
         <variable
             name="activity"
-            type="com.pingpong_android.view.groupList.GroupListActivity" />
+            type="com.pingpong_android.view.teamList.TeamListActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
             android:id="@+id/team_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_group"
+            tools:listitem="@layout/item_team"
             tools:itemCount="3"
             android:orientation="vertical"
             android:layout_marginTop="28dp"

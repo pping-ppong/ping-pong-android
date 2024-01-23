@@ -13,8 +13,8 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.adapter.TeamAdapter
 import com.pingpong_android.view.editProfile.EditProfileActivity
 import com.pingpong_android.view.friends.FriendActivity
-import com.pingpong_android.view.groupList.GroupListActivity
-import com.pingpong_android.view.makeGroup.MakeGroupActivity
+import com.pingpong_android.view.teamList.TeamListActivity
+import com.pingpong_android.view.makeTeam.MakeTeamActivity
 import com.pingpong_android.view.setting.SettingActivity
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page, TransitionMode.RIGHT) {
@@ -131,12 +131,12 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     fun goToMakeTeam() {
-        val intent = Intent(this, MakeGroupActivity::class.java)
+        val intent = Intent(this, MakeTeamActivity::class.java)
         startActivity(intent)
     }
 
     fun goToGroupList() {
-        val intent = Intent(this, GroupListActivity::class.java)
+        val intent = Intent(this, TeamListActivity::class.java)
         startActivity(intent)
     }
 }

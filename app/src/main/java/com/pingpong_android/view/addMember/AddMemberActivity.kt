@@ -12,8 +12,7 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_LIST
 import com.pingpong_android.databinding.ActivityAddMemberBinding
-import com.pingpong_android.model.MemberDTO
-import com.pingpong_android.view.makeGroup.MakeGroupActivity
+import com.pingpong_android.view.makeTeam.MakeTeamActivity
 import java.io.Serializable
 
 class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activity_add_member) {
@@ -86,7 +85,7 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
     }
 
      private fun sendSelectedMembers() {
-        val intent = Intent(this, MakeGroupActivity::class.java)
+        val intent = Intent(this, MakeTeamActivity::class.java)
         intent.putExtra(INTENT_EXTRA_MEMBER_LIST, addMemberAdapter.getSelectedList() as Serializable)
         setResult(RESULT_OK, intent)
         if (!isFinishing) finish()

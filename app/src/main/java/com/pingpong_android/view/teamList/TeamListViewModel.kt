@@ -1,4 +1,4 @@
-package com.pingpong_android.view.groupList
+package com.pingpong_android.view.teamList
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import com.pingpong_android.model.result.TeamListResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class GroupListViewModel : BaseViewModel(){
+class TeamListViewModel : BaseViewModel(){
 
     private val _teamListData = MutableLiveData<TeamListResultDTO>()
     val teamList : LiveData<TeamListResultDTO>

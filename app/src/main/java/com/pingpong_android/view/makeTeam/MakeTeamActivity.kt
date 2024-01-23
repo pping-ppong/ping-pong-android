@@ -1,4 +1,4 @@
-package com.pingpong_android.view.makeGroup
+package com.pingpong_android.view.makeTeam
 
 import android.content.Context
 import android.content.Intent
@@ -14,16 +14,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_LIST
-import com.pingpong_android.databinding.ActivityMakeGroupBinding
+import com.pingpong_android.databinding.ActivityMakeTeamBinding
 import com.pingpong_android.model.MemberDTO
-import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.addMember.AddMemberActivity
-import com.pingpong_android.view.friends.FriendActivity
-import com.pingpong_android.view.gallery.GalleryActivity
 
-class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activity_make_group, TransitionMode.RIGHT) {
+class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity_make_team, TransitionMode.RIGHT) {
 
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var memberAdapter = MemberAdapter(emptyList())
@@ -31,7 +27,7 @@ class MakeGroupActivity : BaseActivity<ActivityMakeGroupBinding>(R.layout.activi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = MakeGroupViewModel()
+        binding.viewModel = MakeTeamViewModel()
         binding.activity = this
 
         subscribeTeamData()

@@ -118,7 +118,7 @@
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
-        <activity android:name=".view.makeGroup.MakeGroupActivity"
+        <activity android:name=".view.makeTeam.MakeTeamActivity"
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
@@ -126,7 +126,11 @@
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
-        <activity android:name=".view.groupList.GroupListActivity"
+        <activity android:name=".view.teamList.TeamListActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.teamCalendar.TeamCalendarActivity"
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 

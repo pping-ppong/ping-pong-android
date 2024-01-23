@@ -32,7 +32,7 @@
             android:id="@+id/notice_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_edit_group_order"
+            tools:listitem="@layout/item_edit_team_order"
             tools:itemCount="7"
             android:orientation="vertical"
             android:layout_marginTop="28dp"

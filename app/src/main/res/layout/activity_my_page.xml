@@ -137,7 +137,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             tools:itemCount="2"
-            tools:listitem="@layout/item_group"
+            tools:listitem="@layout/item_team"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todo_group_title"/>

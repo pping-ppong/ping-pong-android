@@ -39,7 +39,7 @@
     <string name="no_notice_list">알림이 없어요 :D</string>
 
     <!-- ///////////////////////////////// -->
-    <!-- 그룹 -->
+    <!-- 팀 -->
     <string name="edit_group_order">그룹 순서 편집</string>
     <string name="attending_group">참여 중인 그룹</string>
     <string name="group_member">그룹 멤버</string>
@@ -48,6 +48,7 @@
     <string name="member">멤버</string>
     <string name="invite_member">멤버 초대</string>
     <string name="search_nick">닉네임 검색</string>
+    <string name="todo_hint">입력</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 마이페이지 & 설정 -->

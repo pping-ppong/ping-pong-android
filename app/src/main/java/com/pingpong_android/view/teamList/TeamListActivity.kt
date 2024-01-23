@@ -1,4 +1,4 @@
-package com.pingpong_android.view.groupList
+package com.pingpong_android.view.teamList
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,19 +9,19 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.databinding.ActivityGroupListBinding
+import com.pingpong_android.databinding.ActivityTeamListBinding
 import com.pingpong_android.layout.ModalBottomSheetDialog
 import com.pingpong_android.view.adapter.TeamAdapter
-import com.pingpong_android.view.makeGroup.MakeGroupActivity
+import com.pingpong_android.view.makeTeam.MakeTeamActivity
 
-class GroupListActivity : BaseActivity<ActivityGroupListBinding>(R.layout.activity_group_list, TransitionMode.RIGHT) {
+class TeamListActivity : BaseActivity<ActivityTeamListBinding>(R.layout.activity_team_list, TransitionMode.RIGHT) {
 
     private var teamAdapter = TeamAdapter(emptyList())
     private var menuList : List<String> = listOf("그룹 만들기", "그룹 순서 편집")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = GroupListViewModel()
+        binding.viewModel = TeamListViewModel()
         binding.activity = this
 
         initAdapter()
@@ -82,7 +82,7 @@ class GroupListActivity : BaseActivity<ActivityGroupListBinding>(R.layout.activi
     }
 
     fun goToMakeTeam() {
-        val intent = Intent(this, MakeGroupActivity::class.java)
+        val intent = Intent(this, MakeTeamActivity::class.java)
         startActivity(intent)
     }
 }

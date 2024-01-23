@@ -20,7 +20,7 @@ import com.kakao.sdk.user.model.User
 import com.pingpong_android.BuildConfig
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USER_DTO
 import com.pingpong_android.databinding.ActivityLoginBinding
 import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
@@ -157,7 +157,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun goToJoin() {
         prefs.saveUser(userDTO)
         val intent = Intent(this, JoinActivity::class.java)
-        intent.putExtra(INTENT_EXTRA_USERDTO, userDTO)
+        intent.putExtra(INTENT_EXTRA_USER_DTO, userDTO)
         startActivity(intent)
     }
 

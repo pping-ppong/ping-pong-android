@@ -1,4 +1,4 @@
-package com.pingpong_android.view.makeGroup
+package com.pingpong_android.view.makeTeam
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import com.pingpong_android.model.result.TeamResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class MakeGroupViewModel : BaseViewModel() {
+class MakeTeamViewModel : BaseViewModel() {
 
     var isReady : MutableLiveData<Boolean> = MutableLiveData(false)
 

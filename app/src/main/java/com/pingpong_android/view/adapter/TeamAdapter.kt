@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pingpong_android.databinding.ItemGroupBinding
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_TEAM_DTO
+import com.pingpong_android.databinding.ItemTeamBinding
 import com.pingpong_android.model.TeamDTO
-import com.pingpong_android.view.main.MainActivity
-import com.pingpong_android.view.myPage.MyPageActivity
+import com.pingpong_android.view.teamCalendar.TeamCalendarActivity
 
 class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 
@@ -20,7 +20,7 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
-        val binding =  ItemGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =  ItemTeamBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TeamViewHolder(binding)
     }
 
@@ -31,7 +31,8 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
         holder.bind(teamList.get(position), position)
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, MainActivity::class.java)  // todo : 그룹 할일 페이지로 변경
+            val intent = Intent(context, TeamCalendarActivity::class.java)
+            intent.putExtra(INTENT_EXTRA_TEAM_DTO, teamList.get(position))
             context.startActivity(intent)
         }
     }
@@ -41,7 +42,7 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
         notifyDataSetChanged()
     }
 
-    inner class TeamViewHolder(val binding : ItemGroupBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TeamViewHolder(val binding : ItemTeamBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(teamDTO: TeamDTO, position : Int) {
             binding.groupName.text = teamDTO.teamName
             

@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pingpong_android.view.makeGroup.MakeGroupViewModel" />
+            type="com.pingpong_android.view.makeTeam.MakeTeamViewModel" />
         <variable
             name="activity"
-            type="com.pingpong_android.view.makeGroup.MakeGroupActivity" />
+            type="com.pingpong_android.view.makeTeam.MakeTeamActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
