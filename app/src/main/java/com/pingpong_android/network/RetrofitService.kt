@@ -1,6 +1,7 @@
 package com.pingpong_android.network
 
 import com.pingpong_android.model.OauthDTO
+import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
@@ -98,6 +99,23 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Body team : HashMap<String, Any>
     ) : Single<TeamResultDTO>
+
+    // 할 일 등록
+    @POST("/api/teams/{id}/plans")
+    fun requestAddTodo(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long,
+        @Body todoDTO: TodoDTO
+    ) : Single<TodoResultDTO>
+
+    // 그룹의 캘린더 조회 (팝콘 성취율만)
+    @GET("/api/teams/{id}/calendars/achievement")
+    fun requestTeamCalendarAll(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long,
+        @Query("startDate") startDate : String,
+        @Query("endDate") endDate : String
+    )
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
