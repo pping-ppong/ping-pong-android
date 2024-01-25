@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemCalendarMonthBinding
+import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.view.main.MainActivity
 import java.util.Calendar
 import java.util.Date
@@ -15,13 +16,14 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
 
     private var calendar = Calendar.getInstance()
     private lateinit var activity : MainActivity
+    private var achieveList : List<AchieveDTO> = emptyList()
 
     fun setMainActivity(activity: MainActivity) {
         this.activity = activity
     }
 
-    fun addAchieveList() {
-
+    fun addAchieveList(achieveList: List<AchieveDTO>) {
+        this.achieveList = achieveList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -65,8 +67,14 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
             }
 
             // 버튼 이벤트
-            binding.lastMonth.setOnClickListener { bind(position-1) }
-            binding.nextMonth.setOnClickListener { bind(position+1) }
+            binding.lastMonth.setOnClickListener {
+                bind(position-1)
+                activity.requestCalAchieveNow(-1)
+            }
+            binding.nextMonth.setOnClickListener {
+                bind(position+1)
+                activity.requestCalAchieveNow(1)
+            }
         }
     }
 }

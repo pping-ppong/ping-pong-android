@@ -11,17 +11,19 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMainBinding
+import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.login.LoginActivity
 import com.pingpong_android.view.main.adapter.CalendarAdapter
 import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.notice.NoticeActivity
 import com.pingpong_android.view.search.SearchActivity
+import java.time.LocalDate
+import java.util.Calendar
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private lateinit var userDTO: UserDTO
+    var date: LocalDate = LocalDate.now()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +32,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         initUserDTO()
         initSubscribe()
-        initAdapter()
 
         setClickListener()
         initRequest()
-
-        binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), "2024-01-01", "2024-01-31")
     }
 
     private fun initUserDTO() {
@@ -54,18 +53,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    private fun initAdapter() {
+    private fun initAdapter(achieves: List<AchieveDTO>) {
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val monthListAdapter = CalendarAdapter()
         monthListAdapter.setMainActivity(this)
+        monthListAdapter.addAchieveList(achieves)
 
         binding.calender.apply {
             layoutManager = monthListManager
             adapter = monthListAdapter
             scrollToPosition(Int.MAX_VALUE/2)
         }
-        val snap = PagerSnapHelper()
-        snap.attachToRecyclerView(binding.calender)
     }
 
     private fun setClickListener() {
@@ -75,13 +73,42 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun initRequest() {
+        requestCalAchieveNow()
         binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), userDTO)
         binding.viewModel!!.requestUnReadNotice(prefs.getBearerToken())
     }
 
+    private fun requestCalAchieveNow() {
+        binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(),
+                    startDate = date.withDayOfMonth(1).toString(),
+                    endDate = date.withDayOfMonth(date.lengthOfMonth()).toString())
+    }
+
+    fun requestCalAchieveNow(position : Int) {
+        if (position == 1)
+            date.plusMonths(1)
+        else
+            date.minusMonths(1)
+
+        binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(),
+            startDate = date.withDayOfMonth(1).toString(),
+            endDate = date.withDayOfMonth(date.lengthOfMonth()).toString())
+    }
+
     private fun initSubscribe() {
+        subscribeAchieve()
         subscribeNoticeState()
         subscribeUserInfo()
+    }
+
+    private fun subscribeAchieve() {
+        binding.viewModel!!.achieveResult.observe(this, Observer {
+            if (it.isSuccess && !it.achieveList.isNullOrEmpty()) {
+                initAdapter(it.achieveList)
+            } else {
+                initAdapter(emptyList())
+            }
+        })
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

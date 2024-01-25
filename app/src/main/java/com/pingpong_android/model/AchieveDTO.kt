@@ -2,10 +2,11 @@ package com.pingpong_android.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import java.time.LocalDate
 
 data class AchieveDTO(
     @SerializedName("date")
-    var date : String = ""
+    var date : String
     ) : Serializable {
 
     @SerializedName("achievement")
