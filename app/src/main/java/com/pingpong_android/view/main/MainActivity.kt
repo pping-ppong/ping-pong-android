@@ -34,6 +34,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         setClickListener()
         initRequest()
+
+        binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), "2024-01-01", "2024-01-31")
     }
 
     private fun initUserDTO() {

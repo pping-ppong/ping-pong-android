@@ -11,4 +11,9 @@ data class AchieveDTO(
     @SerializedName("achievement")
     var achievement : Double = 0.0
 
+    @SerializedName("startDate")
+    var startDate : String = ""
+
+    @SerializedName("endDate")
+    var endDate : String = ""
 }

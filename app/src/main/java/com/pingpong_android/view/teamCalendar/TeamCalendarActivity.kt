@@ -41,6 +41,9 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
         initView()
         initAdapter()
+
+        binding.viewModel!!.requestMonthAchievement(
+            prefs.getBearerToken(), teamDTO.teamId, "2024-01-01", "2024-01-31")
     }
 
     @SuppressLint("ClickableViewAccessibility")

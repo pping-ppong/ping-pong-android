@@ -1,5 +1,6 @@
 package com.pingpong_android.network
 
+import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.model.UserDTO
@@ -87,6 +88,14 @@ interface RetrofitService {
     /////////////////////////////////////////////////
     // Team
 
+    // 전체 캘린더 조회 (팝콘 성취율만)
+    @GET("/api/members/calendars/achievement")
+    fun requestMainCalendarAll(
+        @Header("Authorization") accessToken : String,
+        @Query("startDate") startDate : String,
+        @Query("endDate") endDate : String
+    ) : Single<AchieveResultDTO>
+
     // 유저가 속한 팀 전체 조회
     @GET("/api/members/teams")
     fun requestUserTeams(
@@ -115,7 +124,7 @@ interface RetrofitService {
         @Path("id") teamId: Long,
         @Query("startDate") startDate : String,
         @Query("endDate") endDate : String
-    )
+    ) : Single<AchieveResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////

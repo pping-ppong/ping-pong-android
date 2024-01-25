@@ -8,10 +8,12 @@ import android.widget.Toast
 import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.pingpong_android.databinding.ItemCalendarDateBinding
+import com.pingpong_android.model.AchieveDTO
 import java.util.*
 
 class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerView.Adapter<DayAdapter.DayView>() {
     val ROW = 6
+    var last_month_days : Int = 0;
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
         var binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,6 +43,7 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
 
             if(tempMonth != day.month) {
                 binding.dateLayout.visibility = View.INVISIBLE
+                last_month_days += 1
             } else {
                 binding.dateLayout.visibility = View.VISIBLE
 

@@ -20,6 +20,10 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
         this.activity = activity
     }
 
+    fun addAchieveList() {
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarMonthBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CalendarViewHolder(binding)
