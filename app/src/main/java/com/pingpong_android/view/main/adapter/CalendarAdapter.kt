@@ -9,6 +9,8 @@ import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemCalendarMonthBinding
 import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.view.main.MainActivity
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
 
@@ -17,6 +19,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
     private var calendar = Calendar.getInstance()
     private lateinit var activity : MainActivity
     private var achieveList : List<AchieveDTO> = emptyList()
+    private var last_month_days = 0
 
     fun setMainActivity(activity: MainActivity) {
         this.activity = activity
@@ -43,6 +46,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
 
         fun bind(position: Int) {
             // 날짜 adapter
+            last_month_days = 0
             calendar.time = Date()
             calendar.set(Calendar.DAY_OF_MONTH, 1)
             calendar.add(Calendar.MONTH, position)
@@ -54,12 +58,16 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
                 for(k in 0..6) {
                     calendar.add(Calendar.DAY_OF_MONTH, (1-calendar.get(Calendar.DAY_OF_WEEK)) + k)
                     dayList[i * 7 + k] = calendar.time
+
+                    if (i == 0 && calendar.time.month != tempMonth) {
+                        last_month_days += 1
+                    }
                 }
                 calendar.add(Calendar.WEEK_OF_MONTH, 1)
             }
 
             val dayListManager = GridLayoutManager(activity, 7)
-            val dayListAdapter = DayAdapter(tempMonth, dayList)
+            val dayListAdapter = DayAdapter(activity, tempMonth, dayList, getAchieve(dayList))
 
             binding.dateRv.apply {
                 layoutManager = dayListManager
@@ -76,5 +84,17 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
                 activity.requestCalAchieveNow(1)
             }
         }
+    }
+
+    private fun getAchieve(days : List<Date>) : MutableList<Double> {
+        var achieves : MutableList<Double> = MutableList(days.size) { 0.0 }
+
+        // 달성율 리스트 생성
+        for (i in achieveList) {
+            val date : LocalDate = LocalDate.parse(i.date)
+            achieves[last_month_days + date.dayOfMonth-1] = i.achievement
+        }
+
+        return achieves
     }
 }

@@ -8,6 +8,7 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.AchieveResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamListResultDTO
+import com.pingpong_android.model.result.TeamResultDTO
 import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -57,6 +58,22 @@ class MainViewModel : BaseViewModel(){
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _achieveResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+
+    // 할 일 조회
+    private val _plansResult = MutableLiveData<TeamResultDTO>()
+    val plansResult : LiveData<TeamResultDTO>
+        get() = _plansResult
+    fun requestPlans(token : String, date : String) {
+        addDisposable(
+            instance!!.requestMainPlans(token, date)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _plansResult.postValue(it)
                 },{
                     Log.e("Error", "requestJoin")} )
         )

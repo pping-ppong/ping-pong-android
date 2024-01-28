@@ -12,13 +12,17 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMainBinding
 import com.pingpong_android.model.AchieveDTO
+import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.main.adapter.CalendarAdapter
 import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.notice.NoticeActivity
 import com.pingpong_android.view.search.SearchActivity
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Calendar
+import java.util.Date
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
@@ -66,6 +70,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
+    private fun initPlanAdapter(plans : List<TeamDTO>) {
+
+    }
+
     private fun setClickListener() {
         binding.btnMypage.setOnClickListener { goToMyPage() }
         binding.btnSearch.setOnClickListener { goToSearch()}
@@ -74,6 +82,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun initRequest() {
         requestCalAchieveNow()
+        binding.viewModel!!.requestPlans(prefs.getBearerToken(), date.toString())
         binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), userDTO)
         binding.viewModel!!.requestUnReadNotice(prefs.getBearerToken())
     }
@@ -99,6 +108,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         subscribeAchieve()
         subscribeNoticeState()
         subscribeUserInfo()
+        subscribePlans()
     }
 
     private fun subscribeAchieve() {
@@ -107,6 +117,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 initAdapter(it.achieveList)
             } else {
                 initAdapter(emptyList())
+            }
+        })
+    }
+
+    private fun subscribePlans() {
+        binding.viewModel!!.plansResult.observe(this, Observer {
+            if (it.isSuccess && !it.teamList.isNullOrEmpty()) {
+                initPlanAdapter(it.teamList)
+            } else {
+                initPlanAdapter(emptyList())
             }
         })
     }
@@ -150,6 +170,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             binding.defaultImage.visibility = View.VISIBLE
             Glide.with(binding.btnMypage).clear(binding.btnMypage)
         }
+    }
+
+    fun requestPlans(day : Date) {
+        var tmpDate : LocalDate = day.toInstant()
+                                        .atZone(ZoneId.systemDefault())
+                                        .toLocalDate()
+        binding.viewModel!!.requestPlans(prefs.getBearerToken(), tmpDate.toString())
     }
 
     private fun goToMyPage() {

@@ -14,5 +14,5 @@ data class TeamResultDTO (
     var message : String,
 
     @SerializedName("result")
-    var teamList : TeamDTO
+    var teamList : List<TeamDTO>
 )

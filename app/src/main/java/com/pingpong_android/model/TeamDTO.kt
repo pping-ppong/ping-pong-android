@@ -18,4 +18,7 @@ data class TeamDTO(
 
     @SerializedName("memberId")
     lateinit var memberIdList : List<Long>
+
+    @SerializedName("planList")
+    lateinit var planList : List<PlanDTO>
 }
