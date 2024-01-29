@@ -101,7 +101,7 @@ interface RetrofitService {
     fun requestMainPlans(
         @Header("Authorization") accessToken : String,
         @Query("date") date : String
-    ) : Single<TeamResultDTO>
+    ) : Single<TeamListResultDTO>
 
     // 유저가 속한 팀 전체 조회
     @GET("/api/members/teams")

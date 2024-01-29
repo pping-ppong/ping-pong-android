@@ -21,6 +21,7 @@ import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.view.adapter.MemberHorizontalAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamCalendarAdapter
+import com.pingpong_android.view.teamCalendar.adapter.TeamTodoAdapter
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -28,12 +29,13 @@ import java.util.*
 class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.activity_team_calendar, TransitionMode.RIGHT) {
 
     private lateinit var teamDTO: TeamDTO
-    private lateinit var memberDTO: MemberDTO
-    private lateinit var date_for_plan : String
+    private lateinit var memberDTO: MemberDTO   // 할 일 생성 시 담당 멤버
+    private lateinit var date_for_plan : String // 할 일 생성 시 날짜
 
     private var monthListAdapter = TeamCalendarAdapter()
-//    private var todoListAdapter = PlanTeamAdapter(emptyList())
+    private var todoListAdapter = TeamTodoAdapter()
 
+    var myMemberId : Long = 0
     private var date_for_cal: LocalDate = LocalDate.now().withDayOfMonth(1)
     private var date_for_day: LocalDate = LocalDate.now()
 
@@ -44,8 +46,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         binding.viewModel = TeamCalendarViewModel()
         binding.activity = this
 
-        memberDTO = MemberDTO(49)
-        date_for_plan = "2024-01-24"
+        myMemberId = prefs.getId().toLong()
 
         initView()
         initSubscribe()
@@ -91,14 +92,14 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         }
 
         // 할 일
-//        val planTeamListManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        todoListAdapter.setActivity(this)
-//        todoListAdapter.addTodoList(emptyList())
-//
-//        binding.todoRv.apply {
-//            layoutManager = planTeamListManager
-//            adapter = todoListAdapter
-//        }
+        val planListManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        todoListAdapter.setActivity(this)
+        todoListAdapter.addPlanList(emptyList())
+
+        binding.teamPlanRv.apply {
+            layoutManager = planListManager
+            adapter = todoListAdapter
+        }
 
         // 멤버
         val membersLayoutManager = LinearLayoutManager(this)
@@ -134,12 +135,10 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     // 할 일 - request 결과
     private fun subscribePlans() {
         binding.viewModel!!.plansResult.observe(this, androidx.lifecycle.Observer {
-            if (it.isSuccess && !it.teamList.isNullOrEmpty()) {
-//                todoListAdapter.addTodoList(it.teamList)
-//                todoListAdapter.notifyDataSetChanged()
+            if (it.isSuccess && !it.team.planList.isNullOrEmpty()) {
+                todoListAdapter.addPlanList(it.team.planList)
             } else {
-//                todoListAdapter.addTodoList(emptyList())
-//                todoListAdapter.notifyDataSetChanged()
+                todoListAdapter.addPlanList(emptyList())
             }
         })
     }
@@ -184,11 +183,11 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     }
 
     // 할 일 완료/미완료 처리
-    fun requestPlanComplete(isComplete : Boolean, teamId: Long, planId: Long) {
+    fun requestPlanComplete(isComplete : Boolean, planId: Long) {
         if (isComplete) {   // 완료 표시
-            binding.viewModel!!.requestPlanComplete(prefs.getBearerToken(), teamId, planId)
+            binding.viewModel!!.requestPlanComplete(prefs.getBearerToken(), teamDTO.teamId, planId)
         } else {    // 미완료 표시
-            binding.viewModel!!.requestPlanIncomplete(prefs.getBearerToken(), teamId, planId)
+            binding.viewModel!!.requestPlanIncomplete(prefs.getBearerToken(), teamDTO.teamId, planId)
         }
     }
 
@@ -245,7 +244,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         }
     }
 
-    fun showBottomSheet(teamId: Long, planId: Long) {
+    fun showBottomSheet(planId: Long) {
         val modalBottomSheet = ModalBottomSheetDialog(menuList)
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
         modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
@@ -254,7 +253,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             }
 
             override fun onSecondClickListener() {
-                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamId, planId)
+                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamDTO.teamId, planId)
                 modalBottomSheet.dismiss()
             }
 

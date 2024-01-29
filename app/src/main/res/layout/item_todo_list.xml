@@ -19,13 +19,41 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <RelativeLayout
+            android:id="@+id/image"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <ImageView
+                android:id="@+id/profile_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:clipToOutline="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:background="@drawable/back_gray_circle_with_gray_outline" />
+
+            <ImageView
+                android:id="@+id/default_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="4dp"
+                android:src="@drawable/ic_profile_popcorn" />
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_etc"
-            app:layout_constraintStart_toEndOf="@+id/btn_star"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="할일 할일 할일" />
 

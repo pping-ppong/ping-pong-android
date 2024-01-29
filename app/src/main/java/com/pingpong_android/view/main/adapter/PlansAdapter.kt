@@ -33,25 +33,25 @@ class PlansAdapter(val activity : MainActivity, val teamId: Long, val planList: 
             // 할 일 상태 - 생성/삭제됨
             if (planDTO.status == "ACTIVE") {
                 binding.planLayout.visibility = View.VISIBLE
+
+                // 수행 상태 - 완료/미완
+                if (planDTO.achievement == "COMPLETE") {
+                    binding.btnStar.setImageResource(R.drawable.ic_star_on)
+                    binding.btnStar.setOnClickListener {
+                        activity.requestPlanComplete(false, teamId, planDTO.planId)
+                    }
+                } else {
+                    binding.btnStar.setImageResource(R.drawable.ic_star_off)
+                    binding.btnStar.setOnClickListener {
+                        activity.requestPlanComplete(true, teamId, planDTO.planId)
+                    }
+                }
+
+                // bottomSheet
+                binding.btnEtc.setOnClickListener { activity.showBottomSheet(teamId, planDTO.planId) }
             } else {
                 binding.planLayout.visibility = View.GONE
             }
-
-            // 수행 상태 - 완료/미완
-            if (planDTO.achievement == "COMPLETE") {
-                binding.btnStar.setImageResource(R.drawable.ic_star_on)
-                binding.btnStar.setOnClickListener {
-                    activity.requestPlanComplete(false, teamId, planDTO.planId)
-                }
-            } else {
-                binding.btnStar.setImageResource(R.drawable.ic_star_off)
-                binding.btnStar.setOnClickListener {
-                    activity.requestPlanComplete(true, teamId, planDTO.planId)
-                }
-            }
-
-            // bottomSheet
-            binding.btnEtc.setOnClickListener { activity.showBottomSheet(teamId, planDTO.planId) }
         }
     }
 }

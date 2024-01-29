@@ -23,5 +23,5 @@ class PlanDTO(
     var achievement : String = ""
 
     @SerializedName("manager")
-    var manager : UserDTO? = null
+    var manager : MemberDTO? = null
 }

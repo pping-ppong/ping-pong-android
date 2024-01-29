@@ -8,7 +8,6 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.AchieveResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamListResultDTO
-import com.pingpong_android.model.result.TeamResultDTO
 import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -64,8 +63,8 @@ class MainViewModel : BaseViewModel(){
     }
 
     // 할 일 조회
-    private val _plansResult = MutableLiveData<TeamResultDTO>()
-    val plansResult : LiveData<TeamResultDTO>
+    private val _plansResult = MutableLiveData<TeamListResultDTO>()
+    val plansResult : LiveData<TeamListResultDTO>
         get() = _plansResult
     fun requestPlans(token : String, date : String) {
         addDisposable(
