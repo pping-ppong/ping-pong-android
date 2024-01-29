@@ -27,7 +27,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
 
         userDTO = prefs.getUser()
 
-        /* temp */
+        /* AVD temp */
 //        userDTO.socialId = "3277875718"
 //        userDTO.email = "minji.7754.7754@kakao.com"
 
