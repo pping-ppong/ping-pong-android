@@ -80,5 +80,4 @@ class DayAdapter(val activity : MainActivity, val tempMonth:Int, val dayList: Mu
             }
         }
     }
-
 }

@@ -21,4 +21,7 @@ class PlanDTO(
 
     @SerializedName("achievement")
     var achievement : String = ""
+
+    @SerializedName("manager")
+    var manager : UserDTO? = null
 }

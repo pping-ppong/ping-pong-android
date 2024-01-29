@@ -29,6 +29,11 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
         this.achieveList = achieveList
     }
 
+    fun setDateToCalendar(date: LocalDate) {
+        calendar.clear()
+        calendar.set(date.year, date.monthValue-1, 1)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarMonthBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CalendarViewHolder(binding)
@@ -47,9 +52,6 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
         fun bind(position: Int) {
             // 날짜 adapter
             last_month_days = 0
-            calendar.time = Date()
-            calendar.set(Calendar.DAY_OF_MONTH, 1)
-            calendar.add(Calendar.MONTH, position)
             binding.monthInfo.text = "${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월"
             val tempMonth = calendar.get(Calendar.MONTH)
 
@@ -76,25 +78,23 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
 
             // 버튼 이벤트
             binding.lastMonth.setOnClickListener {
-                bind(position-1)
                 activity.requestCalAchieveNow(-1)
             }
             binding.nextMonth.setOnClickListener {
-                bind(position+1)
                 activity.requestCalAchieveNow(1)
             }
         }
-    }
 
-    private fun getAchieve(days : List<Date>) : MutableList<Double> {
-        var achieves : MutableList<Double> = MutableList(days.size) { 0.0 }
+        private fun getAchieve(days : List<Date>) : MutableList<Double> {
+            var achieves : MutableList<Double> = MutableList(days.size) { 0.0 }
 
-        // 달성율 리스트 생성
-        for (i in achieveList) {
-            val date : LocalDate = LocalDate.parse(i.date)
-            achieves[last_month_days + date.dayOfMonth-1] = i.achievement
+            // 달성율 리스트 생성
+            for (i in achieveList) {
+                val date : LocalDate = LocalDate.parse(i.date)
+                achieves[last_month_days + date.dayOfMonth-1] = i.achievement
+            }
+
+            return achieves
         }
-
-        return achieves
     }
 }

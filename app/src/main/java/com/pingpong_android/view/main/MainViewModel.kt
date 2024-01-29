@@ -78,4 +78,43 @@ class MainViewModel : BaseViewModel(){
                     Log.e("Error", "requestJoin")} )
         )
     }
+
+    // 할 일 완료 / 미완료 요청
+    private val _planRequestResult = MutableLiveData<ResultDTO>()
+    val planRequestResult : LiveData<ResultDTO>
+        get() = _planRequestResult
+    fun requestPlanComplete(token : String, teamId : Long, planId : Long) {
+        addDisposable(
+            instance!!.requestPlanComplete(token, teamId, planId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _planRequestResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+    fun requestPlanIncomplete(token : String, teamId : Long, planId : Long) {
+        addDisposable(
+            instance!!.requestPlanIncomplete(token, teamId, planId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _planRequestResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+
+    fun requestPlanDelete(token : String, teamId : Long, planId : Long) {
+        addDisposable(
+            instance!!.deletePlan(token, teamId, planId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _planRequestResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
 }

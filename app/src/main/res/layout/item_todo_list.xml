@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/plan_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
 
         <ImageView
-            android:id="@+id/star"
+            android:id="@+id/btn_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_star_off"
@@ -19,11 +20,12 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_etc"
-            app:layout_constraintStart_toEndOf="@+id/star"
+            app:layout_constraintStart_toEndOf="@+id/btn_star"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="할일 할일 할일" />
 

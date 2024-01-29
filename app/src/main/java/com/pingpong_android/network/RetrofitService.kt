@@ -124,6 +124,14 @@ interface RetrofitService {
         @Body todoDTO: TodoDTO
     ) : Single<TodoResultDTO>
 
+    // 할 일 삭제
+    @DELETE("/api/teams/{teamId}/plans/{planId}")
+    fun deletePlan (
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
     // 그룹의 캘린더 조회 (팝콘 성취율만)
     @GET("/api/teams/{id}/calendars/achievement")
     fun requestTeamCalendarAll(
@@ -132,6 +140,30 @@ interface RetrofitService {
         @Query("startDate") startDate : String,
         @Query("endDate") endDate : String
     ) : Single<AchieveResultDTO>
+
+    // 그룹의 해당 날짜의 할일 조회
+    @GET("/api/teams/{id}/calendars")
+    fun requestTeamPlans(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long,
+        @Query("date") date : String
+    ) : Single<TeamResultDTO>
+
+    // 할 일 표시 완료
+    @PATCH("/api/teams/{teamId}/plans/{planId}/complete")
+    fun requestPlanComplete(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
+    // 할 일 표시 미완료
+    @PATCH("/api/teams/{teamId}/plans/{planId}/incomplete")
+    fun requestPlanIncomplete(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
