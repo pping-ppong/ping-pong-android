@@ -34,7 +34,7 @@
     <!-- ///////////////////////////////// -->
     <!-- 알림 -->
     <string name="alarm">알림</string>
-    <string name="confirm">수락</string>
+    <string name="accept">수락</string>
     <string name="reject">거절</string>
     <string name="no_notice_list">알림이 없어요 :D</string>
 
@@ -82,4 +82,13 @@
     <string name="push_alarm">푸시 알림</string>
     <string name="term_open_source">오픈소스 라이브러리</string>
     <string name="app_version_info">앱버전</string>
+
+    <!-- ///////////////////////////////// -->
+    <!-- 레이아웃 -->
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="date">날짜</string>
+    <string name="manager">담당자</string>
+
+
 </resources>

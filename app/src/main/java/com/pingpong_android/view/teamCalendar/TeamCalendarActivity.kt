@@ -15,6 +15,7 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_TEAM_DTO
 import com.pingpong_android.databinding.ActivityTeamCalendarBinding
+import com.pingpong_android.layout.DateMemberSetDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
@@ -221,12 +222,6 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         }
     }
 
-    fun onClickDateMember() {
-        Toast.makeText(this, "date & member", Toast.LENGTH_SHORT).show()
-//        binding.textInputLayout.visibility = View.GONE
-        // todo : 팝업창 (설정값 전달_nullable, 설정값 받기, textlayout visible + data set)
-    }
-
     private fun onClickAddTodo() {
         var todoDTO = TodoDTO(binding.todoTxt.text.toString())
         todoDTO.date = date_for_plan
@@ -242,6 +237,21 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             binding.btnRequestAddTodo.setImageDrawable(this.getDrawable(R.drawable.ic_send_disabled))
             binding.btnRequestAddTodo.setOnClickListener(null)
         }
+    }
+
+    fun onClickDateMember() {
+        binding.textInputLayout.visibility = View.GONE
+        val dateMemberDialog = DateMemberSetDialog(teamDTO.memberList, date_for_cal)
+        dateMemberDialog.setButtonClickListener(object : DateMemberSetDialog.OnButtonClickListener{
+            override fun onCancelClicked() {
+
+            }
+
+            override fun onConfirmClicked() {
+
+            }
+        })
+        dateMemberDialog.show(supportFragmentManager, DateMemberSetDialog.TAG)
     }
 
     fun showBottomSheet(planId: Long) {
