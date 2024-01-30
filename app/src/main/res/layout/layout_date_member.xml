@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="24dp">
         <TextView
             android:layout_width="match_parent"
             style="@style/textBlackBold16"
@@ -20,6 +21,7 @@
             android:paddingVertical="4dp"/>
 
         <CalendarView
+            style="@style/CalenderViewCustom"
             android:id="@+id/calender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

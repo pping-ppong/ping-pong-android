@@ -241,14 +241,34 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
     fun onClickDateMember() {
         binding.textInputLayout.visibility = View.GONE
-        val dateMemberDialog = DateMemberSetDialog(teamDTO.memberList, date_for_cal)
+        val dateMemberDialog = DateMemberSetDialog(teamDTO.memberList, date_for_day)
         dateMemberDialog.setButtonClickListener(object : DateMemberSetDialog.OnButtonClickListener{
             override fun onCancelClicked() {
-
+                dateMemberDialog.dismiss()
+                binding.textInputLayout.visibility = View.VISIBLE
             }
 
             override fun onConfirmClicked() {
+                date_for_plan = dateMemberDialog.selectedDate.toString()
+                memberDTO = dateMemberDialog.selectedMember
 
+                binding.todoDate.text = dateMemberDialog.selectedDate.monthValue.toString() + "/" + dateMemberDialog.selectedDate.dayOfMonth.toString()
+                binding.todoMemberName.text = memberDTO.nickName
+                if (!memberDTO.profileImage.isNullOrEmpty()) {
+                    binding.profileImg.visibility = View.VISIBLE
+                    binding.defaultImage.visibility = View.GONE
+                    Glide.with(binding.profileImg)
+                        .load(memberDTO.profileImage)
+                        .into(binding.profileImg)
+                } else {
+                    binding.profileImg.visibility = View.VISIBLE
+                    binding.defaultImage.visibility = View.GONE
+                    Glide.with(binding.profileImg)
+                        .clear(binding.profileImg)
+                }
+
+                dateMemberDialog.dismiss()
+                binding.textInputLayout.visibility = View.VISIBLE
             }
         })
         dateMemberDialog.show(supportFragmentManager, DateMemberSetDialog.TAG)
