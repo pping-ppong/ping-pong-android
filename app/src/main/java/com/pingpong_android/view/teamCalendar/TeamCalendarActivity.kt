@@ -104,7 +104,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
         // 멤버
         val membersLayoutManager = LinearLayoutManager(this)
-        val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList)
+        val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList, false)
 
         binding.memberRv.apply {
             layoutManager = membersLayoutManager
@@ -116,6 +116,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         subscribeAchieve()
         subscribePlans()
         subscribeComplete()
+        subscribeAddTodo()
     }
 
     // 달성률 - request 결과
@@ -140,6 +141,17 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
                 todoListAdapter.addPlanList(it.team.planList)
             } else {
                 todoListAdapter.addPlanList(emptyList())
+            }
+        })
+    }
+
+    private fun subscribeAddTodo() {
+        binding.viewModel!!.addTodoResult.observe(this, androidx.lifecycle.Observer {
+            if (it.isSuccess) {
+                initRequest()
+                onClickInputText(false)
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -241,6 +253,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
     fun onClickDateMember() {
         binding.textInputLayout.visibility = View.GONE
+
         val dateMemberDialog = DateMemberSetDialog(teamDTO.memberList, date_for_day)
         dateMemberDialog.setButtonClickListener(object : DateMemberSetDialog.OnButtonClickListener{
             override fun onCancelClicked() {
@@ -250,8 +263,9 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
             override fun onConfirmClicked() {
                 date_for_plan = dateMemberDialog.selectedDate.toString()
-                memberDTO = dateMemberDialog.selectedMember
+                memberDTO = dateMemberDialog.getSelectMember()
 
+                // 입력 레이아웃에 날짜, 담당자 반영
                 binding.todoDate.text = dateMemberDialog.selectedDate.monthValue.toString() + "/" + dateMemberDialog.selectedDate.dayOfMonth.toString()
                 binding.todoMemberName.text = memberDTO.nickName
                 if (!memberDTO.profileImage.isNullOrEmpty()) {
@@ -261,8 +275,8 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
                         .load(memberDTO.profileImage)
                         .into(binding.profileImg)
                 } else {
-                    binding.profileImg.visibility = View.VISIBLE
-                    binding.defaultImage.visibility = View.GONE
+                    binding.profileImg.visibility = View.GONE
+                    binding.defaultImage.visibility = View.VISIBLE
                     Glide.with(binding.profileImg)
                         .clear(binding.profileImg)
                 }

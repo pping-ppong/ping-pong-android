@@ -1,12 +1,17 @@
 package com.pingpong_android.layout
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.pingpong_android.databinding.LayoutDateMemberBinding
 import com.pingpong_android.model.MemberDTO
+import com.pingpong_android.view.adapter.MemberHorizontalAdapter
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -17,8 +22,8 @@ class DateMemberSetDialog(val memberList : List<MemberDTO>, val date : LocalDate
 
     private lateinit var binding : LayoutDateMemberBinding
     private lateinit var buttonClickListener: OnButtonClickListener // 클릭 이벤트 실행
-    lateinit var selectedMember : MemberDTO
     lateinit var selectedDate : LocalDate
+    val memberAdapter = MemberHorizontalAdapter(memberList, true)
 
     companion object {
         const val TAG = "DateMemberSetDialog"
@@ -70,8 +75,18 @@ class DateMemberSetDialog(val memberList : List<MemberDTO>, val date : LocalDate
     }
 
     private fun initMember() {
-        selectedMember = memberList.get(0)  // 기본
-        // todo : recyclerview with flexboxlayout
+        val memberLayoutManager = FlexboxLayoutManager(getContext())
+        memberLayoutManager.flexDirection = FlexDirection.ROW
+        memberLayoutManager.justifyContent = JustifyContent.FLEX_START
+
+        binding.memberRv.apply {
+            layoutManager = memberLayoutManager
+            adapter = memberAdapter
+        }
+    }
+
+    fun getSelectMember() : MemberDTO {
+        return memberAdapter.getSelectedMember()
     }
 
     // 클릭 이벤트 설정

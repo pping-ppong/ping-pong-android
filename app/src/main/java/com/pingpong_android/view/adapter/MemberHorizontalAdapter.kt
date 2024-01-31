@@ -9,7 +9,9 @@ import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemImageWithTextBinding
 import com.pingpong_android.model.MemberDTO
 
-class MemberHorizontalAdapter(private val memberList: List<MemberDTO>) : RecyclerView.Adapter<MemberHorizontalAdapter.MembersViewHolder>() {
+class MemberHorizontalAdapter(private val memberList: List<MemberDTO>, val forSelect : Boolean) : RecyclerView.Adapter<MemberHorizontalAdapter.MembersViewHolder>() {
+
+    private var selectedMemberDTO: MemberDTO = memberList.get(0)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         var binding = ItemImageWithTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,8 +22,19 @@ class MemberHorizontalAdapter(private val memberList: List<MemberDTO>) : Recycle
         return memberList.size
     }
 
+    fun getSelectedMember() : MemberDTO {
+        return selectedMemberDTO
+    }
+
     override fun onBindViewHolder(holder: MembersViewHolder, position: Int) {
         holder.bind(memberList.get(position), position)
+
+        if (forSelect) {
+            holder.itemView.setOnClickListener {
+                selectedMemberDTO = memberList.get(position)
+                notifyDataSetChanged()
+            }
+        }
     }
 
     inner class MembersViewHolder(val binding : ItemImageWithTextBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -36,6 +49,12 @@ class MemberHorizontalAdapter(private val memberList: List<MemberDTO>) : Recycle
             } else {
                 binding.defaultImage.visibility = View.VISIBLE
                 Glide.with(binding.image).clear(binding.image)
+            }
+
+            if (forSelect && memberDTO.memberId == selectedMemberDTO.memberId) {
+                binding.selectBorder.visibility = View.VISIBLE
+            } else {
+                binding.selectBorder.visibility = View.GONE
             }
         }
     }

@@ -47,7 +47,7 @@ class TeamAdapter(private var teamList: List<TeamDTO>) : RecyclerView.Adapter<Te
             binding.groupName.text = teamDTO.teamName
             
             val membersLayoutManager = LinearLayoutManager(context)
-            val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList)
+            val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList, false)
 
             binding.memberRv.apply {
                 layoutManager = membersLayoutManager
