@@ -49,7 +49,7 @@ class GalleryAdapter(private var photoList: List<ImageItem>) : RecyclerView.Adap
     }
 
     fun getSelectedPhoto() : ImageItem {
-        return photoList.get(selected)
+        return if (selected == -1) ImageItem(null, false) else photoList.get(selected)
     }
 
     inner class GalleryViewHolder(val binding : ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root) {

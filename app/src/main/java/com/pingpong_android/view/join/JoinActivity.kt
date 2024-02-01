@@ -1,27 +1,35 @@
 package com.pingpong_android.view.join
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_URI
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USER_DTO
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_WEB_URL
 import com.pingpong_android.databinding.ActivityJoinBinding
+import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.UserDTO
+import com.pingpong_android.view.gallery.GalleryActivity
 import com.pingpong_android.view.main.MainActivity
 import com.pingpong_android.view.webView.WebViewActivity
 
 class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, TransitionMode.VERTICAL) {
 
     private lateinit var userDTO: UserDTO
-
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +41,20 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         checkNickNameValidation()
         checkTerms()
 
+        onActivityResult()
         initSubscribe()
         initView()
+    }
+
+    private fun onActivityResult() {
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                if (it.data != null) {
+                    val uri : Uri = Uri.parse(it.data!!.getStringExtra(INTENT_EXTRA_URI))
+
+                }
+            }
+        }
     }
 
     private fun initView() {
@@ -85,9 +105,11 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
     }
 
     private fun initSubscribe() {
-        subscribeJoin()
         subscribeNickNmCheck()
-        subscribeReissue()
+        subscribeAddImage()
+        subscribeImageUrl()
+        subscribeJoin()
+        subscribeLogin()
     }
 
     private fun subscribeNickNmCheck() {
@@ -110,6 +132,30 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         })
     }
 
+    private fun subscribeAddImage() {
+        binding.viewModel!!.addImgS3Result.observe(this, Observer {
+            if (it.isSuccess && it.imgList.isNotEmpty()) {
+                // 사진 등록 성공 시
+
+            } else {
+                // 사진 등록 실패 시
+
+            }
+        })
+    }
+
+    private fun subscribeImageUrl() {
+        binding.viewModel!!.imgUrlResult.observe(this, Observer {
+            if (it.isSuccess && it.imgList.isNotEmpty()) {
+                // url 요청 성공 시
+
+            } else {
+                // url 요청 실패 시
+
+            }
+        })
+    }
+
     private fun subscribeJoin() {
         binding.viewModel!!.userData.observe(this, Observer {
             if (it.isSuccess) {
@@ -125,7 +171,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         })
     }
 
-    private fun subscribeReissue() {
+    private fun subscribeLogin() {
         binding.viewModel!!.userLogin.observe(this, Observer {
             if (it.isSuccess) {
                 // 로그인 성공 시
@@ -140,6 +186,12 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
                 finish()
             }
         })
+    }
+
+    fun goToGallery() {
+        val intent = Intent(this, GalleryActivity::class.java)
+        intent.putExtra("FROM_JOIN", true)
+        activityResultLauncher.launch(intent)
     }
 
     private fun goToMain(userDTO: UserDTO) {

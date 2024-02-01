@@ -6,6 +6,9 @@ import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -59,6 +62,26 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Path("id") userId : String
     ) : Single<ResultDTO>
+
+    // S3 사진 등록
+    @Multipart
+    @POST("/api/s3/file")
+    fun requestAddImage(
+        @Part image : MultipartBody.Part
+    ) : Single<ImageResultDTO>
+
+    //S3 사진 불러오기
+    @GET("/api/s3/file")
+    fun requestImageName(
+        @Query("name") name : String
+    ) : Single<ImageResultDTO>
+
+    //S3 사진 삭제
+    @FormUrlEncoded
+    @HTTP(method="DELETE", hasBody=true, path="/api/s3/file")
+    fun deleteImage(
+        @Field("name") name : String
+    ): Response<ResponseBody>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
@@ -169,7 +192,7 @@ interface RetrofitService {
     /////////////////////////////////////////////////
     // Friend
 
-    // 유저가 속한 팀 전체 조회
+    // 유저가 친구 전체 조회
     @GET("/api/friends")
     fun requestUserFriendList(
         @Header("Authorization") accessToken : String

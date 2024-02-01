@@ -73,5 +73,15 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
             binding.defaultImage.visibility = View.VISIBLE
             Glide.with(binding.image).clear(binding.image)
         }
+
+        if (user.friendStatus) {
+            binding.btnFriend.text = getString(R.string.friend)
+            binding.btnFriend.setTextColor(getColor(R.color.black))
+            binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+        } else {
+            binding.btnFriend.text = getString(R.string.add_friend)
+            binding.btnFriend.setTextColor(getColor(R.color.white))
+            binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
+        }
     }
 }

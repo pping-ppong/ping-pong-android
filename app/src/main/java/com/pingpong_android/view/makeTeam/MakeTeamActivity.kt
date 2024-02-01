@@ -34,9 +34,13 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
         initAdapter()
         nameEtEvent()
 
+        onActivityResult()
         binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
+    }
+
+    private fun onActivityResult() {
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
+            if (it.resultCode == RESULT_OK) {
                 if (it.data != null) {
                     memberList.addAll(it.data!!.getSerializableExtra(INTENT_EXTRA_MEMBER_LIST) as MutableList<MemberDTO>)
                     memberAdapter.addList(memberList.toSet().toList())

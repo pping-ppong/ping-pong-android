@@ -19,7 +19,11 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
         binding.viewModel = EditProfileViewModel()
         binding.activity = this
 
+        onActivityResult()
         binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
+    }
+
+    private fun onActivityResult() {
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
 //                val return = it.data?.getStringExtra("return") ?: ""
@@ -29,6 +33,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
 
     fun goToGallery() {
         val intent = Intent(this, GalleryActivity::class.java)
+        intent.putExtra("FROM_EDIT", true)
         activityResultLauncher.launch(intent)
     }
 }

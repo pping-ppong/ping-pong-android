@@ -61,6 +61,7 @@ class DateMemberSetDialog(val memberList : List<MemberDTO>, val date : LocalDate
         // 캘린더
         date.withDayOfMonth(1).toString()
         selectedDate = date // 기본
+        // todo : 선택된 날짜 색상 변경
         // 해당 달만 조회
         binding.calender.date = LocalDate.parse(date.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             .atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()

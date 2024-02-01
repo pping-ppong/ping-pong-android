@@ -12,6 +12,4 @@ data class MemberDTO(
 
     @SerializedName("profileImage")
     var profileImage : String = ""
-
-    var isSelected : Boolean = false
 }
