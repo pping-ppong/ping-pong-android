@@ -29,9 +29,6 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
 
     private fun initView() {
         binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
-        binding.btnFriend.setOnClickListener {
-            binding.viewModel!!.requestFriendShip(prefs.getBearerToken(), prefs.getId().toLong(), memberId)
-        }
     }
 
     private fun initSubscribe() {

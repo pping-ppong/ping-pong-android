@@ -77,6 +77,7 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_g
 
             intent.putExtra(INTENT_EXTRA_URI, galleryAdapter.getSelectedPhoto().uri.toString())
             setResult(RESULT_OK, intent)
+            finish()
         }
     }
 }
