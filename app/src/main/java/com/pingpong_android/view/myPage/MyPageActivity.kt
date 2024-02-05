@@ -46,6 +46,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     private fun initSubscribe() {
         subscribeUserInfo()
         subscribeTeamListInfo()
+        subscribeBadgeList()
     }
 
     private fun initAdapter() {
@@ -92,6 +93,20 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
                 binding.teamRv.visibility = View.GONE
                 binding.noTeamLayout.visibility = View.VISIBLE
                 binding.btnMore.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun subscribeBadgeList() {
+        binding.viewModel!!.badgeList.observe(this, Observer {
+            if (it.isSuccess && !it.badgeList.isEmpty()) {
+                binding.noBadgeList.visibility = View.GONE
+                binding.badgeRv.visibility = View.VISIBLE
+                // todo
+            } else {
+                binding.noBadgeList.visibility = View.VISIBLE
+                binding.badgeRv.visibility = View.GONE
+                // todo
             }
         })
     }

@@ -83,6 +83,20 @@ interface RetrofitService {
         @Field("name") name : String
     ): Response<ResponseBody>
 
+    // 뱃지 조회하기
+    @GET("/api/members/{id}/badges")
+    fun requestAllBadges (
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: Long
+    ) : Single<BadgeResultDTO>
+
+    // 뱃지 8개 조회하기
+    @GET("/api/members/{id}/pre-badges")
+    fun request8Badges (
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: Long
+    ) : Single<BadgeResultDTO>
+
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // Notice

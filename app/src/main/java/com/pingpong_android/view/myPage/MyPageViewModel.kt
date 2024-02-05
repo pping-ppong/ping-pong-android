@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.UserDTO
+import com.pingpong_android.model.result.BadgeResultDTO
 import com.pingpong_android.model.result.TeamListResultDTO
 import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,13 +13,10 @@ import io.reactivex.schedulers.Schedulers
 
 class MyPageViewModel : BaseViewModel(){
 
+    // 유저 정보 조회
     private val _userData = MutableLiveData<UserResultDTO>()
     val UserData : LiveData<UserResultDTO>
         get() = _userData
-
-    private val _teamListData = MutableLiveData<TeamListResultDTO>()
-    val TeamList : LiveData<TeamListResultDTO>
-        get() = _teamListData
     fun requestUserInfo(token : String, user : UserDTO) {
         addDisposable(
             instance!!.requestMyPageUserInfo(token, user.memberId)
@@ -31,6 +29,10 @@ class MyPageViewModel : BaseViewModel(){
         )
     }
 
+    // 그룹 조회
+    private val _teamListData = MutableLiveData<TeamListResultDTO>()
+    val TeamList : LiveData<TeamListResultDTO>
+        get() = _teamListData
     fun requestUserTeamList(token : String) {
         addDisposable(
             instance!!.requestUserTeams(token)
@@ -38,6 +40,22 @@ class MyPageViewModel : BaseViewModel(){
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _teamListData.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+
+    // 뱃지 조회
+    private val _badgeList = MutableLiveData<BadgeResultDTO>()
+    val badgeList : LiveData<BadgeResultDTO>
+        get() = _badgeList
+    fun requestBadgeList(token : String, memberId : Long) {
+        addDisposable(
+            instance!!.request8Badges(token, memberId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _badgeList.postValue(it)
                 },{
                     Log.e("Error", "requestJoin")} )
         )
