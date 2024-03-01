@@ -11,16 +11,10 @@ import io.reactivex.schedulers.Schedulers
 
 class ProfileViewModel : BaseViewModel() {
 
+    // 프로필 조회
     private val _userResult = MutableLiveData<UserResultDTO>()
     val userResult : LiveData<UserResultDTO>
         get() = _userResult
-
-    private val _result = MutableLiveData<ResultDTO>()
-    val result : LiveData<ResultDTO>
-        get() = _result
-
-
-    // 프로필 조회
     fun requestOthersProfile(token : String, memberId : Long) {
         addDisposable(
             instance!!.requestOthersProfile(token, memberId)
@@ -34,6 +28,9 @@ class ProfileViewModel : BaseViewModel() {
     }
 
     // 친구 신청
+    private val _applyResult = MutableLiveData<ResultDTO>()
+    val applyResult : LiveData<ResultDTO>
+        get() = _applyResult
     fun requestFriendShip(token : String, applicantId : Long, respondentId : Long) {
         val body = HashMap<String, Long>()
         body.put("applicantId", applicantId)
@@ -44,7 +41,7 @@ class ProfileViewModel : BaseViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _result.postValue(it)
+                    _applyResult.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )
@@ -58,6 +55,22 @@ class ProfileViewModel : BaseViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
+                },{
+                    Log.e("Error", "requestController")} )
+        )
+    }
+
+    // 친구 끊기
+    private val _deleteResult = MutableLiveData<ResultDTO>()
+    val deleteResult : LiveData<ResultDTO>
+        get() = _deleteResult
+    fun deleteFriendShip(token : String, memberId : Long) {
+        addDisposable(
+            instance!!.deleteFriendShip(token, memberId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _deleteResult.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )

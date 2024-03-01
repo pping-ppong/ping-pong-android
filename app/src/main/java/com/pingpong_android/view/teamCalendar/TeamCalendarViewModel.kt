@@ -12,6 +12,7 @@ import com.pingpong_android.model.result.TeamResultDTO
 import com.pingpong_android.model.result.TodoResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.time.LocalDate
 
 class TeamCalendarViewModel : BaseViewModel() {
 
@@ -35,7 +36,7 @@ class TeamCalendarViewModel : BaseViewModel() {
     private val _achieveResult = MutableLiveData<AchieveResultDTO>()
     val achieveResult : LiveData<AchieveResultDTO>
         get() = _achieveResult
-    fun requestMonthAchievement(token : String, teamId : Long, startDate : String, endDate : String) {
+    fun requestMonthAchievement(token : String, teamId : Long, startDate : LocalDate, endDate : LocalDate) {
         addDisposable(
             instance!!.requestTeamCalendarAll(token, teamId, startDate, endDate)
                 .subscribeOn(Schedulers.io())

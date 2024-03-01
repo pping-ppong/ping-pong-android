@@ -161,8 +161,8 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         binding.viewModel!!.planRequestResult.observe(this, androidx.lifecycle.Observer {
             if (it.isSuccess) {
                 binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
-                    startDate = date_for_cal.toString(),
-                    endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()).toString())
+                    startDate = date_for_cal,
+                    endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
                 binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
             }
         })
@@ -170,8 +170,8 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
     private fun initRequest() {
         binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
-            startDate = date_for_cal.toString(),
-            endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()).toString())
+            startDate = date_for_cal,
+            endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
     }
 
@@ -183,8 +183,8 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             date_for_cal = date_for_cal.minusMonths(1)
 
         binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
-            startDate = date_for_cal.toString(),
-            endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()).toString())
+            startDate = date_for_cal,
+            endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
     }
 
     // 할 일 불러오기

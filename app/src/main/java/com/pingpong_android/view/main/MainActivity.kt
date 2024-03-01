@@ -196,9 +196,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun subscribeNoticeState() {
         binding.viewModel!!.noticeState.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.message.equals("읽지 않은 알림이 존재하지 합니다"))
+                if (it.type.equals("SUCCESS_EXISTS_UNREAD_NOTIFY"))
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_on))
-                else if (it.message.equals("모든 알림을 읽었습니다"))
+                else if (it.type.equals("SUCCESS_EXISTS_NOTIFY"))
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
                 else
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))

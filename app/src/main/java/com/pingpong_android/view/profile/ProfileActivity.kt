@@ -34,6 +34,7 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     private fun initSubscribe() {
         subscribeOthersProfile()
         subscribeApplyFriendShip()
+        subscribeDeleteFriendShip()
     }
 
     private fun subscribeOthersProfile() {
@@ -47,13 +48,20 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     }
 
     private fun subscribeApplyFriendShip() {
-        binding.viewModel!!.result.observe(this, Observer {
+        binding.viewModel!!.applyResult.observe(this, Observer {
             if (it.isSuccess && it.code == 200) {
                 binding.viewModel!!.requestAlarmFriend(prefs.getBearerToken(), memberId)
                 Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
             }
+        })
+    }
+
+    private fun subscribeDeleteFriendShip() {
+        binding.viewModel!!.deleteResult.observe(this, Observer {
+            if (it.message.isNotEmpty())
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
         })
     }
 
@@ -75,10 +83,21 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
             binding.btnFriend.text = getString(R.string.friend)
             binding.btnFriend.setTextColor(getColor(R.color.black))
             binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+            binding.btnFriend.setOnClickListener { deleteFriendShip() }
+
         } else {
             binding.btnFriend.text = getString(R.string.add_friend)
             binding.btnFriend.setTextColor(getColor(R.color.white))
             binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
+            binding.btnFriend.setOnClickListener{ requestFriendShip() }
         }
+    }
+
+    private fun requestFriendShip() {
+        binding.viewModel!!.requestFriendShip(prefs.getBearerToken(), prefs.getId().toLong(), memberId)
+    }
+
+    private fun deleteFriendShip() {
+        binding.viewModel!!.deleteFriendShip(prefs.getBearerToken(), memberId)
     }
 }

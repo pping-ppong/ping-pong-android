@@ -10,6 +10,7 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
+import java.time.LocalDate
 
 
 interface RetrofitService {
@@ -49,6 +50,14 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Path("id") userId : String
     ) : Single<UserResultDTO>
+
+    // 유저 정보 수정
+    @PATCH("/api/members/{id}")
+    fun requestEditProfile(
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: String,
+        @Body user: UserDTO
+        ) : Single<UserResultDTO>
 
     // 로그아웃
     @POST("/api/oauth/logout")
@@ -174,8 +183,8 @@ interface RetrofitService {
     fun requestTeamCalendarAll(
         @Header("Authorization") accessToken : String,
         @Path("id") teamId: Long,
-        @Query("startDate") startDate : String,
-        @Query("endDate") endDate : String
+        @Query("startDate") startDate : LocalDate,
+        @Query("endDate") endDate : LocalDate
     ) : Single<AchieveResultDTO>
 
     // 그룹의 해당 날짜의 할일 조회
@@ -240,17 +249,19 @@ interface RetrofitService {
     ) : Single<UserResultDTO>
 
     // 친구 신청 승인
+    @FormUrlEncoded
     @POST("/api/friends/accept")
     fun acceptFriendShip(
         @Header("Authorization") accessToken : String,
-        @Body respondentId : Long
+        @Field("opponentId") opponentId : Long
     ) : Single<ResultDTO>
 
     // 친구 신청 거절
+    @FormUrlEncoded
     @POST("/api/friends/refuse")
     fun refuseFriendShip(
         @Header("Authorization") accessToken : String,
-        @Body respondentId : Long
+        @Field("opponentId") opponentId : Long
     ) : Single<ResultDTO>
 
     // 친구 신청하기
@@ -261,9 +272,10 @@ interface RetrofitService {
     ) : Single<ResultDTO>
 
     // 친구 신청 끊기
-    @DELETE("/api/friends/unfollow")
-    fun deleteFriendShip (
+    @FormUrlEncoded
+    @HTTP(method="DELETE", hasBody=true, path="/api/friends/unfollow")
+    fun deleteFriendShip(
         @Header("Authorization") accessToken : String,
         @Field("memberId") memberId : Long
-    )
+    ): Single<ResultDTO>
 }
