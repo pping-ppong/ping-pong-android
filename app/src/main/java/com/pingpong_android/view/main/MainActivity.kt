@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -11,45 +13,73 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMainBinding
+import com.pingpong_android.layout.ModalBottomSheetDialog
+import com.pingpong_android.model.AchieveDTO
+import com.pingpong_android.model.PlanDTO
+import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.login.LoginActivity
 import com.pingpong_android.view.main.adapter.CalendarAdapter
+import com.pingpong_android.view.main.adapter.PlanTeamAdapter
 import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.notice.NoticeActivity
 import com.pingpong_android.view.search.SearchActivity
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Calendar
+import java.util.Date
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
+    private lateinit var userDTO: UserDTO
+    private var monthListAdapter = CalendarAdapter()
+    private var todoListAdapter = PlanTeamAdapter(emptyList())
+
+    private var date_for_cal: LocalDate = LocalDate.now().withDayOfMonth(1)
+    private var date_for_day: LocalDate = LocalDate.now()
+
+    private var menuList : List<String> = listOf("넘기기", "버리기")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = MainViewModel()
         binding.activity = this
 
+        initAdapter()
         initUserDTO()
         initSubscribe()
-        initAdapter()
 
         setClickListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initRequest()
     }
 
+    // 유저 정보 바인딩
     private fun initUserDTO() {
-        prefs = PreferenceUtil(applicationContext)
         userDTO = prefs.getUser()
         prefs.saveBearerToken(userDTO.accessToken)
 
         if (userDTO.profileImage.isNotEmpty()) {
             binding.defaultImage.visibility = View.GONE
-            Glide.with(binding.btnMypage).load(userDTO.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
+            Glide.with(binding.btnMypage)
+                .load(userDTO.profileImage)
+                .into(binding.btnMypage)
+            binding.btnMypage.clipToOutline = true
+        } else {
+            binding.defaultImage.visibility = View.VISIBLE
+            Glide.with(binding.btnMypage).clear(binding.btnMypage)
+        }
+    }
+
+    // 유저 정보 다시 불러온 데이터로 리바인딩
+    private fun initView(user : UserDTO) {
+        if (user.profileImage.isNotEmpty()) {
+            binding.defaultImage.visibility = View.GONE
+            Glide.with(binding.btnMypage)
+                .load(user.profileImage)
                 .into(binding.btnMypage)
             binding.btnMypage.clipToOutline = true
         } else {
@@ -59,17 +89,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun initAdapter() {
+        // 달력
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val monthListAdapter = CalendarAdapter()
         monthListAdapter.setMainActivity(this)
+        monthListAdapter.setDateToCalendar(date_for_cal)
+        monthListAdapter.addAchieveList(emptyList())
 
         binding.calender.apply {
             layoutManager = monthListManager
             adapter = monthListAdapter
             scrollToPosition(Int.MAX_VALUE/2)
         }
-        val snap = PagerSnapHelper()
-        snap.attachToRecyclerView(binding.calender)
+
+        // 할 일
+        val planTeamListManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        todoListAdapter.setActivity(this)
+        todoListAdapter.addTodoList(emptyList())
+
+        binding.todoRv.apply {
+            layoutManager = planTeamListManager
+            adapter = todoListAdapter
+        }
     }
 
     private fun setClickListener() {
@@ -78,23 +118,87 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.btnAlarm.setOnClickListener { goToNotice() }
     }
 
+    // 데이터 요청
     private fun initRequest() {
+        requestCalAchieveNow()
+        binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
         binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), userDTO)
         binding.viewModel!!.requestUnReadNotice(prefs.getBearerToken())
     }
 
-    private fun initSubscribe() {
-        subscribeNoticeState()
-        subscribeUserInfo()
+    // 달성률 조회
+    private fun requestCalAchieveNow() {
+        binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(),
+                    startDate = date_for_cal.toString(),
+                    endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()).toString())
     }
 
+    // 달성률 조회 (날짜 이동)
+    fun requestCalAchieveNow(position : Int) {
+        if (position == 1)
+            date_for_cal = date_for_cal.plusMonths(1)
+        else
+            date_for_cal = date_for_cal.minusMonths(1)
+
+        binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(),
+            startDate = date_for_cal.toString(),
+            endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()).toString())
+    }
+
+    private fun initSubscribe() {
+        subscribeAchieve()
+        subscribeNoticeState()
+        subscribeUserInfo()
+        subscribePlans()
+        subscribeComplete()
+    }
+
+    // 달성률 - request 결과
+    private fun subscribeAchieve() {
+        binding.viewModel!!.achieveResult.observe(this, Observer {
+            if (it.isSuccess && !it.achieveList.isNullOrEmpty()) {
+                monthListAdapter.setDateToCalendar(date_for_cal)
+                monthListAdapter.addAchieveList(it.achieveList)
+                monthListAdapter.notifyDataSetChanged()
+            } else {
+                monthListAdapter.setDateToCalendar(date_for_cal)
+                monthListAdapter.addAchieveList(emptyList())
+                monthListAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    // 할 일 - request 결과
+    private fun subscribePlans() {
+        binding.viewModel!!.plansResult.observe(this, Observer {
+            if (it.isSuccess && !it.teamList.isNullOrEmpty()) {
+                todoListAdapter.addTodoList(it.teamList)
+                todoListAdapter.notifyDataSetChanged()
+            } else {
+                todoListAdapter.addTodoList(emptyList())
+                todoListAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    // 할 일 완료/미완료 - request 결과
+    private fun subscribeComplete() {
+        binding.viewModel!!.planRequestResult.observe(this, Observer {
+            if (it.isSuccess) {
+                requestCalAchieveNow()
+                binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+            }
+        })
+    }
+
+    // 알림 - request 결과
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeNoticeState() {
         binding.viewModel!!.noticeState.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.message.equals("읽지 않은 알림이 존재하지 합니다"))
+                if (it.type.equals("SUCCESS_EXISTS_UNREAD_NOTIFY"))
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_on))
-                else if (it.message.equals("모든 알림을 읽었습니다"))
+                else if (it.type.equals("SUCCESS_EXISTS_NOTIFY"))
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
                 else
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
@@ -104,31 +208,51 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         })
     }
 
+    // 유저 정보 - request 결과
     private fun subscribeUserInfo() {
         binding.viewModel!!.userData.observe(this, Observer {
             if (it.isSuccess) {
                 // 유저 정보 조회 성공
-                friendView(it.userDTO)
+                initView(it.userDTO)
             } else {
                 // 유저 정보 조회 실패
-                friendView(userDTO)
+                initView(userDTO)
             }
         })
     }
 
-    private fun friendView(user : UserDTO) {
-        if (user.profileImage.isNotEmpty()) {
-            binding.defaultImage.visibility = View.GONE
-            Glide.with(binding.btnMypage).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                .into(binding.btnMypage)
-            binding.btnMypage.clipToOutline = true
-        } else {
-            binding.defaultImage.visibility = View.VISIBLE
-            Glide.with(binding.btnMypage).clear(binding.btnMypage)
+    // 할 일 불러오기
+    fun requestPlans(day : Date) {
+        date_for_day = day.toInstant()
+                          .atZone(ZoneId.systemDefault())
+                          .toLocalDate()
+        binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+    }
+
+    // 할 일 완료/미완료 처리
+    fun requestPlanComplete(isComplete : Boolean, teamId: Long, planId: Long) {
+        if (isComplete) {   // 완료 표시
+            binding.viewModel!!.requestPlanComplete(prefs.getBearerToken(), teamId, planId)
+        } else {    // 미완료 표시
+            binding.viewModel!!.requestPlanIncomplete(prefs.getBearerToken(), teamId, planId)
         }
+    }
+
+    fun showBottomSheet(teamId: Long, planId: Long) {
+        val modalBottomSheet = ModalBottomSheetDialog(menuList)
+        modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+        modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
+            override fun onFirstClickListener() {
+                Toast.makeText(applicationContext, "아직 준비중이에요 !", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onSecondClickListener() {
+                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamId, planId)
+                modalBottomSheet.dismiss()
+            }
+
+        })
+        modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
     }
 
     private fun goToMyPage() {

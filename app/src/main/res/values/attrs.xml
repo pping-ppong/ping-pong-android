@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TopPanel">
+        <attr name="topPanelTitle" format="reference|string"/>
+        <attr name="topPanelClose" format="boolean"/>
+        <attr name="topPanelBack" format="boolean"/>
+        <attr name="topPanelRightBtnImage" format="reference|color"/>
+    </declare-styleable>
+</resources>

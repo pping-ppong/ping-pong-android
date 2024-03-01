@@ -1,5 +1,6 @@
 package com.pingpong_android.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.pingpong_android.model.OauthDTO
@@ -8,6 +9,13 @@ import com.pingpong_android.model.UserDTO
 class PreferenceUtil(context: Context) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences("prefs_name", Context.MODE_PRIVATE)
+
+    @SuppressLint("CommitPrefEdits")
+    fun clearAll() {
+        var editor = prefs.edit()
+        editor.clear()
+        editor.apply()
+    }
 
     fun getString(key: String, defValue: String): String {
         return prefs.getString(key, defValue).toString()
@@ -38,6 +46,10 @@ class PreferenceUtil(context: Context) {
             prefs.edit().putString("refreshToken", user.refreshToken).apply()
     }
 
+    fun saveBearerToken(token : String) {
+        prefs.edit().putString("bearerToken", "Bearer $token").apply()
+    }
+
     fun getUser(): UserDTO {
         return UserDTO(prefs.getString("socialId", null).toString()).apply {
             email = prefs.getString("email", null).toString()
@@ -51,15 +63,19 @@ class PreferenceUtil(context: Context) {
         }
     }
 
-    fun saveBearerToken(token : String) {
-        prefs.edit().putString("bearerToken", "Bearer $token").apply()
-    }
-
     fun getBearerToken() : String {
         return prefs.getString("bearerToken", null).toString()
     }
 
     fun getId() : String {
         return prefs.getString("memberId", null).toString()
+    }
+
+    fun getNickName() : String {
+        return prefs.getString("nickName", null).toString()
+    }
+
+    fun getProfileImg() : String {
+        return prefs.getString("profileImage", null).toString()
     }
 }

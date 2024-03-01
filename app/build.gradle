@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id "kotlin-parcelize"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -13,10 +14,15 @@ android {
         applicationId "com.pingpong_android"
         minSdk 26
         targetSdk 33
-        versionCode 1
+        versionCode 3
         versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // buildConfig
+        buildConfigField "String", "KAKAO_APP_KEY", '"kakao3e5405729c12a33398cbc5a5e0c9daf8"'
+        buildConfigField "String", "KAKAO_LOGIN_APP_KEY", '"3e5405729c12a33398cbc5a5e0c9daf8"'
+        buildConfigField "String", "GOOGLE_REQUEST_ID_TOKEN", '"680648046678-tc0qg1j98s58uobt5viegaabomo03e47.apps.googleusercontent.com"'
     }
 
     buildTypes {
@@ -24,6 +30,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -50,6 +58,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation 'com.google.android.play:integrity:1.3.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.13.0'
@@ -59,7 +68,7 @@ dependencies {
     implementation 'com.kakao.sdk:v2-user:2.11.0'
 
     // Google Play services
-    implementation 'com.google.gms:google-services:4.3.15'
+//    implementation 'com.google.gms:google-services:4.3.15'
     implementation 'com.google.firebase:firebase-auth:22.0.0'
     implementation 'com.google.firebase:firebase-bom:32.0.0'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
@@ -90,6 +99,7 @@ dependencies {
     // Design
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.13.0'

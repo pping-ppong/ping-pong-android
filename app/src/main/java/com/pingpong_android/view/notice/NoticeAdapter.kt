@@ -45,33 +45,50 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
     inner class NoticeViewHolder(val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(notice : NoticeDTO, position: Int) {
             if (notice.type == FRIEND) {
-                // 친구 관련 알림
-                binding.btnConfirm.visibility = View.VISIBLE
-                binding.btnConfirm.visibility = View.VISIBLE
+                if (!notice.isAccepted) {   // 수락 또는 거절 요청 전
+                    // 친구 관련 알림
+                    binding.btnConfirm.visibility = View.VISIBLE
+                    binding.btnReject.visibility = View.VISIBLE
 
-                // 메세지
-                binding.message.text = notice.message
+                    // 메세지
+                    binding.message.text = notice.message
 
-                // 사진 설정
-                if (notice.profileImage.isNullOrEmpty()) {
-                    binding.defaultImage.visibility = View.VISIBLE
-                    Glide.with(binding.image).clear(binding.image)
+                    // 사진 설정
+                    if (notice.profileImage.isNullOrEmpty()) {
+                        binding.defaultImage.visibility = View.VISIBLE
+                        Glide.with(binding.image).clear(binding.image)
+                    } else {
+                        binding.defaultImage.visibility = View.GONE
+
+                        Glide.with(binding.image).load(notice.profileImage)
+                            .into(binding.image)
+                    }
+
+                    binding.btnConfirm.setOnClickListener { activity.acceptFriendShip(49) }
+                    binding.btnReject.setOnClickListener { activity.refuseFriendShip(notice.memberId) }
                 } else {
-                    binding.defaultImage.visibility = View.GONE
+                    // 친구 관련 알림
+                    binding.btnConfirm.visibility = View.GONE
+                    binding.btnReject.visibility = View.GONE
 
-                    Glide.with(binding.image).load(notice.profileImage)
-                        .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                        .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                        .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                        .into(binding.image)
+                    // 메세지
+                    binding.message.text = notice.message
+
+                    // 사진 설정
+                    if (notice.profileImage.isNullOrEmpty()) {
+                        binding.defaultImage.visibility = View.VISIBLE
+                        Glide.with(binding.image).clear(binding.image)
+                    } else {
+                        binding.defaultImage.visibility = View.GONE
+
+                        Glide.with(binding.image).load(notice.profileImage)
+                            .into(binding.image)
+                    }
                 }
-
-                binding.btnConfirm.setOnClickListener { activity.acceptFriendShip(notice.memberId) }
-                binding.btnReject.setOnClickListener { activity.refuseFriendShip(notice.memberId) }
             } else if (notice.type == TODO) {
                 // 할일 관련 알림
                 binding.btnConfirm.visibility = View.GONE
-                binding.btnConfirm.visibility = View.GONE
+                binding.btnReject.visibility = View.GONE
 
                 // 메세지
                 binding.message.text = notice.message

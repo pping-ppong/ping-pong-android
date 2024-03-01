@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">핑퐁</string>
 
-    <!-- todo : buildConfig로 변경 -->
-    <string name="kakao_app_key">kakao3e5405729c12a33398cbc5a5e0c9daf8</string>
-    <string name="kakao_login_app_key">3e5405729c12a33398cbc5a5e0c9daf8</string>
-    <string name="google_request_id_token">382876464425-9d20ieg1rrh4869927i4abehd4jc0t3v.apps.googleusercontent.com</string>
-
     <!-- ///////////////////////////////// -->
     <!-- 회원가입 -->
     <string name="join_title">회원가입</string>
     <string name="nickName">닉네임</string>
     <string name="login_hint">한글/영문 조합 10자 이내</string>
+    <string name="more_detail">자세히 보기</string>
+    <string name="term_personal_information">개인정보 처리방침</string>
+    <string name="url_term_personal_information">https://h2bal.notion.site/348d88feb1c4473d989fdba43c0023e3</string>
+    <string name="term_service">이용약관</string>
+    <string name="url_term_service">https://h2bal.notion.site/e31711309bae467cac6874f2108eecd6</string>
     <string name="btn_done">완료</string>
 
     <!-- ///////////////////////////////// -->
@@ -34,12 +34,12 @@
     <!-- ///////////////////////////////// -->
     <!-- 알림 -->
     <string name="alarm">알림</string>
-    <string name="confirm">수락</string>
+    <string name="accept">수락</string>
     <string name="reject">거절</string>
     <string name="no_notice_list">알림이 없어요 :D</string>
 
     <!-- ///////////////////////////////// -->
-    <!-- 그룹 -->
+    <!-- 팀 -->
     <string name="edit_group_order">그룹 순서 편집</string>
     <string name="attending_group">참여 중인 그룹</string>
     <string name="group_member">그룹 멤버</string>
@@ -48,6 +48,7 @@
     <string name="member">멤버</string>
     <string name="invite_member">멤버 초대</string>
     <string name="search_nick">닉네임 검색</string>
+    <string name="todo_hint">입력</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 마이페이지 & 설정 -->
@@ -71,8 +72,23 @@
     <string name="no_image">사진이 없어요ㅜ_ㅜ</string>
 
     <string name="account">계정</string>
-    <string name="notice">공지사항</string>
+    <string name="alarm_setting">알림 설정</string>
+    <string name="announcement">공지사항</string>
     <string name="info">정보</string>
     <string name="logout">로그아웃</string>
+
+    <string name="social_login">소셜로그인</string>
+    <string name="delete_account">회원 탈퇴</string>
+    <string name="push_alarm">푸시 알림</string>
+    <string name="term_open_source">오픈소스 라이브러리</string>
+    <string name="app_version_info">앱버전</string>
+
+    <!-- ///////////////////////////////// -->
+    <!-- 레이아웃 -->
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="date">날짜</string>
+    <string name="manager">담당자</string>
+
 
 </resources>

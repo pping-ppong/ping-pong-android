@@ -48,11 +48,8 @@ class SearchAdapter (private var friendList : List<MemberDTO>) : RecyclerView.Ad
             } else {
                 binding.defaultImage.visibility = View.GONE
 
-                Glide.with(binding.image).load(user.profileImage)
-                    .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                    .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                    .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                    .into(binding.image)
+                Glide.with(binding.profileImg).load(user.profileImage)
+                    .into(binding.profileImg)
                 binding.image.clipToOutline = true
             }
         }

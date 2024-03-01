@@ -1,6 +1,7 @@
 package com.pingpong_android.view.gallery
 
 import android.content.ContentUris
+import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -10,20 +11,32 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_URI
 import com.pingpong_android.databinding.ActivityGalleryBinding
+import com.pingpong_android.view.editProfile.EditProfileActivity
+import com.pingpong_android.view.join.JoinActivity
 
-class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_gallery) {
+class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_gallery, TransitionMode.RIGHT) {
 
     private var galleryAdapter = GalleryAdapter(emptyList())
+    private var FROM_JOIN : Boolean = false
+    private var FROM_EDIT : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = GalleryViewModel()
         binding.activity = this
 
+        initData()
         initAdapter()
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.viewModel!!.fetchImageItemList(this)
+    }
+
+    private fun initData() {
+        FROM_JOIN = intent.getBooleanExtra("FROM_JOIN", false)
+        FROM_EDIT = intent.getBooleanExtra("FROM_EDIT", false)
     }
 
     private fun initAdapter() {
@@ -52,10 +65,19 @@ class GalleryActivity : BaseActivity<ActivityGalleryBinding>(R.layout.activity_g
         })
     }
 
-    private fun setOnClick() {
-        binding.btnDone.setOnClickListener { v -> {
+    fun onApplyClick() {
+        if (galleryAdapter.getSelectedPhoto().uri != null) {
+            val intent : Intent
+            if (FROM_JOIN)
+                intent = Intent(this, JoinActivity::class.java)
+            else if (FROM_EDIT)
+                intent = Intent(this, EditProfileActivity::class.java)
+            else
+                intent = Intent(this, EditProfileActivity::class.java)
 
-        } }
+            intent.putExtra(INTENT_EXTRA_URI, galleryAdapter.getSelectedPhoto().uri.toString())
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
-
 }

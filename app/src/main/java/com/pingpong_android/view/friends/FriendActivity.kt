@@ -1,17 +1,18 @@
 package com.pingpong_android.view.friends
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants
 import com.pingpong_android.databinding.ActivityFriendBinding
-import com.pingpong_android.utils.PreferenceUtil
+import com.pingpong_android.view.profile.ProfileActivity
 
-class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_friend) {
+class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_friend, TransitionMode.RIGHT) {
 
-    private lateinit var prefs : PreferenceUtil
     private var friendsAdapter = FriendsAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +20,9 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
         binding.viewModel = FriendViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
-
         initAdapter()
         initRequest()
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
     }
 
     private fun initAdapter() {
@@ -52,5 +52,11 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
                 binding.noFriendList.visibility = View.VISIBLE
             }
         })
+    }
+
+    fun goToUserProfile(memberId : Long) {
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(Constants.INTENT_EXTRA_MEMBER_ID, memberId)
+        startActivity(intent)
     }
 }

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.pingpong_android.view.teamCalendar.TeamCalendarViewModel" />
+        <variable
+            name="activity"
+            type="com.pingpong_android.view.teamCalendar.TeamCalendarActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <com.pingpong_android.layout.TopPanel
+            android:id="@+id/topPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:topPanelClose="true"
+            app:topPanelTitle="그룹명"
+            android:paddingHorizontal="32dp"
+            app:topPanelRightBtnImage="@drawable/ic_etc_small"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            tools:listitem="@layout/item_calendar_month"
+            tools:itemCount="1"
+            android:paddingHorizontal="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topPanel"/>
+
+        <!-- white gradient 넣기 -->
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingHorizontal="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/calender"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/group_mem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@string/group_member"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/btn_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@string/more"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableTint="@color/system_gray"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/member_rv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_image_with_text"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/group_mem"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/btn_add_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_todo"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:paddingVertical="16dp"
+                    android:layout_marginTop="13dp"
+                    android:background="@drawable/back_white_stroke_gray_18dp"
+                    android:textColor="@color/black"
+                    android:onClickListener="@{v -> activity.onClickInputText(true)}"
+                    app:layout_constraintTop_toBottomOf="@+id/member_rv"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/team_plan_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_my_todo_in_team"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/btn_add_todo"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <FrameLayout
+                android:id="@+id/input_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClickListener="@{v -> activity.onClickInputText(false)}"
+                android:background="#4d000000"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottom_sheet_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back_white_round_top_16dp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="32dp"
+                android:layout_alignParentBottom="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/todo_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/todo_hint"
+                    android:inputType="text"
+                    android:maxEms="20"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:textCursorDrawable="@drawable/text_input_cursor"
+                    android:paddingVertical="16dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/todo_date"/>
+
+                <TextView
+                    android:id="@+id/todo_date"
+                    style="@style/textBlack12"
+                    tools:text="10/21"
+                    android:gravity="center"
+                    android:drawablePadding="4dp"
+                    android:onClickListener="@{v -> activity.onClickDateMember()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:drawableStartCompat="@drawable/ic_calendar" />
+
+                <RelativeLayout
+                    android:id="@+id/profile_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:onClickListener="@{v -> activity.onClickDateMember()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/todo_date">
+                    <ImageView
+                        android:id="@+id/profile_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerInParent="true"
+                        android:clipToOutline="true"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:background="@drawable/back_gray_circle_with_gray_outline" />
+
+                    <ImageView
+                        android:id="@+id/default_image"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_profile" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/todo_member_name"
+                    style="@style/textBlack12"
+                    android:layout_marginStart="4dp"
+                    android:gravity="center"
+                    android:onClickListener="@{v -> activity.onClickDateMember()}"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_layout"
+                    app:layout_constraintStart_toEndOf="@+id/profile_layout"
+                    app:layout_constraintTop_toTopOf="@+id/profile_layout"
+                    tools:text="바리바리" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_request_add_todo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/ic_send_disabled"
+                    android:focusable="false"
+                    app:layout_constraintBottom_toBottomOf="@+id/todo_date"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

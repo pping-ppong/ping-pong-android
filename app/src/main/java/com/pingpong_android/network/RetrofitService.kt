@@ -1,10 +1,16 @@
 package com.pingpong_android.network
 
+import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.model.OauthDTO
+import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
+import java.time.LocalDate
 
 
 interface RetrofitService {
@@ -45,6 +51,61 @@ interface RetrofitService {
         @Path("id") userId : String
     ) : Single<UserResultDTO>
 
+    // 유저 정보 수정
+    @PATCH("/api/members/{id}")
+    fun requestEditProfile(
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: String,
+        @Body user: UserDTO
+        ) : Single<UserResultDTO>
+
+    // 로그아웃
+    @POST("/api/oauth/logout")
+    fun requestLogout(
+        @Body userDTO: UserDTO
+    ) : Single<UserResultDTO>
+
+    // 회원탈퇴
+    @DELETE("/api/members/{id}")
+    fun requestDeleteAccount(
+        @Header("Authorization") accessToken : String,
+        @Path("id") userId : String
+    ) : Single<ResultDTO>
+
+    // S3 사진 등록
+    @Multipart
+    @POST("/api/s3/file")
+    fun requestAddImage(
+        @Part image : MultipartBody.Part
+    ) : Single<ImageResultDTO>
+
+    //S3 사진 불러오기
+    @GET("/api/s3/file")
+    fun requestImageName(
+        @Query("name") name : String
+    ) : Single<ImageResultDTO>
+
+    //S3 사진 삭제
+    @FormUrlEncoded
+    @HTTP(method="DELETE", hasBody=true, path="/api/s3/file")
+    fun deleteImage(
+        @Field("name") name : String
+    ): Response<ResponseBody>
+
+    // 뱃지 조회하기
+    @GET("/api/members/{id}/badges")
+    fun requestAllBadges (
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: Long
+    ) : Single<BadgeResultDTO>
+
+    // 뱃지 8개 조회하기
+    @GET("/api/members/{id}/pre-badges")
+    fun request8Badges (
+        @Header("Authorization") accessToken : String,
+        @Path("id") memberId: Long
+    ) : Single<BadgeResultDTO>
+
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // Notice
@@ -61,21 +122,100 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String
     ) : Single<ResultDTO>
 
+    // 친구 신청 알림 요청
+    @POST ("/api/notifications/friends")
+    fun requestAlarmFriend(
+        @Header("Authorization") accessToken : String,
+        @Body respondentId : Long
+    ) : Single<ResultDTO>
+
+
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // Team
+
+    // 전체 캘린더 조회 (팝콘 성취율만)
+    @GET("/api/members/calendars/achievement")
+    fun requestMainCalendarAll(
+        @Header("Authorization") accessToken : String,
+        @Query("startDate") startDate : String,
+        @Query("endDate") endDate : String
+    ) : Single<AchieveResultDTO>
+
+    // 해당 날짜의 전체 할일 조회
+    @GET("/api/members/calendars")
+    fun requestMainPlans(
+        @Header("Authorization") accessToken : String,
+        @Query("date") date : String
+    ) : Single<TeamListResultDTO>
 
     // 유저가 속한 팀 전체 조회
     @GET("/api/members/teams")
     fun requestUserTeams(
         @Header("Authorization") accessToken : String
-        ) : Single<TeamListResultDTO>
+    ) : Single<TeamListResultDTO>
+
+    // 팀 생성
+    @POST("/api/teams")
+    fun requestMakeGroup(
+        @Header("Authorization") accessToken : String,
+        @Body team : HashMap<String, Any>
+    ) : Single<TeamResultDTO>
+
+    // 할 일 등록
+    @POST("/api/teams/{id}/plans")
+    fun requestAddTodo(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long,
+        @Body todoDTO: TodoDTO
+    ) : Single<TodoResultDTO>
+
+    // 할 일 삭제
+    @DELETE("/api/teams/{teamId}/plans/{planId}")
+    fun deletePlan (
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
+    // 그룹의 캘린더 조회 (팝콘 성취율만)
+    @GET("/api/teams/{id}/calendars/achievement")
+    fun requestTeamCalendarAll(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long,
+        @Query("startDate") startDate : LocalDate,
+        @Query("endDate") endDate : LocalDate
+    ) : Single<AchieveResultDTO>
+
+    // 그룹의 해당 날짜의 할일 조회
+    @GET("/api/teams/{id}/calendars")
+    fun requestTeamPlans(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long,
+        @Query("date") date : String
+    ) : Single<TeamResultDTO>
+
+    // 할 일 표시 완료
+    @PATCH("/api/teams/{teamId}/plans/{planId}/complete")
+    fun requestPlanComplete(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
+    // 할 일 표시 미완료
+    @PATCH("/api/teams/{teamId}/plans/{planId}/incomplete")
+    fun requestPlanIncomplete(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
     // Friend
 
-    // 유저가 속한 팀 전체 조회
+    // 유저가 친구 전체 조회
     @GET("/api/friends")
     fun requestUserFriendList(
         @Header("Authorization") accessToken : String
@@ -109,17 +249,19 @@ interface RetrofitService {
     ) : Single<UserResultDTO>
 
     // 친구 신청 승인
+    @FormUrlEncoded
     @POST("/api/friends/accept")
     fun acceptFriendShip(
         @Header("Authorization") accessToken : String,
-        @Body respondentId : Long
+        @Field("opponentId") opponentId : Long
     ) : Single<ResultDTO>
 
     // 친구 신청 거절
+    @FormUrlEncoded
     @POST("/api/friends/refuse")
     fun refuseFriendShip(
         @Header("Authorization") accessToken : String,
-        @Body respondentId : Long
+        @Field("opponentId") opponentId : Long
     ) : Single<ResultDTO>
 
     // 친구 신청하기
@@ -130,9 +272,10 @@ interface RetrofitService {
     ) : Single<ResultDTO>
 
     // 친구 신청 끊기
-    @DELETE("/api/friends/unfollow?memberId=")
-    fun deleteFriendShip (
+    @FormUrlEncoded
+    @HTTP(method="DELETE", hasBody=true, path="/api/friends/unfollow")
+    fun deleteFriendShip(
         @Header("Authorization") accessToken : String,
         @Field("memberId") memberId : Long
-    )
+    ): Single<ResultDTO>
 }

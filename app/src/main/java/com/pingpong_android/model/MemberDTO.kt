@@ -11,5 +11,5 @@ data class MemberDTO(
     var nickName : String = ""
 
     @SerializedName("profileImage")
-    var profileImage : String? = null
+    var profileImage : String = ""
 }

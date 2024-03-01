@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "382876464425",
-    "project_id": "ping-pong-410702",
-    "storage_bucket": "ping-pong-410702.appspot.com"
+    "project_number": "680648046678",
+    "project_id": "ping-pong-410913",
+    "storage_bucket": "ping-pong-410913.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:382876464425:android:27179c547b810b42dfb338",
+        "mobilesdk_app_id": "1:680648046678:android:121b014b11428fb63da3f7",
         "android_client_info": {
           "package_name": "com.pingpong_android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "382876464425-1fpcfd1a8chu33qum69vkjcmuksf1hjs.apps.googleusercontent.com",
+          "client_id": "680648046678-cknhsi4ju3ubjv32j5iqp6j7709lhmfi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.pingpong_android",
@@ -22,7 +22,7 @@
           }
         },
         {
-          "client_id": "382876464425-9d20ieg1rrh4869927i4abehd4jc0t3v.apps.googleusercontent.com",
+          "client_id": "680648046678-qgh8jc6su2iqlgenrb0l9e53nkib8h7u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.pingpong_android",
@@ -30,20 +30,20 @@
           }
         },
         {
-          "client_id": "382876464425-2v60oimorgovg58qaiv97do34lnc8rgc.apps.googleusercontent.com",
+          "client_id": "680648046678-tc0qg1j98s58uobt5viegaabomo03e47.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUuKN2zgR9h0yrdAtA4zzbckpiYbbx3MA"
+          "current_key": "AIzaSyB7lce2nY7DK6s3K0GWdYbmDBZymjEySgY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "382876464425-2v60oimorgovg58qaiv97do34lnc8rgc.apps.googleusercontent.com",
+              "client_id": "680648046678-tc0qg1j98s58uobt5viegaabomo03e47.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

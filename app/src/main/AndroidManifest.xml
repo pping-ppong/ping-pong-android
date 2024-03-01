@@ -6,6 +6,9 @@
     <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        android:minSdkVersion="33" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +30,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="oauth"
-                    android:scheme="@string/kakao_app_key" />
+                    android:scheme="@{}" />
             </intent-filter>
         </activity>
 
@@ -48,6 +51,12 @@
         </activity>
 
         <activity
+            android:name=".view.webView.WebViewActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme">
+        </activity>
+
+        <activity
             android:name=".view.main.MainActivity"
             android:exported="true"
             android:theme="@style/DefaultTheme">
@@ -58,6 +67,30 @@
             android:exported="false"/>
 
         <activity android:name=".view.myPage.MyPageActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.SettingActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.account.AccountActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.alarm.AlarmActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.announcement.AnnouncementActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.setting.information.InformationActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.trash.TrashActivity"
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
@@ -84,6 +117,27 @@
         <activity android:name=".view.profile.ProfileActivity"
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.makeTeam.MakeTeamActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.addMember.AddMemberActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.teamList.TeamListActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity android:name=".view.teamCalendar.TeamCalendarActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
+        <activity
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
     </application>
 
 </manifest>

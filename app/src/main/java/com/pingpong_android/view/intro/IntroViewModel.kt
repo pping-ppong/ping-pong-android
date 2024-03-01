@@ -16,11 +16,6 @@ class IntroViewModel : BaseViewModel() {
     val loginResult : LiveData<UserResultDTO>
         get() = _loginResult
 
-    private val _reissueResult = MutableLiveData<UserResultDTO>()
-    val reissueResult : LiveData<UserResultDTO>
-        get() = _reissueResult
-
-
     // 로그인 요청
     fun requestLogin(userDTO: UserDTO) {
         addDisposable(
@@ -30,6 +25,7 @@ class IntroViewModel : BaseViewModel() {
                 .subscribe({
                     _loginResult.postValue(it)
                 },{
+
                     Log.e("Error", "requestController")} )
         )
     }

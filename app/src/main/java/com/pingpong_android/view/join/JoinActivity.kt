@@ -1,50 +1,68 @@
 package com.pingpong_android.view.join
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
+import com.pingpong_android.base.Constants
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_URI
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USER_DTO
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_WEB_URL
 import com.pingpong_android.databinding.ActivityJoinBinding
+import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
-import com.pingpong_android.view.intro.IntroActivity
+import com.pingpong_android.view.gallery.GalleryActivity
 import com.pingpong_android.view.main.MainActivity
+import com.pingpong_android.view.webView.WebViewActivity
 
-class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
+class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, TransitionMode.VERTICAL) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
+    private lateinit var userDTO: UserDTO
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = JoinViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
-        userDTO = intent.getSerializableExtra(INTENT_EXTRA_USERDTO) as UserDTO
+        userDTO = intent.getSerializableExtra(INTENT_EXTRA_USER_DTO) as UserDTO
 
         checkNickNameValidation()
+        checkTerms()
+
+        onActivityResult()
         initSubscribe()
         initView()
     }
 
+    private fun onActivityResult() {
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                if (it.data != null) {
+                    val uri : Uri = Uri.parse(it.data!!.getStringExtra(INTENT_EXTRA_URI))
+
+                }
+            }
+        }
+    }
+
     private fun initView() {
-        if (userDTO.profileImage != null) {
+        if (userDTO.profileImage.isEmpty()) {
             Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
             binding.defaultPhoto.visibility = View.INVISIBLE
         } else {
+            Glide.with(this).clear(binding.profileImg)
             binding.profileImg.visibility = View.INVISIBLE
             binding.defaultPhoto.visibility = View.INVISIBLE
         }
@@ -66,14 +84,32 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         }
     }
 
+    private fun checkTerms() {
+        binding.checkService.setOnCheckedChangeListener { button, isChecked ->
+            binding.viewModel!!.isReadyTerms.value = isChecked && binding.checkUserInfo.isChecked
+            checkAll()
+        }
+
+        binding.checkUserInfo.setOnCheckedChangeListener { button, isChecked ->
+            binding.viewModel!!.isReadyTerms.value = isChecked && binding.checkService.isChecked
+            checkAll()
+        }
+    }
+
+    private fun checkAll() {
+        binding.viewModel!!.isReadyAll.value = binding.viewModel!!.isReadyNickname.value!! && binding.viewModel!!.isReadyTerms.value!!
+    }
+
     fun requestJoin() {
         binding.viewModel!!.requestJoin(userDTO)
     }
 
     private fun initSubscribe() {
-        subscribeJoin()
         subscribeNickNmCheck()
-        subscribeReissue()
+        subscribeAddImage()
+        subscribeImageUrl()
+        subscribeJoin()
+        subscribeLogin()
     }
 
     private fun subscribeNickNmCheck() {
@@ -82,14 +118,40 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
                 if (it.code == 200) {
                     binding.nickNmEtLayout.error = null
                     userDTO.nickName = binding.nickNmEt.text.toString()
-                    binding.viewModel!!.isReady.value = true
+                    binding.viewModel!!.isReadyNickname.value = true
+                    checkAll()
                 }
             } else {
                 if (it.message != null) {
                     binding.nickNmEtLayout.error = it.message
-                    binding.viewModel!!.isReady.value = false
+                    binding.viewModel!!.isReadyNickname.value = false
                 } else
-                    binding.viewModel!!.isReady.value = false
+                    binding.viewModel!!.isReadyNickname.value = false
+                checkAll()
+            }
+        })
+    }
+
+    private fun subscribeAddImage() {
+        binding.viewModel!!.addImgS3Result.observe(this, Observer {
+            if (it.isSuccess && it.imgList.isNotEmpty()) {
+                // 사진 등록 성공 시
+
+            } else {
+                // 사진 등록 실패 시
+
+            }
+        })
+    }
+
+    private fun subscribeImageUrl() {
+        binding.viewModel!!.imgUrlResult.observe(this, Observer {
+            if (it.isSuccess && it.imgList.isNotEmpty()) {
+                // url 요청 성공 시
+
+            } else {
+                // url 요청 실패 시
+
             }
         })
     }
@@ -101,7 +163,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
                     userDTO.memberId = it.userDTO.memberId
                     userDTO.nickName = it.userDTO.nickName
                     userDTO.profileImage = it.userDTO.profileImage
-                    binding.viewModel!!.requestReissue(userDTO)
+                    binding.viewModel!!.requestLogin(userDTO)
                 } else
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             } else
@@ -109,19 +171,27 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         })
     }
 
-    private fun subscribeReissue() {
-        binding.viewModel!!.reissueResult.observe(this, Observer {
+    private fun subscribeLogin() {
+        binding.viewModel!!.userLogin.observe(this, Observer {
             if (it.isSuccess) {
-                // 토큰 재발행 성공 시
+                // 로그인 성공 시
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveUser(userDTO)
                 prefs.saveBearerToken(it.userDTO.accessToken)
                 goToMain(userDTO)
             } else {
-                // 토큰 재발행 실패 시
-                Log.d("Reissue", it.message)
+                // 로그인 실패 시
+                Log.d("Join-Login", it.message)
+                finish()
             }
         })
+    }
+
+    fun goToGallery() {
+        val intent = Intent(this, GalleryActivity::class.java)
+        intent.putExtra("FROM_JOIN", true)
+        activityResultLauncher.launch(intent)
     }
 
     private fun goToMain(userDTO: UserDTO) {
@@ -130,5 +200,16 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join) {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         finish()
+    }
+
+    fun goToWebView(type : Int) {
+        var url = if (type == 1)
+            getString(R.string.url_term_personal_information)
+        else
+            getString(R.string.url_term_service)
+
+        val intent = Intent(this, WebViewActivity::class.java)
+        intent.putExtra(INTENT_EXTRA_WEB_URL, url)
+        startActivity(intent)
     }
 }

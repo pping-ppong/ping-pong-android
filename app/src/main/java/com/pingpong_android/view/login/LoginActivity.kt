@@ -1,5 +1,6 @@
 package com.pingpong_android.view.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,9 +17,10 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.User
+import com.pingpong_android.BuildConfig
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
-import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USERDTO
+import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_USER_DTO
 import com.pingpong_android.databinding.ActivityLoginBinding
 import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
@@ -28,11 +30,7 @@ import com.pingpong_android.view.main.MainActivity
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
-
+    private lateinit var userDTO: UserDTO
     private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +38,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.viewModel = LoginViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         userDTO = prefs.getUser()
 
         initSubscribe()
@@ -54,7 +51,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun initSubscribe() {
         subscribeLogin()
-        subscribeReissue()
     }
 
     private fun loginKakao() {
@@ -105,53 +101,39 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun loginGoogle() {
         binding.googleLogin.setOnClickListener {
-            requestGoogleLogin()
+            googleSignInClient.signOut()
+            val signInIntent = googleSignInClient.signInIntent
+            googleAuthLauncher.launch(signInIntent)
         }
     }
 
-    private fun requestGoogleLogin() {
-        googleSignInClient.signOut()
-        val signInIntent = googleSignInClient.signInIntent
-        googleAuthLauncher.launch(signInIntent)
-    }
-
     private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
 
-        try {
-            val account = task.getResult(ApiException::class.java)
+            try {
+                val account = task.getResult(ApiException::class.java)
 
-            // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
-            val userName = account.givenName
-            val serverAuth = account.serverAuthCode
+                // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
+                userDTO = UserDTO(account.id.toString()) // socialId
+                userDTO.email = account.email.toString()
+                userDTO.socialType = "GOOGLE"
+                userDTO.nickName = account.givenName!!
+                prefs.saveUser(userDTO)
 
-//            userDTO = UserDTO(account.id)
-//            userDTO.email = user!!.kakaoAccount!!.email!!
-//            userDTO.socialType = "KAKAO"
-//            userDTO.code = token.accessToken
-//            userDTO.accessToken = token.accessToken
-//            userDTO.refreshToken = token.refreshToken
-//            if (!user.kakaoAccount!!.profile!!.nickname.isNullOrEmpty())
-//                userDTO.nickName = user.kakaoAccount!!.profile!!.nickname!!
-//            if(!user.kakaoAccount!!.profile!!.profileImageUrl.isNullOrEmpty())
-//                userDTO.profileImage = user.kakaoAccount!!.profile!!.profileImageUrl!!
-//            prefs.saveUser(userDTO)
-//
-//            // 가입된 회원인지 확인
-//            val oauthDTO = OauthDTO("KAKAO", token.accessToken)
-//            oauthDTO.refreshToken = token.refreshToken
-//            oauthDTO.accessToken = token.accessToken
-//            binding.viewModel!!.requestSocialInfo(oauthDTO)
-
-        } catch (e: ApiException) {
-            Log.e(LoginActivity::class.java.simpleName, e.stackTraceToString())
+                // 가입된 회원인지 확인
+                binding.viewModel!!.requestLogin(userDTO)
+            } catch (e: ApiException) {
+                Log.e(LoginActivity::class.java.simpleName, e.stackTraceToString())
+                Toast.makeText(this, e.statusCode.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun getGoogleClient(): GoogleSignInClient {
         val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
-            .requestServerAuthCode(getString(R.string.google_request_id_token)) // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
+            .requestServerAuthCode(BuildConfig.GOOGLE_REQUEST_ID_TOKEN) // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
             .requestEmail() // 이메일도 요청할 수 있다.
             .build()
 
@@ -165,33 +147,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
                 prefs.saveBearerToken(it.userDTO.accessToken)
-                binding.viewModel!!.requestReissue(userDTO)
+                goToMain()
             } else {
                 goToJoin()
             }
         })
     }
 
-    private fun subscribeReissue() {
-        binding.viewModel!!.reissueResult.observe(this, Observer {
-            if (it.isSuccess) {
-                // 토큰 재발행 성공 시
-                goToMain()
-            } else {
-                // 토큰 재발행 실패 시
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    fun goToJoin() {
+    private fun goToJoin() {
         prefs.saveUser(userDTO)
         val intent = Intent(this, JoinActivity::class.java)
-        intent.putExtra(INTENT_EXTRA_USERDTO, userDTO)
+        intent.putExtra(INTENT_EXTRA_USER_DTO, userDTO)
         startActivity(intent)
     }
 
-    fun goToMain() {
+    private fun goToMain() {
         prefs.saveUser(userDTO)
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

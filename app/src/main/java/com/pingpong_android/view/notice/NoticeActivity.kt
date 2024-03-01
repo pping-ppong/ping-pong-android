@@ -8,12 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityNoticeBinding
-import com.pingpong_android.utils.PreferenceUtil
-
 
 class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_notice) {
 
-    private lateinit var prefs : PreferenceUtil
     private var noticeAdapter = NoticeAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,12 +18,11 @@ class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_not
         binding.viewModel = NoticeViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
-
         initAdapter()
         subscribeNotice()
         subscribeResult()
 
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.viewModel!!.requestAllNotice(prefs.getBearerToken())
     }
 

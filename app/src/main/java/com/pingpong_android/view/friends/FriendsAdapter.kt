@@ -1,6 +1,7 @@
 package com.pingpong_android.view.friends
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -11,10 +12,10 @@ import com.pingpong_android.model.UserDTO
 
 class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 
-    private lateinit var friendActivity: FriendActivity
+    private lateinit var activity: FriendActivity
 
-    fun setFriendActivity(friendActivity: FriendActivity) {
-        this.friendActivity = friendActivity
+    fun setFriendActivity(activity: FriendActivity) {
+        this.activity = activity
     }
 
     override fun onCreateViewHolder(
@@ -28,8 +29,8 @@ class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: FriendsViewHolder, position: Int) {
         holder.bind(friendList.get(position), position)
 
-        if (friendActivity != null) {
-
+        if (activity != null) {
+            holder.itemView.setOnClickListener { activity.goToUserProfile(friendList.get(position).memberId) }
         }
     }
 
@@ -44,12 +45,26 @@ class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Ad
 
     inner class FriendsViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user : MemberDTO, position : Int) {
-            binding.nickNmEt.text = user.nickName
-            Glide.with(binding.image).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
-                .into(binding.image)
+            // 주인장 아이콘
+            if (position == 0) {
+                binding.icHost.visibility = View.VISIBLE
+                binding.nickNmEt.text = user.nickName + " (나)"
+            } else {
+                binding.icHost.visibility = View.GONE
+                binding.nickNmEt.text = user.nickName
+            }
+
+            // 유저 사진
+            if (user.profileImage.isNotEmpty()) {
+                binding.defaultImage.visibility = View.GONE
+                Glide.with(binding.profileImg)
+                    .load(user.profileImage)
+                    .into(binding.profileImg)
+                binding.image.clipToOutline = true
+            } else {
+                binding.defaultImage.visibility = View.VISIBLE
+                Glide.with(binding.image).clear(binding.image)
+            }
         }
     }
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/back_white_16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp">
+        <TextView
+            android:layout_width="match_parent"
+            style="@style/textBlackBold16"
+            android:text="@string/date"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="4dp"/>
+
+        <CalendarView
+            style="@style/CalenderViewCustom"
+            android:id="@+id/calender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedMonthDateColor="@color/black"
+            android:selectedWeekBackgroundColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
+        <TextView
+            android:layout_width="match_parent"
+            style="@style/textBlackBold16"
+            android:text="@string/manager"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="4dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/member_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_image_with_text"
+            tools:itemCount="2"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="27dp"
+            app:layout_constraintTop_toBottomOf="@+id/topPanel"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="27dp"
+        android:layout_marginBottom="24dp">
+        <TextView
+            android:id="@+id/btn_no"
+            style="@style/textBlackBold16"
+            android:text="@string/cancel"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="4dp"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/btn_yes"
+            style="@style/textBlackBold16"
+            android:text="@string/confirm"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="4dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</LinearLayout>

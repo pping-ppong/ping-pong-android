@@ -7,7 +7,13 @@ class Constants {
         const val FRIEND = "FRIEND"
         const val TODO = "TODO"
 
-        const val INTENT_EXTRA_USERDTO = "INTENT_EXTRA_USERDTO"
+        const val INTENT_EXTRA_USER_DTO = "INTENT_EXTRA_USER_DTO"
+        const val INTENT_EXTRA_TEAM_DTO = "INTENT_EXTRA_TEAM_DTO"
+
         const val INTENT_EXTRA_MEMBER_ID = "INTENT_EXTRA_MEMBER_ID"
+        const val INTENT_EXTRA_MEMBER_LIST = "INTENT_EXTRA_MEMBER_LIST"
+
+        const val INTENT_EXTRA_WEB_URL = "INTENT_EXTRA_WEB_URL"
+        const val INTENT_EXTRA_URI = "INTENT_EXTRA_URI"
     }
 }

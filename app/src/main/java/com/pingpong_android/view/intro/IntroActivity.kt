@@ -5,45 +5,33 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.kakao.sdk.common.util.Utility
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityIntroBinding
-import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
 import com.pingpong_android.view.login.LoginActivity
 import com.pingpong_android.view.main.MainActivity
 
 class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro)  {
 
     private val REQUEST_PERMISSIONS = 1
-
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        private lateinit var userDTO: UserDTO
-    }
+    private lateinit var userDTO: UserDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = IntroViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         userDTO = prefs.getUser()
 
-
-        /* temp */
-        userDTO.socialId = "3277875718"
-        userDTO.email = "minji.7754.7754@kakao.com"
+        /* AVD temp */
+//        userDTO.socialId = "3277875718"
+//        userDTO.email = "minji.7754.7754@kakao.com"
 
         subscribeLogin()
-        subscribeReissue()
-
         checkPermission()
     }
 
@@ -51,8 +39,11 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         var permission = mutableMapOf<String, String>()
 
         permission["storageWrite"] =  Manifest.permission.WRITE_EXTERNAL_STORAGE
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        // 저장공간 읽기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permission["storageRead"] = Manifest.permission.READ_MEDIA_IMAGES
+            permission["storageRead"] = Manifest.permission.POST_NOTIFICATIONS
+        }
         else
             permission["storageRead"] = Manifest.permission.READ_EXTERNAL_STORAGE
 
@@ -104,26 +95,12 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
                 userDTO.memberId = it.userDTO.memberId
                 userDTO.accessToken = it.userDTO.accessToken
                 userDTO.refreshToken = it.userDTO.refreshToken
+                prefs.saveUser(userDTO)
                 prefs.saveBearerToken(it.userDTO.accessToken)
                 goToMain()
             } else {
                 // 로그인 요청 실패
                 // 로그인 화면으로 이동
-                goToLogin()
-            }
-        })
-    }
-
-    private fun subscribeReissue() {
-        binding.viewModel!!.reissueResult.observe(this, Observer {
-            if (it.isSuccess) {
-                // 토큰 재발행 성공 시
-                userDTO.accessToken = it.userDTO.accessToken
-                userDTO.refreshToken = it.userDTO.refreshToken
-                prefs.saveBearerToken(it.userDTO.accessToken)
-                goToMain()
-            } else {
-                // 토큰 재발행 실패 시
                 goToLogin()
             }
         })

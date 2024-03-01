@@ -10,28 +10,40 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp">
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/image"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:background="@drawable/back_gray_circle_with_gray_outline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/profile_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:clipToOutline="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:background="@drawable/back_gray_circle_with_gray_outline" />
 
-        <ImageView
-            android:id="@+id/default_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:padding="6dp"
-            android:src="@drawable/ic_profile_popcorn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <ImageView
+                android:id="@+id/default_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_profile_popcorn" />
+            <ImageView
+                android:id="@+id/ic_host"
+                android:src="@drawable/ic_host"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/ic_search"
@@ -75,6 +87,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

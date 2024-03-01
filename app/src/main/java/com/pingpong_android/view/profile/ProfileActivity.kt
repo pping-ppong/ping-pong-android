@@ -10,21 +10,16 @@ import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivityOthersProfileBinding
 import com.pingpong_android.model.UserDTO
-import com.pingpong_android.utils.PreferenceUtil
 
-class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.activity_others_profile) {
+class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.activity_others_profile, TransitionMode.RIGHT) {
 
-    companion object {
-        lateinit var prefs: PreferenceUtil
-        var memberId : Long = -1
-    }
+    var memberId : Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = ProfileViewModel()
         binding.activity = this
 
-        prefs = PreferenceUtil(applicationContext)
         memberId = intent.getLongExtra(INTENT_EXTRA_MEMBER_ID, -1)
 
         initView()
@@ -33,14 +28,13 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     }
 
     private fun initView() {
-        binding.btnFriend.setOnClickListener {
-            binding.viewModel!!.requestFriendShip(prefs.getBearerToken(), prefs.getId().toLong(), memberId)
-        }
+        binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
     }
 
     private fun initSubscribe() {
         subscribeOthersProfile()
         subscribeApplyFriendShip()
+        subscribeDeleteFriendShip()
     }
 
     private fun subscribeOthersProfile() {
@@ -54,26 +48,56 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     }
 
     private fun subscribeApplyFriendShip() {
-        binding.viewModel!!.result.observe(this, Observer {
+        binding.viewModel!!.applyResult.observe(this, Observer {
+            if (it.isSuccess && it.code == 200) {
+                binding.viewModel!!.requestAlarmFriend(prefs.getBearerToken(), memberId)
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
 
+    private fun subscribeDeleteFriendShip() {
+        binding.viewModel!!.deleteResult.observe(this, Observer {
+            if (it.message.isNotEmpty())
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
         })
     }
 
     private fun friendView(user : UserDTO) {
-        binding.userNm.text = user.nickName
+        binding.topPanel.setTitle(user.nickName)
         binding.cnt.text = String.format(getString(R.string.friend_num), user.friendCnt)
 
         if (user.profileImage.isNotEmpty()) {
             binding.defaultImage.visibility = View.GONE
             Glide.with(binding.image).load(user.profileImage)
-                .error(R.drawable.ic_profile_popcorn)   // 오류일 경우
-                .fallback(R.drawable.ic_profile_popcorn)    // Null인 경우
-                .placeholder(R.drawable.ic_profile_popcorn) // 로드 전
                 .into(binding.image)
             binding.image.clipToOutline = true
         } else {
             binding.defaultImage.visibility = View.VISIBLE
             Glide.with(binding.image).clear(binding.image)
         }
+
+        if (user.friendStatus) {
+            binding.btnFriend.text = getString(R.string.friend)
+            binding.btnFriend.setTextColor(getColor(R.color.black))
+            binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+            binding.btnFriend.setOnClickListener { deleteFriendShip() }
+
+        } else {
+            binding.btnFriend.text = getString(R.string.add_friend)
+            binding.btnFriend.setTextColor(getColor(R.color.white))
+            binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
+            binding.btnFriend.setOnClickListener{ requestFriendShip() }
+        }
+    }
+
+    private fun requestFriendShip() {
+        binding.viewModel!!.requestFriendShip(prefs.getBearerToken(), prefs.getId().toLong(), memberId)
+    }
+
+    private fun deleteFriendShip() {
+        binding.viewModel!!.deleteFriendShip(prefs.getBearerToken(), memberId)
     }
 }
