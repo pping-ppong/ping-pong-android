@@ -13,5 +13,8 @@ data class ResultDTO (
     var type : String,
 
     @SerializedName("message")
-    var message : String
+    var message : String,
+
+    @SerializedName("result")
+    var result : String
 )

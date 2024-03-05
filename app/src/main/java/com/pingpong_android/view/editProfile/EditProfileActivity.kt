@@ -123,7 +123,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
         binding.viewModel!!.addImgS3Result.observe(this, Observer {
             if (it.isSuccess && it.imgList.isNotEmpty()) {
                 // 사진 등록 성공 시
-                binding.viewModel!!.requestImageUrl(it.imgList.get(0))
+                binding.viewModel!!.requestImageUrl(it.imgList[0])
             } else {
                 // 사진 등록 실패 시
                 Toast.makeText(this, "사진을 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
@@ -133,9 +133,9 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
 
     private fun subscribeImageUrl() {
         binding.viewModel!!.imgUrlResult.observe(this, Observer {
-            if (it.isSuccess && it.imgList.isNotEmpty()) {
+            if (it.isSuccess && it.result.isNotEmpty()) {
                 // url 요청 성공 시
-                userDTO.profileImage = it.imgList.get(0)
+                userDTO.profileImage = it.result
 
                 binding.profileImg.visibility = View.VISIBLE
                 binding.defaultPhoto.visibility = View.GONE
