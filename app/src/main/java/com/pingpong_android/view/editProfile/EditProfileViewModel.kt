@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.ImageResultDTO
+import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -64,8 +65,8 @@ class EditProfileViewModel : BaseViewModel(){
     }
 
     // S3 사진 url 불러오기
-    private val _imgUrlResult = MutableLiveData<ImageResultDTO>()
-    val imgUrlResult : LiveData<ImageResultDTO>
+    private val _imgUrlResult = MutableLiveData<ResultDTO>()
+    val imgUrlResult : LiveData<ResultDTO>
         get() = _imgUrlResult
     fun requestImageUrl(imageName : String) {
         addDisposable(

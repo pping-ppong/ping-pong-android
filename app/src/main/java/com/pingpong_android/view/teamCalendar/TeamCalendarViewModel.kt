@@ -37,8 +37,12 @@ class TeamCalendarViewModel : BaseViewModel() {
     val achieveResult : LiveData<AchieveResultDTO>
         get() = _achieveResult
     fun requestMonthAchievement(token : String, teamId : Long, startDate : LocalDate, endDate : LocalDate) {
+        val body = HashMap<String, String>()
+        body["startDate"] = startDate.toString()
+        body["endDate"] = endDate.toString()
+
         addDisposable(
-            instance!!.requestTeamCalendarAll(token, teamId, startDate, endDate)
+            instance!!.requestTeamCalendarAll(token, teamId, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

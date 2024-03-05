@@ -83,7 +83,7 @@ interface RetrofitService {
     @GET("/api/s3/file")
     fun requestImageName(
         @Query("name") name : String
-    ) : Single<ImageResultDTO>
+    ) : Single<ResultDTO>
 
     //S3 사진 삭제
     @FormUrlEncoded
@@ -179,12 +179,11 @@ interface RetrofitService {
     ) : Single<ResultDTO>
 
     // 그룹의 캘린더 조회 (팝콘 성취율만)
-    @GET("/api/teams/{id}/calendars/achievement")
+    @POST("/api/teams/{id}/calendars/achievement")
     fun requestTeamCalendarAll(
         @Header("Authorization") accessToken : String,
         @Path("id") teamId: Long,
-        @Query("startDate") startDate : LocalDate,
-        @Query("endDate") endDate : LocalDate
+        @Body calendar : HashMap<String, String>
     ) : Single<AchieveResultDTO>
 
     // 그룹의 해당 날짜의 할일 조회
