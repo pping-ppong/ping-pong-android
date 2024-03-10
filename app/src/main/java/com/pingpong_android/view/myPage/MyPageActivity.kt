@@ -28,6 +28,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
         binding.activity = this
 
         user = prefs.getUser()
+        friendView(user)
 
         initAdapter()
         initSubscribe()
