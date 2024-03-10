@@ -146,7 +146,7 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
 
     private fun subscribeImageUrl() {
         binding.viewModel!!.imgUrlResult.observe(this, Observer {
-            if (it.isSuccess && it.imgList.isNotEmpty()) {
+            if (it.isSuccess && it.result.isNotEmpty()) {
                 // url 요청 성공 시
 
             } else {
