@@ -42,7 +42,7 @@ class TeamCalendarViewModel : BaseViewModel() {
         body["endDate"] = endDate.toString()
 
         addDisposable(
-            instance!!.requestTeamCalendarAll(token, teamId, body)
+            instance!!.requestTeamCalendarAll(token, teamId, startDate.toString(), endDate.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

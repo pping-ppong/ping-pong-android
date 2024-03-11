@@ -36,9 +36,9 @@ class EditProfileViewModel : BaseViewModel(){
     private val _updateResult = MutableLiveData<UserResultDTO>()
     val updateResult : LiveData<UserResultDTO>
         get() = _updateResult
-    fun requestEditProfile(token : String, memberId : String, userDTO: UserDTO) {
+    fun requestEditProfile(token : String, userDTO: UserDTO) {
         addDisposable(
-            instance!!.requestEditProfile(token, memberId, userDTO)
+            instance!!.requestEditProfile(token, userDTO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

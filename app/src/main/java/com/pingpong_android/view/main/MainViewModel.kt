@@ -34,9 +34,9 @@ class MainViewModel : BaseViewModel(){
     private val _userData = MutableLiveData<UserResultDTO>()
     val userData : LiveData<UserResultDTO>
         get() = _userData
-    fun requestUserInfo(token : String, user : UserDTO) {
+    fun requestUserInfo(token : String) {
         addDisposable(
-            instance!!.requestMyPageUserInfo(token, user.memberId)
+            instance!!.requestMyPageUserInfo(token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

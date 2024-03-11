@@ -40,7 +40,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     private fun requestMyPageInfo() {
-        binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), user)
+        binding.viewModel!!.requestUserInfo(prefs.getBearerToken())
         binding.viewModel!!.requestUserTeamList(prefs.getBearerToken())
     }
 
