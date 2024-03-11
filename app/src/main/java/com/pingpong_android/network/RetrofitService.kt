@@ -45,17 +45,15 @@ interface RetrofitService {
     ) : Single<UserResultDTO>
 
     // 마이페이지 - 유저 정보 조회
-    @GET("/api/members/{id}/mypage")
+    @GET("/api/members/mypage")
     fun requestMyPageUserInfo(
-        @Header("Authorization") accessToken : String,
-        @Path("id") userId : String
+        @Header("Authorization") accessToken : String
     ) : Single<UserResultDTO>
 
     // 유저 정보 수정
-    @PATCH("/api/members/{id}")
+    @PATCH("/api/members")
     fun requestEditProfile(
         @Header("Authorization") accessToken : String,
-        @Path("id") memberId: String,
         @Body user: UserDTO
         ) : Single<UserResultDTO>
 
@@ -66,10 +64,9 @@ interface RetrofitService {
     ) : Single<UserResultDTO>
 
     // 회원탈퇴
-    @DELETE("/api/members/{id}")
+    @DELETE("/api/members")
     fun requestDeleteAccount(
-        @Header("Authorization") accessToken : String,
-        @Path("id") userId : String
+        @Header("Authorization") accessToken : String
     ) : Single<ResultDTO>
 
     // S3 사진 등록
@@ -179,11 +176,12 @@ interface RetrofitService {
     ) : Single<ResultDTO>
 
     // 그룹의 캘린더 조회 (팝콘 성취율만)
-    @POST("/api/teams/{id}/calendars/achievement")
+    @GET("/api/teams/{id}/calendars/achievement")
     fun requestTeamCalendarAll(
         @Header("Authorization") accessToken : String,
         @Path("id") teamId: Long,
-        @Body calendar : HashMap<String, String>
+        @Query("startDate") startDate : String,
+        @Query("endDate") endDate : String
     ) : Single<AchieveResultDTO>
 
     // 그룹의 해당 날짜의 할일 조회

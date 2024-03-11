@@ -14,9 +14,9 @@ class AccountViewModel : BaseViewModel() {
         get() = _result
 
     // 로그인 요청
-    fun requestLogout(token : String, memberId : String) {
+    fun requestDeleteAccount(token : String) {
         addDisposable(
-            instance!!.requestDeleteAccount(token, memberId)
+            instance!!.requestDeleteAccount(token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

@@ -23,6 +23,7 @@ import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.view.adapter.MemberHorizontalAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamCalendarAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamTodoAdapter
+import java.lang.NullPointerException
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -41,6 +42,9 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     private var date_for_day: LocalDate = LocalDate.now()
 
     private var menuList : List<String> = listOf("넘기기", "버리기")
+    private var todoTxtCheck : Boolean = false
+    private var todoMemberCheck : Boolean = false
+    private var todoDateCheck : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +79,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         }
 
         override fun afterTextChanged(s: Editable?) {
-            checkAddable()
+            checkTodoText()
         }
     }
 
@@ -173,6 +177,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             startDate = date_for_cal,
             endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
+        date_for_plan = date_for_day.toString()
     }
 
     // 달성률 조회 (날짜 이동)
@@ -192,6 +197,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         date_for_day = day.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate()
+        date_for_plan = date_for_day.toString()
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
     }
 
@@ -225,6 +231,9 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             binding.todoDate.text = ""
             binding.todoMemberName.text = ""
 
+            date_for_plan = ""
+            memberDTO = MemberDTO(-1)
+
             binding.defaultImage.setImageResource(R.drawable.ic_profile)
             Glide.with(this).clear(binding.profileImg)
 
@@ -241,8 +250,27 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         binding.viewModel!!.requestAddTodo(prefs.getBearerToken(), teamDTO.teamId, todoDTO)
     }
 
+    private fun checkTodoText() {
+        if (!binding.todoTxt.text.isNullOrEmpty())
+            todoTxtCheck = true
+        else
+            todoTxtCheck = false
+        checkAddable()
+    }
+
+    private fun checkTodoDateMember() {
+        if (!date_for_plan.isNullOrEmpty() && memberDTO != null && memberDTO.memberId != (-1).toLong()) {
+            todoDateCheck = true
+            todoMemberCheck = true
+        } else {
+            todoDateCheck = false
+            todoMemberCheck = false
+        }
+        checkAddable()
+    }
+
     private fun checkAddable() {
-        if (!binding.todoTxt.text.isNullOrEmpty() && !date_for_plan.isNullOrEmpty() && memberDTO != null) {
+        if (todoTxtCheck && todoDateCheck && todoMemberCheck) {
             binding.btnRequestAddTodo.setImageDrawable(this.getDrawable(R.drawable.ic_send_enabled))
             binding.btnRequestAddTodo.setOnClickListener { onClickAddTodo() }
         } else {
@@ -283,6 +311,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
                 dateMemberDialog.dismiss()
                 binding.textInputLayout.visibility = View.VISIBLE
+                checkTodoDateMember()
             }
         })
         dateMemberDialog.show(supportFragmentManager, DateMemberSetDialog.TAG)
