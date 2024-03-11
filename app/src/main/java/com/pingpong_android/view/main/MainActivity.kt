@@ -122,7 +122,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun initRequest() {
         requestCalAchieveNow()
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
-        binding.viewModel!!.requestUserInfo(prefs.getBearerToken(), userDTO)
+        binding.viewModel!!.requestUserInfo(prefs.getBearerToken())
         binding.viewModel!!.requestUnReadNotice(prefs.getBearerToken())
     }
 

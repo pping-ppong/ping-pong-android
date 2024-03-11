@@ -164,8 +164,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
     }
 
     fun requestEditProfile() {
-        binding.viewModel!!.requestEditProfile(prefs.getBearerToken(),
-                        userDTO.memberId, userDTO)
+        binding.viewModel!!.requestEditProfile(prefs.getBearerToken(), userDTO)
     }
 
     fun goToGallery() {
