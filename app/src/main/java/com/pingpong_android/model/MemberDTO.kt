@@ -12,4 +12,13 @@ data class MemberDTO(
 
     @SerializedName("profileImage")
     var profileImage : String = ""
+
+    @SerializedName("hostId")
+    var hostId : Long = -1
+
+    @SerializedName("friendStatus")
+    var friendStatus : String = ""
+
+    @SerializedName("status")
+    var status : String = ""
 }

@@ -1,4 +1,4 @@
-package com.pingpong_android.view.friends
+package com.pingpong_android.view.friendList
 
 import android.util.Log
 import androidx.lifecycle.LiveData

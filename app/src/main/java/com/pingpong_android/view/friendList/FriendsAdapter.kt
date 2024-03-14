@@ -1,14 +1,12 @@
-package com.pingpong_android.view.friends
+package com.pingpong_android.view.friendList
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.MemberDTO
-import com.pingpong_android.model.UserDTO
 
 class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 

@@ -16,7 +16,8 @@ class JoinViewModel : BaseViewModel(){
 
     var isReadyNickname : MutableLiveData<Boolean> = MutableLiveData(false)
     var isReadyTerms : MutableLiveData<Boolean> = MutableLiveData(false)
-    var isReadyAll : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isReadyAll : MutableLiveData
+    <Boolean> = MutableLiveData(false)
 
     // 닉네임 중복 확인
     private val _nickNameCheckResult = MutableLiveData<UserResultDTO>()

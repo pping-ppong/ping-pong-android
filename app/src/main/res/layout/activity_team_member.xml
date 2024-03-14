@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <data>-->
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="com.pingpong_android.view.friends.FriendViewModel" />-->
-<!--        <variable-->
-<!--            name="activity"-->
-<!--            type="com.pingpong_android.view.friends.FriendActivity" />-->
-<!--    </data>-->
+    <data>
+        <variable
+            name="viewModel"
+            type="com.pingpong_android.view.teamMemList.TeamMemberViewModel" />
+        <variable
+            name="activity"
+            type="com.pingpong_android.view.teamMemList.TeamMemberActivity" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

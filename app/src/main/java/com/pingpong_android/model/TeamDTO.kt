@@ -21,4 +21,6 @@ data class TeamDTO(
 
     @SerializedName("planList")
     lateinit var planList : List<PlanDTO>
+
+    // todo : responses 추가 _ 문서 24번
 }

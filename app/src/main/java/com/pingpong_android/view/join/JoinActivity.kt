@@ -1,6 +1,8 @@
 package com.pingpong_android.view.join
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -25,6 +27,13 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.gallery.GalleryActivity
 import com.pingpong_android.view.main.MainActivity
 import com.pingpong_android.view.webView.WebViewActivity
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 
 class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, TransitionMode.VERTICAL) {
 
@@ -50,8 +59,21 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 if (it.data != null) {
-                    val uri : Uri = Uri.parse(it.data!!.getStringExtra(INTENT_EXTRA_URI))
-
+                    val uri : Uri = Uri.parse(it.data!!.getStringExtra(Constants.INTENT_EXTRA_URI))
+                    val file = File(uri.path)
+                    var inputStream: InputStream? = null
+                    try {
+                        inputStream = contentResolver.openInputStream(uri)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                    val requestBody = RequestBody.Companion.create("image/*".toMediaTypeOrNull(), byteArrayOutputStream.toByteArray())
+                    val uploadFile: MultipartBody.Part =
+                        MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
+                    binding.viewModel!!.requestAddImageS3(uploadFile)
                 }
             }
         }
@@ -136,10 +158,10 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         binding.viewModel!!.addImgS3Result.observe(this, Observer {
             if (it.isSuccess && it.imgList.isNotEmpty()) {
                 // 사진 등록 성공 시
-
+                binding.viewModel!!.requestImageUrl(it.imgList[0])
             } else {
                 // 사진 등록 실패 시
-
+                Toast.makeText(this, "사진을 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -148,10 +170,14 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         binding.viewModel!!.imgUrlResult.observe(this, Observer {
             if (it.isSuccess && it.result.isNotEmpty()) {
                 // url 요청 성공 시
+                userDTO.profileImage = it.result
 
+                binding.profileImg.visibility = View.VISIBLE
+                binding.defaultPhoto.visibility = View.GONE
+                Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
             } else {
                 // url 요청 실패 시
-
+                Toast.makeText(this, "사진을 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

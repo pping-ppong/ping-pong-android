@@ -12,7 +12,7 @@ import com.pingpong_android.databinding.ActivityMyPageBinding
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.adapter.TeamAdapter
 import com.pingpong_android.view.editProfile.EditProfileActivity
-import com.pingpong_android.view.friends.FriendActivity
+import com.pingpong_android.view.friendList.FriendActivity
 import com.pingpong_android.view.teamList.TeamListActivity
 import com.pingpong_android.view.makeTeam.MakeTeamActivity
 import com.pingpong_android.view.setting.SettingActivity

@@ -1,4 +1,4 @@
-package com.pingpong_android.view.friends
+package com.pingpong_android.view.friendList
 
 import android.content.Intent
 import android.os.Bundle

@@ -43,8 +43,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permission["storageRead"] = Manifest.permission.READ_MEDIA_IMAGES
             permission["storageRead"] = Manifest.permission.POST_NOTIFICATIONS
-        }
-        else
+        } else
             permission["storageRead"] = Manifest.permission.READ_EXTERNAL_STORAGE
 
         // 현재 권한 상태 검사

@@ -83,6 +83,7 @@ interface RetrofitService {
     ) : Single<ResultDTO>
 
     //S3 사진 삭제
+    // 기본적으로 프로필 업데이트 시 사진 삭제됨
     @FormUrlEncoded
     @HTTP(method="DELETE", hasBody=true, path="/api/s3/file")
     fun deleteImage(
@@ -126,6 +127,20 @@ interface RetrofitService {
         @Body respondentId : Long
     ) : Single<ResultDTO>
 
+    // 팀 초대 수락
+    @POST("/api/teams/{id}/accept")
+    fun acceptTeamMember(
+        @Header("Authorization") accessToken : String,
+        @Path("id") id : Long
+    ) : Single<ResultDTO>
+
+    // 팀 초대 거절
+    @DELETE("/api/teams/{id}/refuse")
+    fun refuseTeamMember(
+        @Header("Authorization") accessToken : String,
+        @Path("id") id : Long
+    ) : Single<ResultDTO>
+
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
@@ -158,6 +173,20 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Body team : HashMap<String, Any>
     ) : Single<TeamResultDTO>
+
+    // 팀 삭제
+    @DELETE("/api/teams/{id}")
+    fun deleteTeam(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long
+    ) : Single<ResultDTO>
+
+    // 팀멤버 모두 조회
+    @GET("api/teams/{id}/members")
+    fun requestTeamAllMember(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId: Long
+    ) : Single<FriendListResultDTO>
 
     // 할 일 등록
     @POST("/api/teams/{id}/plans")
@@ -206,6 +235,29 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Path("teamId") teamId : Long,
         @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
+    // 멤버 방출하기
+    @PATCH("/api/teams/{teamId}/emit")
+    fun emitMember(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Field("emitterId") emitterId : Long
+    ) : Single<TeamResultDTO>
+
+    // 방장 위임하기
+    @PATCH("/api/teams/{teamId}/host")
+    fun changeTeamHost(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Field("delegatorId") delegatorId : Long
+    ) : Single<TeamResultDTO>
+
+    // 팀 나가기
+    @POST("/api/teams/{teamId}/resign")
+    fun resignTeamMember(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long
     ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////
