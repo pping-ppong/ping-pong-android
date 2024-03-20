@@ -16,6 +16,7 @@
             android:layout_centerVertical="true"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
+            android:clipToOutline="true"
             android:background="@drawable/back_gray_circle_with_gray_outline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

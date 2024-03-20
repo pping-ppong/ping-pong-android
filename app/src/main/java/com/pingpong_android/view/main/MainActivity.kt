@@ -20,6 +20,7 @@ import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.main.adapter.CalendarAdapter
 import com.pingpong_android.view.main.adapter.PlanTeamAdapter
+import com.pingpong_android.view.makeTeam.MakeTeamActivity
 import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.notice.NoticeActivity
 import com.pingpong_android.view.search.SearchActivity
@@ -146,11 +147,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     private fun initSubscribe() {
+        subscribeTeamListInfo()
         subscribeAchieve()
         subscribeNoticeState()
         subscribeUserInfo()
         subscribePlans()
         subscribeComplete()
+    }
+
+    // 그룹 있는지 여부 확인
+    private fun subscribeTeamListInfo() {
+        binding.viewModel!!.teamListData.observe(this, Observer {
+            if (it.isSuccess) {
+                // 유저의 팀 조회 성공
+                if (it.teamList.isNotEmpty()) {
+                    binding.noTeamLayout.visibility = View.GONE
+                    binding.todoRv.visibility = View.VISIBLE
+                    // 그룹이 있는 경우 요청
+                    binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+                } else {
+                    binding.noTeamLayout.visibility = View.VISIBLE
+                    binding.todoRv.visibility = View.GONE
+                }
+            } else {
+                // 유저의 팀 조회 실패
+                binding.noTeamLayout.visibility = View.VISIBLE
+                binding.todoRv.visibility = View.GONE
+            }
+        })
     }
 
     // 달성률 - request 결과
@@ -199,11 +223,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 if (it.type.equals("SUCCESS_EXISTS_UNREAD_NOTIFY"))
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_on))
                 else if (it.type.equals("SUCCESS_EXISTS_NOTIFY"))
-                    binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
-                else
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
+                else
+                    binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
             } else {
-                binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
+                binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
             }
         })
     }
@@ -267,6 +291,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun goToNotice() {
         val intent = Intent(this, NoticeActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToMakeTeam() {
+        val intent = Intent(this, MakeTeamActivity::class.java)
         startActivity(intent)
     }
 }

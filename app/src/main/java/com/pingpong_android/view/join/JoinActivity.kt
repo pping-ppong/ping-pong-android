@@ -81,11 +81,12 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
 
     private fun initView() {
         if (userDTO.profileImage.isEmpty()) {
-            Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
-            binding.defaultPhoto.visibility = View.INVISIBLE
-        } else {
             Glide.with(this).clear(binding.profileImg)
-            binding.profileImg.visibility = View.INVISIBLE
+            binding.profileImg.visibility = View.VISIBLE
+            binding.defaultPhoto.visibility = View.VISIBLE
+
+        } else {
+            Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
             binding.defaultPhoto.visibility = View.INVISIBLE
         }
     }
@@ -158,7 +159,12 @@ class JoinActivity : BaseActivity<ActivityJoinBinding>(R.layout.activity_join, T
         binding.viewModel!!.addImgS3Result.observe(this, Observer {
             if (it.isSuccess && it.imgList.isNotEmpty()) {
                 // 사진 등록 성공 시
-                binding.viewModel!!.requestImageUrl(it.imgList[0])
+//                binding.viewModel!!.requestImageUrl(it.imgList[0])
+                userDTO.profileImage = it.imgList[0]
+
+                binding.profileImg.visibility = View.VISIBLE
+                binding.defaultPhoto.visibility = View.GONE
+                Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
             } else {
                 // 사진 등록 실패 시
                 Toast.makeText(this, "사진을 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()

@@ -77,7 +77,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     private fun subscribeTeamListInfo() {
-        binding.viewModel!!.TeamList.observe(this, Observer {
+        binding.viewModel!!.teamListData.observe(this, Observer {
             if (it.isSuccess && it.teamList.isNotEmpty()) {
                 // 유저의 팀 조회 성공
                 binding.teamRv.visibility = View.VISIBLE

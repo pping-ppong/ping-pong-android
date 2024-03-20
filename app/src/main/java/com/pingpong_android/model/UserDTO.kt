@@ -49,5 +49,5 @@ data class UserDTO(
     var friendCnt : Int = 0
 
     @SerializedName("friendStatus")
-    var friendStatus : Boolean = false
+    var friendStatus : String = ""
 }

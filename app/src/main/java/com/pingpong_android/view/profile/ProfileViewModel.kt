@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.result.ResultDTO
+import com.pingpong_android.model.result.NoResultDTO
 import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -28,8 +29,8 @@ class ProfileViewModel : BaseViewModel() {
     }
 
     // 친구 신청
-    private val _applyResult = MutableLiveData<ResultDTO>()
-    val applyResult : LiveData<ResultDTO>
+    private val _applyResult = MutableLiveData<NoResultDTO>()
+    val applyResult : LiveData<NoResultDTO>
         get() = _applyResult
     fun requestFriendShip(token : String, applicantId : Long, respondentId : Long) {
         val body = HashMap<String, Long>()
@@ -48,13 +49,16 @@ class ProfileViewModel : BaseViewModel() {
     }
 
     // 친구 신청 알림
+    private val _alarmResult = MutableLiveData<ResultDTO>()
+    val alarmResult : LiveData<ResultDTO>
+        get() = _alarmResult
     fun requestAlarmFriend(token : String, memberId : Long) {
         addDisposable(
             instance!!.requestAlarmFriend(token, memberId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
+                    _alarmResult.postValue(it)
                 },{
                     Log.e("Error", "requestController")} )
         )

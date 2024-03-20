@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/back_white_16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="10dp"
+        android:background="@drawable/back_white_round_top_16dp">
+        <TextView
+            android:id="@+id/member_nm"
+            android:layout_width="match_parent"
+            style="@style/textBlackBold14"
+            tools:text="김수한무님"
+            android:textColor="@color/system_gray"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="16dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"/>
+
+        <TextView
+            android:id="@+id/first_btn"
+            android:layout_width="match_parent"
+            style="@style/textBlackBold14"
+            tools:text="방장 넘기기"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="16dp"/>
+
+        <TextView
+            android:id="@+id/second_btn"
+            android:layout_width="match_parent"
+            style="@style/textBlackBold14"
+            tools:text="방출 시키기"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="16dp"/>
+    </LinearLayout>
+</LinearLayout>

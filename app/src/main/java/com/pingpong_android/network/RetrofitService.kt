@@ -1,7 +1,5 @@
 package com.pingpong_android.network
 
-import com.pingpong_android.model.AchieveDTO
-import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
@@ -10,7 +8,6 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
-import java.time.LocalDate
 
 
 interface RetrofitService {
@@ -124,7 +121,7 @@ interface RetrofitService {
     @POST ("/api/notifications/friends")
     fun requestAlarmFriend(
         @Header("Authorization") accessToken : String,
-        @Body respondentId : Long
+        @Body memberId : Long
     ) : Single<ResultDTO>
 
     // 팀 초대 수락
@@ -318,7 +315,7 @@ interface RetrofitService {
     fun requestFriendShip(
         @Header("Authorization") accessToken : String,
         @Body params: HashMap<String, Long>
-    ) : Single<ResultDTO>
+    ) : Single<NoResultDTO>
 
     // 친구 신청 끊기
     @FormUrlEncoded

@@ -91,9 +91,15 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
             if (it.isSuccess && it.friendList.isNotEmpty()) {
                 setViewType(beforeSearch = false, hasResult = true)
                 searchAdapter.addList(it.friendList)
+
+                binding.friendRv.visibility = View.VISIBLE
+                binding.noUserList.visibility = View.GONE
             } else {
                 setViewType(beforeSearch = false, hasResult = true)
                 searchAdapter.addList(emptyList())
+
+                binding.friendRv.visibility = View.GONE
+                binding.noUserList.visibility = View.VISIBLE
             }
         })
     }

@@ -46,6 +46,22 @@ class MainViewModel : BaseViewModel(){
         )
     }
 
+    // 그룹 조회
+    private val _teamListData = MutableLiveData<TeamListResultDTO>()
+    val teamListData : LiveData<TeamListResultDTO>
+        get() = _teamListData
+    fun requestUserTeamList(token : String) {
+        addDisposable(
+            instance!!.requestUserTeams(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _teamListData.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+
     // 캘린더 성취율 조회
     private val _achieveResult = MutableLiveData<AchieveResultDTO>()
     val achieveResult : LiveData<AchieveResultDTO>
@@ -78,7 +94,7 @@ class MainViewModel : BaseViewModel(){
         )
     }
 
-    // 할 일 완료 / 미완료 요청
+    // 할 일 완료 / 미완료 / 삭제 요청
     private val _planRequestResult = MutableLiveData<ResultDTO>()
     val planRequestResult : LiveData<ResultDTO>
         get() = _planRequestResult

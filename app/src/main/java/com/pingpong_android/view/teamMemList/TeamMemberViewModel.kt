@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.result.FriendListResultDTO
+import com.pingpong_android.model.result.NoResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -64,8 +65,8 @@ class TeamMemberViewModel : BaseViewModel() {
     }
 
     // 친구 신청
-    private val _applyResult = MutableLiveData<ResultDTO>()
-    val applyResult : LiveData<ResultDTO>
+    private val _applyResult = MutableLiveData<NoResultDTO>()
+    val applyResult : LiveData<NoResultDTO>
         get() = _applyResult
     fun requestFriendShip(token : String, applicantId : Long, respondentId : Long) {
         val body = HashMap<String, Long>()

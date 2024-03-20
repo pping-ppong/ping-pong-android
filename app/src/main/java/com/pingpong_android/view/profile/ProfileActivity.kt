@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
+import com.pingpong_android.base.Status
 import com.pingpong_android.databinding.ActivityOthersProfileBinding
 import com.pingpong_android.model.UserDTO
 
@@ -35,6 +36,7 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
         subscribeOthersProfile()
         subscribeApplyFriendShip()
         subscribeDeleteFriendShip()
+        subscribeAlarmSend()
     }
 
     private fun subscribeOthersProfile() {
@@ -49,11 +51,22 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
 
     private fun subscribeApplyFriendShip() {
         binding.viewModel!!.applyResult.observe(this, Observer {
-            if (it.isSuccess && it.code == 200) {
+            if (it.isSuccess) {
                 binding.viewModel!!.requestAlarmFriend(prefs.getBearerToken(), memberId)
-                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ProfileActivity, it.message, Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ProfileActivity, it.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun subscribeAlarmSend() {
+        binding.viewModel!!.alarmResult.observe(this, Observer {
+            if (it.isSuccess) {
+//                Toast.makeText(this@ProfileActivity, it.message, Toast.LENGTH_LONG).show()
+                binding.viewModel!!.requestOthersProfile(prefs.getBearerToken(), memberId)
+            } else {
+//                Toast.makeText(this@ProfileActivity, it.message, Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -79,17 +92,25 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
             Glide.with(binding.image).clear(binding.image)
         }
 
-        if (user.friendStatus) {
-            binding.btnFriend.text = getString(R.string.friend)
-            binding.btnFriend.setTextColor(getColor(R.color.black))
-            binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
-            binding.btnFriend.setOnClickListener { deleteFriendShip() }
-
-        } else {
-            binding.btnFriend.text = getString(R.string.add_friend)
-            binding.btnFriend.setTextColor(getColor(R.color.white))
-            binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
-            binding.btnFriend.setOnClickListener{ requestFriendShip() }
+        when (user.friendStatus) {
+            Status.ACTIVE -> {
+                binding.btnFriend.text = getString(R.string.friend)
+                binding.btnFriend.setTextColor(getColor(R.color.black))
+                binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+                binding.btnFriend.setOnClickListener { deleteFriendShip() }
+            }
+            Status.WAIT -> {
+                binding.btnFriend.text = getString(R.string.wait)
+                binding.btnFriend.setTextColor(getColor(R.color.black))
+                binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+                binding.btnFriend.setOnClickListener { null }
+            }
+            else -> {
+                binding.btnFriend.text = getString(R.string.add_friend)
+                binding.btnFriend.setTextColor(getColor(R.color.white))
+                binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
+                binding.btnFriend.setOnClickListener{ requestFriendShip() }
+            }
         }
     }
 

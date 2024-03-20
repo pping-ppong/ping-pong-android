@@ -2,6 +2,7 @@ package com.pingpong_android.view.teamCalendar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_TEAM_DTO
 import com.pingpong_android.databinding.ActivityTeamCalendarBinding
 import com.pingpong_android.layout.DateMemberSetDialog
@@ -21,8 +23,10 @@ import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.view.adapter.MemberHorizontalAdapter
+import com.pingpong_android.view.join.JoinActivity
 import com.pingpong_android.view.teamCalendar.adapter.TeamCalendarAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamTodoAdapter
+import com.pingpong_android.view.teamMemList.TeamMemberActivity
 import java.lang.NullPointerException
 import java.time.LocalDate
 import java.time.ZoneId
@@ -332,5 +336,11 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
         })
         modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+    }
+
+    fun goToTeamMember() {
+        val intent = Intent(this, TeamMemberActivity::class.java)
+        intent.putExtra(Constants.INTENT_EXTRA_TEAM_DTO, teamDTO)
+        startActivity(intent)
     }
 }

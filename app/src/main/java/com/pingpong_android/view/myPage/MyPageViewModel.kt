@@ -31,7 +31,7 @@ class MyPageViewModel : BaseViewModel(){
 
     // 그룹 조회
     private val _teamListData = MutableLiveData<TeamListResultDTO>()
-    val TeamList : LiveData<TeamListResultDTO>
+    val teamListData : LiveData<TeamListResultDTO>
         get() = _teamListData
     fun requestUserTeamList(token : String) {
         addDisposable(

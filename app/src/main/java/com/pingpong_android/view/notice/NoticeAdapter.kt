@@ -64,7 +64,7 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
                             .into(binding.image)
                     }
 
-                    binding.btnConfirm.setOnClickListener { activity.acceptFriendShip(49) }
+                    binding.btnConfirm.setOnClickListener { activity.acceptFriendShip(notice.memberId) }
                     binding.btnReject.setOnClickListener { activity.refuseFriendShip(notice.memberId) }
                 } else {
                     // 친구 관련 알림

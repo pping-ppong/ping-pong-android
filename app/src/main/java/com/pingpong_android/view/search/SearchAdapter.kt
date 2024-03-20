@@ -23,7 +23,7 @@ class SearchAdapter (private var friendList : List<MemberDTO>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(friendList.get(position), position)
+        holder.bind(friendList[position], position)
 
         if (searchActivity != null) {
             holder.itemView.setOnClickListener { v -> searchActivity.addSearchLog(friendList.get(position).memberId) }
@@ -43,6 +43,10 @@ class SearchAdapter (private var friendList : List<MemberDTO>) : RecyclerView.Ad
         fun bind(user : MemberDTO, position : Int) {
             binding.nickNmEt.text = user.nickName
 
+            profileImg(user)
+        }
+
+        fun profileImg(user : MemberDTO) {
             if (user.profileImage.isNullOrEmpty()) {
                 binding.defaultImage.visibility = View.VISIBLE
             } else {

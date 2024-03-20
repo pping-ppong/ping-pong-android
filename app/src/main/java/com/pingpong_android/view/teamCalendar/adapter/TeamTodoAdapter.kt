@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
+import com.pingpong_android.base.Status
 import com.pingpong_android.databinding.ItemTodoListBinding
 import com.pingpong_android.model.PlanDTO
 import com.pingpong_android.view.teamCalendar.TeamCalendarActivity
@@ -45,7 +46,7 @@ class TeamTodoAdapter : RecyclerView.Adapter<TeamTodoAdapter.TeamTodoViewHolder>
             binding.title.text = planDTO.title
 
             // 할 일 상태 - 생성/삭제됨
-            if (planDTO.status == "ACTIVE") {
+            if (planDTO.status == Status.ACTIVE) {
                 binding.planLayout.visibility = View.VISIBLE
 
                 // 담당자
@@ -55,7 +56,7 @@ class TeamTodoAdapter : RecyclerView.Adapter<TeamTodoAdapter.TeamTodoViewHolder>
                     binding.btnEtc.visibility = View.VISIBLE
 
                     // 수행 상태 - 완료/미완
-                    if (planDTO.achievement == "COMPLETE") {
+                    if (planDTO.achievement == Status.COMPLETE) {
                         binding.btnStar.setImageResource(R.drawable.ic_star_on)
                         binding.btnStar.setOnClickListener {
                             activity.requestPlanComplete(false, planDTO.planId)

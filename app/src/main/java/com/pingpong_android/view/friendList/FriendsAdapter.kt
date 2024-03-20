@@ -43,14 +43,8 @@ class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Ad
 
     inner class FriendsViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user : MemberDTO, position : Int) {
-            // 주인장 아이콘
-            if (position == 0) {
-                binding.icHost.visibility = View.VISIBLE
-                binding.nickNmEt.text = user.nickName + " (나)"
-            } else {
-                binding.icHost.visibility = View.GONE
-                binding.nickNmEt.text = user.nickName
-            }
+            binding.icHost.visibility = View.GONE
+            binding.nickNmEt.text = user.nickName
 
             // 유저 사진
             if (user.profileImage.isNotEmpty()) {

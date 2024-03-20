@@ -70,7 +70,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
     private fun initView() {
         binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
 
-        if (!userDTO.profileImage.isEmpty()) {
+        if (userDTO.profileImage.isNotEmpty()) {
             binding.profileImg.visibility = View.VISIBLE
             binding.defaultPhoto.visibility = View.GONE
             Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
@@ -79,8 +79,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
             binding.defaultPhoto.visibility = View.VISIBLE
             Glide.with(this).clear(binding.profileImg)
         }
-
-
     }
 
     private fun initSubscribe() {
@@ -123,7 +121,13 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
         binding.viewModel!!.addImgS3Result.observe(this, Observer {
             if (it.isSuccess && it.imgList.isNotEmpty()) {
                 // 사진 등록 성공 시
-                binding.viewModel!!.requestImageUrl(it.imgList[0])
+//                binding.viewModel!!.requestImageUrl(it.imgList[0])
+
+                userDTO.profileImage = it.imgList[0]
+
+                 binding.profileImg.visibility = View.VISIBLE
+                binding.defaultPhoto.visibility = View.GONE
+                Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
             } else {
                 // 사진 등록 실패 시
                 Toast.makeText(this, "사진을 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()

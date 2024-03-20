@@ -72,6 +72,7 @@
                     android:text="@string/more"
                     android:drawableEnd="@drawable/ic_arrow_right"
                     android:drawableTint="@color/system_gray"
+                    android:onClickListener="@{v -> activity.goToTeamMember()}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 

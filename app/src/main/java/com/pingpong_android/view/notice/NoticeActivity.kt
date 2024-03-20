@@ -54,8 +54,10 @@ class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_not
 
     private fun subscribeResult() {
         binding.viewModel!!.result.observe(this, Observer {
-            if (it.isSuccess)
+            if (it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                binding.viewModel!!.requestAllNotice(prefs.getBearerToken())
+            }
         })
     }
 
