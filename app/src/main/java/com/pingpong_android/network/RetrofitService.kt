@@ -52,7 +52,7 @@ interface RetrofitService {
     fun requestEditProfile(
         @Header("Authorization") accessToken : String,
         @Body user: UserDTO
-        ) : Single<UserResultDTO>
+    ) : Single<UserResultDTO>
 
     // 로그아웃
     @POST("/api/oauth/logout")
@@ -149,6 +149,12 @@ interface RetrofitService {
         @Field("notificationId") notificationId : String
     ) : Single<ResultDTO>
 
+    // 할 일 넘기기 알림
+    @POST("/api/notifications/to-do")
+    fun requestPassPlanAlarm(
+        @Header("Authorization") accessToken : String,
+        @Body plan : HashMap<String, Long>
+    ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////
     /////////////////////////////////////////////////
@@ -210,7 +216,7 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Path("teamId") teamId : Long,
         @Path("planId") planId : Long
-    ) : Single<ResultDTO>
+    ) : Single<TodoResultDTO>
 
     // 그룹의 캘린더 조회 (팝콘 성취율만)
     @GET("/api/teams/{id}/calendars/achievement")
@@ -244,6 +250,14 @@ interface RetrofitService {
         @Path("teamId") teamId : Long,
         @Path("planId") planId : Long
     ) : Single<ResultDTO>
+
+    // 할 일 넘기기
+    @PATCH("/api/teams/{id}/plans/pass")
+    fun passPlan(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId : Long,
+        @Body plan : HashMap<String, Long>
+    ) : Single<TodoResultDTO>
 
     // 멤버 방출하기
     @PATCH("/api/teams/{teamId}/emit")

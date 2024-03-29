@@ -82,7 +82,7 @@ class TrashActivity : BaseActivity<ActivityTrashBinding>(R.layout.activity_trash
 
     private fun deleteAllDialog() {
         val ynDialog = YNDialog("휴지통을 완전히 비우시겠습니까?", listOf("취소", "비우기"))
-        ynDialog.setButtonClickListener(object : HostDialog.OnButtonClickListener{
+        ynDialog.setButtonClickListener(object : YNDialog.OnButtonClickListener{
             override fun onFirstClicked() {
                 // 취소
                 ynDialog.dismiss()

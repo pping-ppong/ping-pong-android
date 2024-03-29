@@ -15,12 +15,12 @@
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
-            style="@style/textBlackBold14"
+            style="@style/textBlack14"
             tools:text="이것은설명을추가하는공간이랍니다 이것은설명을추가하는공간이랍니다"
             android:textAlignment="center"
             android:lineSpacingExtra="3dp"
             android:paddingVertical="48dp"
-            android:paddingHorizontal="24dp"/>
+            android:paddingHorizontal="48dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

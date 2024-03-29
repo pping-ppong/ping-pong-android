@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.pingpong_android.databinding.LayoutYesNoDialogBinding
 
 class YNDialog(private var content : String, private var menus : List<String>) : DialogFragment() {
 
     private lateinit var binding : LayoutYesNoDialogBinding
-    private lateinit var buttonClickListener: HostDialog.OnButtonClickListener // 클릭 이벤트 실행
+    private lateinit var buttonClickListener: OnButtonClickListener // 클릭 이벤트 실행
 
     companion object {
         const val TAG = "YesNoDialog"
@@ -47,7 +48,17 @@ class YNDialog(private var content : String, private var menus : List<String>) :
         binding.secondBtn.text = menus[1]
     }
 
-    fun setButtonClickListener(buttonClickListener: HostDialog.OnButtonClickListener) {
+    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
         this.buttonClickListener = buttonClickListener
+    }
+
+    override fun onStart() {
+        super.onStart();
+        val lp : WindowManager.LayoutParams  =  WindowManager.LayoutParams()
+        lp.copyFrom(dialog!!.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        val window: Window = dialog!!.window!!
+        window.attributes =lp
     }
 }

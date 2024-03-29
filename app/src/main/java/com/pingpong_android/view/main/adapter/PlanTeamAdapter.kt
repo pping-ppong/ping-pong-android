@@ -52,7 +52,7 @@ class PlanTeamAdapter(private var todoList : List<TeamDTO>) : RecyclerView.Adapt
 
             // plan-list
             val planListManager = LinearLayoutManager(activity)
-            val planListAdapter = PlansAdapter(activity, teamDTO.teamId, teamDTO.planList)
+            val planListAdapter = PlansAdapter(activity, teamDTO, teamDTO.planList)
 
             binding.planRv.apply {
                 layoutManager = planListManager

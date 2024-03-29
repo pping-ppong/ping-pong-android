@@ -8,9 +8,10 @@ import com.pingpong_android.R
 import com.pingpong_android.base.Status
 import com.pingpong_android.databinding.ItemTodoListBinding
 import com.pingpong_android.model.PlanDTO
+import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.view.main.MainActivity
 
-class PlansAdapter(val activity : MainActivity, val teamId: Long, val planList: List<PlanDTO>) : RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
+class PlansAdapter(val activity : MainActivity, val team: TeamDTO, val planList: List<PlanDTO>) : RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,17 +40,17 @@ class PlansAdapter(val activity : MainActivity, val teamId: Long, val planList: 
                 if (planDTO.achievement == Status.COMPLETE) {
                     binding.btnStar.setImageResource(R.drawable.ic_star_on)
                     binding.btnStar.setOnClickListener {
-                        activity.requestPlanComplete(false, teamId, planDTO.planId)
+                        activity.requestPlanComplete(false, team.teamId, planDTO.planId)
                     }
                 } else {
                     binding.btnStar.setImageResource(R.drawable.ic_star_off)
                     binding.btnStar.setOnClickListener {
-                        activity.requestPlanComplete(true, teamId, planDTO.planId)
+                        activity.requestPlanComplete(true, team.teamId, planDTO.planId)
                     }
                 }
 
                 // bottomSheet
-                binding.btnEtc.setOnClickListener { activity.showBottomSheet(teamId, planDTO.planId) }
+                binding.btnEtc.setOnClickListener { activity.showBottomSheet(team, planDTO.planId) }
             } else {
                 binding.planLayout.visibility = View.GONE
             }

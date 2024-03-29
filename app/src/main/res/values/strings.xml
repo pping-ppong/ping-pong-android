@@ -57,6 +57,8 @@
     <string name="trash">휴지통</string>
     <string name="no_trash">버린 할 일이 아직 없네요.</string>
 
+    <string name="pass">넘기기</string>
+
     <!-- ///////////////////////////////// -->
     <!-- 마이페이지 & 설정 -->
     <string name="edit_profile">프로필 편집</string>

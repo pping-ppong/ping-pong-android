@@ -18,6 +18,7 @@ import com.pingpong_android.base.Constants
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_TEAM_DTO
 import com.pingpong_android.databinding.ActivityTeamCalendarBinding
 import com.pingpong_android.layout.DateMemberSetDialog
+import com.pingpong_android.layout.MemberDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
@@ -61,6 +62,10 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         initView()
         initSubscribe()
         initAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initRequest()
     }
 
@@ -127,6 +132,8 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         subscribePlans()
         subscribeComplete()
         subscribeAddTodo()
+        subscribeDelete()
+        subscribePass()
     }
 
     // 달성률 - request 결과
@@ -173,6 +180,24 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
                     startDate = date_for_cal,
                     endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
                 binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
+        })
+    }
+
+    private fun subscribeDelete() {
+        binding.viewModel!!.deleteResult.observe(this, androidx.lifecycle.Observer {
+            binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
+                startDate = date_for_cal,
+                endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
+            binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
+        })
+    }
+
+    private fun subscribePass() {
+        binding.viewModel!!.passResult.observe(this, androidx.lifecycle.Observer {
+            binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
+                startDate = date_for_cal,
+                endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
+            binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
         })
     }
 
@@ -326,10 +351,13 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
         modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
             override fun onFirstClickListener() {
-                Toast.makeText(applicationContext, "아직 준비중이에요 !", Toast.LENGTH_SHORT).show()
+                // 넘기기
+                showMemberDialog(planId)
+                modalBottomSheet.dismiss()
             }
 
             override fun onSecondClickListener() {
+                // 버리기
                 binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamDTO.teamId, planId)
                 modalBottomSheet.dismiss()
             }
@@ -344,7 +372,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
             override fun onFirstClickListener() {
                 Toast.makeText(applicationContext, "그룹 관리", Toast.LENGTH_SHORT).show()
-//                modalBottomSheet.dismiss()
+                modalBottomSheet.dismiss()
             }
 
             override fun onSecondClickListener() {
@@ -353,6 +381,24 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             }
         })
         modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+    }
+
+    fun showMemberDialog(planId: Long) {
+        val memberDialog = MemberDialog(teamDTO.memberList)
+        memberDialog.setButtonClickListener(object : MemberDialog.OnButtonClickListener{
+            override fun onCancelClicked() {
+                memberDialog.dismiss()
+            }
+
+            override fun onConfirmClicked() {
+                var memberId = memberDialog.getSelectMember()
+                binding.viewModel!!.requestPassPlan(prefs.getBearerToken(), teamDTO.teamId, planId,memberId)
+                binding.viewModel!!.requestPassAlarm(prefs.getBearerToken(), planId, memberId)
+                memberDialog.dismiss()
+            }
+
+        })
+        memberDialog.show(supportFragmentManager, MemberDialog.TAG)
     }
 
     fun goToTeamMember() {

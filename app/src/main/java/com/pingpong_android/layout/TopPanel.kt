@@ -27,7 +27,7 @@ open class TopPanel(context: Context, attrs : AttributeSet) : ConstraintLayout(c
                 try {
                     val typeArray = context.obtainStyledAttributes(attrs, R.styleable.TopPanel)
                     setTitle(getString(R.styleable.TopPanel_topPanelTitle))
-                    setLeftBtn(getBoolean(R.styleable.TopPanel_topPanelBack, true), getBoolean(R.styleable.TopPanel_topPanelClose, false))
+                    setLeftBtn(getBoolean(R.styleable.TopPanel_topPanelBack, false), getBoolean(R.styleable.TopPanel_topPanelClose, false))
                     setRightBtn(typeArray.getDrawable(R.styleable.TopPanel_topPanelRightBtnImage))
                 } finally {
                     recycle()

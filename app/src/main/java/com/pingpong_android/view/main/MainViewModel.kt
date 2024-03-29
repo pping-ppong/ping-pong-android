@@ -8,6 +8,7 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.AchieveResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamListResultDTO
+import com.pingpong_android.model.result.TodoResultDTO
 import com.pingpong_android.model.result.UserResultDTO
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -94,7 +95,7 @@ class MainViewModel : BaseViewModel(){
         )
     }
 
-    // 할 일 완료 / 미완료 / 삭제 요청
+    // 할 일 완료 / 미완료 요청
     private val _planRequestResult = MutableLiveData<ResultDTO>()
     val planRequestResult : LiveData<ResultDTO>
         get() = _planRequestResult
@@ -121,13 +122,53 @@ class MainViewModel : BaseViewModel(){
         )
     }
 
+    // 할 일 삭제 요청
+    private val _deleteResult = MutableLiveData<TodoResultDTO>()
+    val deleteResult : LiveData<TodoResultDTO>
+        get() = _deleteResult
     fun requestPlanDelete(token : String, teamId : Long, planId : Long) {
         addDisposable(
             instance!!.deletePlanToTrash(token, teamId, planId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _planRequestResult.postValue(it)
+                    _deleteResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+
+    // 할 일 넘기기
+    private val _passResult = MutableLiveData<TodoResultDTO>()
+    val passResult : LiveData<TodoResultDTO>
+        get() = _passResult
+    fun requestPassPlan(token : String, teamId : Long, planId : Long, mandatorId : Long) {
+        val plan = HashMap<String, Long>()
+        plan["planId"] = planId
+        plan["mandatorId"] = mandatorId
+
+        addDisposable(
+            instance!!.passPlan(token, teamId, plan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _passResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+    // 넘기기 알림 보내기
+    fun requestPassAlarm(token : String, planId : Long, memberId : Long) {
+        val plan = HashMap<String, Long>()
+        plan["planId"] = planId
+        plan["memberId"] = memberId
+
+        addDisposable(
+            instance!!.requestPassPlanAlarm(token, plan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
                 },{
                     Log.e("Error", "requestJoin")} )
         )

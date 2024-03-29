@@ -21,7 +21,7 @@
             android:id="@+id/topPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:topPanelClose="true"
+            app:topPanelBack="true"
             app:topPanelTitle="그룹명"
             android:paddingHorizontal="32dp"
             app:topPanelRightBtnImage="@drawable/ic_etc_small"

@@ -51,12 +51,7 @@ class TeamListActivity : BaseActivity<ActivityTeamListBinding>(R.layout.activity
             if (it.isSuccess && it.teamList.isNotEmpty()) {
                 // 유저의 팀 조회 성공
                 binding.teamRv.visibility = View.VISIBLE
-
-                // 보이는 그룹 개수 최대 2개
-                if (it.teamList.size > 2)
-                    teamAdapter.addList(it.teamList.subList(0, 2))
-                else
-                    teamAdapter.addList(it.teamList)
+                teamAdapter.addList(it.teamList)
             } else {
                 // 유저의 팀 조회 실패
                 binding.teamRv.visibility = View.GONE

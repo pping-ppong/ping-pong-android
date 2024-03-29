@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMainBinding
+import com.pingpong_android.layout.MemberDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
 import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.model.PlanDTO
@@ -154,6 +155,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         subscribeUserInfo()
         subscribePlans()
         subscribeComplete()
+        subscribeDelete()
+        subscribePass()
     }
 
     // 그룹 있는지 여부 확인
@@ -216,6 +219,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         })
     }
 
+    private fun subscribeDelete() {
+        binding.viewModel!!.deleteResult.observe(this, Observer {
+            if (it.isSuccess) {
+                requestCalAchieveNow()
+                binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+            }
+        })
+    }
+
+    private fun subscribePass() {
+        binding.viewModel!!.passResult.observe(this, Observer {
+            if (it.isSuccess) {
+                requestCalAchieveNow()
+                binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+            }
+        })
+    }
+
     // 알림 - request 결과
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeNoticeState() {
@@ -263,21 +284,45 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    fun showBottomSheet(teamId: Long, planId: Long) {
+    fun showBottomSheet(team: TeamDTO, planId: Long) {
         val modalBottomSheet = ModalBottomSheetDialog(menuList)
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
         modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
             override fun onFirstClickListener() {
-                Toast.makeText(applicationContext, "아직 준비중이에요 !", Toast.LENGTH_SHORT).show()
+                // 넘기기
+                showMemberDialog(team, planId)
+                modalBottomSheet.dismiss()
             }
 
             override fun onSecondClickListener() {
-                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamId, planId)
+                // 버리기
+                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), team.teamId, planId)
                 modalBottomSheet.dismiss()
             }
 
         })
         modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+    }
+
+    fun showMemberDialog(team: TeamDTO, planId: Long) {
+        var tmp = binding.viewModel!!.teamListData.value!!.teamList.toMutableList()
+        var memberList = tmp.get(tmp.indexOf(team)).memberList
+
+        val memberDialog = MemberDialog(memberList)
+        memberDialog.setButtonClickListener(object : MemberDialog.OnButtonClickListener{
+            override fun onCancelClicked() {
+                memberDialog.dismiss()
+            }
+
+            override fun onConfirmClicked() {
+                var memberId = memberDialog.getSelectMember()
+                binding.viewModel!!.requestPassPlan(prefs.getBearerToken(), team.teamId, planId, memberId)
+                binding.viewModel!!.requestPassAlarm(prefs.getBearerToken(), planId, memberId)
+                memberDialog.dismiss()
+            }
+
+        })
+        memberDialog.show(supportFragmentManager, MemberDialog.TAG)
     }
 
     private fun goToMyPage() {

@@ -96,19 +96,54 @@ class TeamCalendarViewModel : BaseViewModel() {
     }
 
     // 할 일 버리기
+    private val _deleteResult = MutableLiveData<TodoResultDTO>()
+    val deleteResult : LiveData<TodoResultDTO>
+        get() = _deleteResult
     fun requestPlanDelete(token : String, teamId : Long, planId : Long) {
         addDisposable(
             instance!!.deletePlanToTrash(token, teamId, planId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _planRequestResult.postValue(it)
+                    _deleteResult.postValue(it)
                 },{
                     Log.e("Error", "requestJoin")} )
         )
     }
 
-    // todo : 할 일 넘기기
+    // 할 일 넘기기
+    private val _passResult = MutableLiveData<TodoResultDTO>()
+    val passResult : LiveData<TodoResultDTO>
+        get() = _passResult
+    fun requestPassPlan(token : String, teamId : Long, planId : Long, mandatorId : Long) {
+        val plan = HashMap<String, Long>()
+        plan["planId"] = planId
+        plan["mandatorId"] = mandatorId
 
+        addDisposable(
+            instance!!.passPlan(token, teamId, plan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _passResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
+    // 넘기기 알림 보내기
+    fun requestPassAlarm(token : String, planId : Long, memberId : Long) {
+        val plan = HashMap<String, Long>()
+        plan["planId"] = planId
+        plan["memberId"] = memberId
 
+        addDisposable(
+            instance!!.requestPassPlanAlarm(token, plan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
 }

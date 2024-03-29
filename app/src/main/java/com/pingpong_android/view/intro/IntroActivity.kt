@@ -42,7 +42,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         // 저장공간 읽기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permission["storageRead"] = Manifest.permission.READ_MEDIA_IMAGES
-            permission["storageRead"] = Manifest.permission.POST_NOTIFICATIONS
+            permission["notice"] = Manifest.permission.POST_NOTIFICATIONS
         } else
             permission["storageRead"] = Manifest.permission.READ_EXTERNAL_STORAGE
 
