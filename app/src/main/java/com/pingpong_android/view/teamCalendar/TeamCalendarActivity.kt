@@ -27,6 +27,7 @@ import com.pingpong_android.view.join.JoinActivity
 import com.pingpong_android.view.teamCalendar.adapter.TeamCalendarAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamTodoAdapter
 import com.pingpong_android.view.teamMemList.TeamMemberActivity
+import com.pingpong_android.view.trash.TrashActivity
 import java.lang.NullPointerException
 import java.time.LocalDate
 import java.time.ZoneId
@@ -69,6 +70,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
         binding.topPanel.setTitle(teamDTO.teamName)
         binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
+        binding.topPanel.setRightClickListener(listener = { showTopMenuBottomSheet() })
 
         // 이벤트 처리
         binding.bottomSheetLayout.setOnTouchListener { _, _ -> true }   // 뒷 배경으로 클릭모션 넘어가지 않도록
@@ -111,7 +113,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         }
 
         // 멤버
-        val membersLayoutManager = LinearLayoutManager(this)
+        val membersLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList, false)
 
         binding.memberRv.apply {
@@ -167,12 +169,10 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     // 할 일 완료/미완료 - request 결과
     private fun subscribeComplete() {
         binding.viewModel!!.planRequestResult.observe(this, androidx.lifecycle.Observer {
-            if (it.isSuccess) {
                 binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
                     startDate = date_for_cal,
                     endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
                 binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
-            }
         })
     }
 
@@ -338,8 +338,31 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
     }
 
+    fun showTopMenuBottomSheet() {
+        val modalBottomSheet = ModalBottomSheetDialog(listOf("그룹 관리", "휴지통"))
+        modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+        modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
+            override fun onFirstClickListener() {
+                Toast.makeText(applicationContext, "그룹 관리", Toast.LENGTH_SHORT).show()
+//                modalBottomSheet.dismiss()
+            }
+
+            override fun onSecondClickListener() {
+                goToTrash()
+                modalBottomSheet.dismiss()
+            }
+        })
+        modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+    }
+
     fun goToTeamMember() {
         val intent = Intent(this, TeamMemberActivity::class.java)
+        intent.putExtra(Constants.INTENT_EXTRA_TEAM_DTO, teamDTO)
+        startActivity(intent)
+    }
+
+    fun goToTrash() {
+        val intent = Intent(this, TrashActivity::class.java)
         intent.putExtra(Constants.INTENT_EXTRA_TEAM_DTO, teamDTO)
         startActivity(intent)
     }

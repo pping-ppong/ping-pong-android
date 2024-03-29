@@ -42,16 +42,7 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
 
     inner class AddMemberViewHolder(val binding : ItemFriendWCheckBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memberDTO: MemberDTO, position: Int) {
-            // 주인장 아이콘
-            if (position == 0) {
-                binding.icHost.visibility = View.VISIBLE
-                binding.nickNmEt.text = memberDTO.nickName + " (나)"
-                binding.btnCheck.visibility = View.GONE
-            } else {
-                binding.icHost.visibility = View.GONE
-                binding.nickNmEt.text = memberDTO.nickName
-                binding.btnCheck.visibility = View.VISIBLE
-            }
+            binding.nickNmEt.text = memberDTO.nickName
 
             // 유저 사진
             if (memberDTO.profileImage.isNotEmpty()) {
@@ -66,15 +57,10 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
             }
 
             // 클릭 이벤트
-            if (position > 0) {
-                binding.btnCheck.setOnClickListener {
-                    if (!selectedList.contains(friendList[position]))
-                        selectedList.add(friendList[position])
-                }
-            } else {
-                binding.btnCheck.setOnClickListener(null)
+            binding.btnCheck.setOnClickListener {
+                if (!selectedList.contains(friendList[position]))
+                    selectedList.add(friendList[position])
             }
-
         }
     }
 }

@@ -47,6 +47,11 @@ class TeamMemberAdapter(private var memberList : List<MemberDTO>) : RecyclerView
         fun bind(user : MemberDTO, position : Int) {
             profileImg(user)
 
+            if (position == 0)
+                binding.icHost.visibility = View.VISIBLE
+            else
+                binding.icHost.visibility = View.GONE
+
             // me & others
             if (user.memberId == activity.myId) {  // me
                 binding.nickNmEt.text = user.nickName + " (나)"

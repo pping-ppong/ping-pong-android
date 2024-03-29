@@ -124,18 +124,29 @@ interface RetrofitService {
         @Body memberId : Long
     ) : Single<ResultDTO>
 
+    // 팀 초대 보내기
+    @POST ("/api/notifications/teams")
+    fun requestTeamInviteAlarm(
+        @Header("Authorization") accessToken : String,
+        @Body team : HashMap<String, Long>
+    ) : Single<ResultDTO>
+
     // 팀 초대 수락
+    @FormUrlEncoded
     @POST("/api/teams/{id}/accept")
     fun acceptTeamMember(
         @Header("Authorization") accessToken : String,
-        @Path("id") id : Long
+        @Path("id") teamId : Long,
+        @Field("notificationId") notificationId : String
     ) : Single<ResultDTO>
 
     // 팀 초대 거절
-    @DELETE("/api/teams/{id}/refuse")
+    @FormUrlEncoded
+    @HTTP(method="DELETE", hasBody=true, path="/api/teams/{id}/refuse")
     fun refuseTeamMember(
         @Header("Authorization") accessToken : String,
-        @Path("id") id : Long
+        @Path("id") teamId : Long,
+        @Field("notificationId") notificationId : String
     ) : Single<ResultDTO>
 
 
@@ -195,7 +206,7 @@ interface RetrofitService {
 
     // 할 일 삭제
     @DELETE("/api/teams/{teamId}/plans/{planId}")
-    fun deletePlan (
+    fun deletePlanToTrash(
         @Header("Authorization") accessToken : String,
         @Path("teamId") teamId : Long,
         @Path("planId") planId : Long
@@ -255,6 +266,36 @@ interface RetrofitService {
     fun resignTeamMember(
         @Header("Authorization") accessToken : String,
         @Path("teamId") teamId : Long
+    ) : Single<ResultDTO>
+
+    // 휴지통 전체 조회
+    @GET("/api/teams/{id}/trash")
+    fun requestTrashAll(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId : Long
+    ) : Single<TrashResultDTO>
+
+    // 할 일 복구하기 (전체 이용 가능)
+    @PATCH("/api/teams/{teamId}/trash/{planId}")
+    fun restorePlan(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
+    // 할 일 하나 삭제하기 (only 방장)
+    @DELETE("/api/teams/{teamId}/trash/{planId}")
+    fun deleteOnePlan(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Path("planId") planId : Long
+    ) : Single<ResultDTO>
+
+    // 할 일 전체 삭제하기 (only 방장)
+    @DELETE("/api/teams/{id}/all-trash")
+    fun deleteAllPlan(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId : Long
     ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////

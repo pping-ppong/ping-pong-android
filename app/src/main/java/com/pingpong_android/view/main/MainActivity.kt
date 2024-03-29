@@ -125,6 +125,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
         binding.viewModel!!.requestUserInfo(prefs.getBearerToken())
         binding.viewModel!!.requestUnReadNotice(prefs.getBearerToken())
+        binding.viewModel!!.requestUserTeamList(prefs.getBearerToken())
     }
 
     // 달성률 조회

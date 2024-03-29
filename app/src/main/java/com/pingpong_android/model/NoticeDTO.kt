@@ -7,6 +7,9 @@ data class NoticeDTO (
     @SerializedName("type") var type : String
 ) : Serializable {
 
+    @SerializedName("notificationId")
+    var notificationId : String = ""
+
     @SerializedName("message")
     var message : String = ""
 
@@ -15,6 +18,9 @@ data class NoticeDTO (
 
     @SerializedName("memberId")
     var memberId : Long = 0
+
+    @SerializedName("teamId")
+    var teamId : Long = 0
 
     @SerializedName("isClicked")
     var isClicked : Boolean = false

@@ -95,9 +95,10 @@ class TeamCalendarViewModel : BaseViewModel() {
         )
     }
 
+    // 할 일 버리기
     fun requestPlanDelete(token : String, teamId : Long, planId : Long) {
         addDisposable(
-            instance!!.deletePlan(token, teamId, planId)
+            instance!!.deletePlanToTrash(token, teamId, planId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -106,4 +107,8 @@ class TeamCalendarViewModel : BaseViewModel() {
                     Log.e("Error", "requestJoin")} )
         )
     }
+
+    // todo : 할 일 넘기기
+
+
 }

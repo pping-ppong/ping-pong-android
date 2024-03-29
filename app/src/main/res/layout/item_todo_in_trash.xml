@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/back_white_stroke_gray_16dp">
         <TextView
-            android:id="@+id/group_name"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="할일 내용"
@@ -30,7 +30,7 @@
             android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group_name">
+            app:layout_constraintTop_toBottomOf="@+id/title">
 
             <ImageView
                 android:id="@+id/calender"
@@ -44,7 +44,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="할일 내용"
+                tools:text="2020/20/00"
                 android:textSize="12dp"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp"
@@ -52,20 +52,32 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <ImageView
-                android:id="@+id/profile"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:background="@drawable/back_gray_circle_with_gray_outline"
-                android:padding="4dp"
+            <RelativeLayout
+                android:id="@+id/profile_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:src="@drawable/ic_profile_popcorn"
-                app:layout_constraintStart_toEndOf="@+id/date"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/date">
+                <ImageView
+                    android:id="@+id/profile_img"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    android:clipToOutline="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/back_gray_circle_with_gray_outline" />
+
+                <ImageView
+                    android:id="@+id/default_image"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="3dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_profile_popcorn" />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/nickNm"
                 android:layout_width="wrap_content"
@@ -74,7 +86,7 @@
                 android:textSize="12dp"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp"
-                app:layout_constraintStart_toEndOf="@+id/profile"
+                app:layout_constraintStart_toEndOf="@+id/profile_layout"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

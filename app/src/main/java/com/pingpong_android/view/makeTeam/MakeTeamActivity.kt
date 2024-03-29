@@ -17,6 +17,7 @@ import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_LIST
 import com.pingpong_android.databinding.ActivityMakeTeamBinding
 import com.pingpong_android.model.MemberDTO
+import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.view.addMember.AddMemberActivity
 
 class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity_make_team, TransitionMode.RIGHT) {
@@ -98,15 +99,25 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
 
     private fun subscribeTeamData() {
         binding.viewModel!!.teamData.observe(this, Observer {
-            if (it.isSuccess)
+            if (it.isSuccess) {
+                requestInviteAlarm(it.team)
                 finish()
-            else
+            } else
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         })
     }
 
+    private fun requestInviteAlarm(team : TeamDTO) {
+        val tmp = team.memberIdList.toMutableList()
+        tmp.remove(prefs.getId().toLong())
+        for (id in tmp) {
+            binding.viewModel!!.requestTeamInviteAlarm(prefs.getBearerToken(), team.teamId, id)
+        }
+    }
+
     fun makeGroup() {
-        binding.viewModel!!.requestMakeGroup(prefs.getBearerToken(), binding.groupNameEt.text.toString(), memberAdapter.getMemberId())
+        binding.viewModel!!.requestMakeGroup(prefs.getBearerToken(), binding.groupNameEt.text.toString(), memberAdapter.
+        getMemberId())
     }
 
     fun goToFriendList() {

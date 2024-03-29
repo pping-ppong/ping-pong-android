@@ -111,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingBottom="16dp"
-            android:visibility="gone"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -121,6 +121,7 @@
                 android:layout_height="wrap_content">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todo_rv"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/layout_todo"

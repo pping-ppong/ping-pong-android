@@ -54,11 +54,14 @@
     <string name="invite_refuse">초대 거절</string>
     <string name="invite_complete">신청 완료</string>
 
+    <string name="trash">휴지통</string>
+    <string name="no_trash">버린 할 일이 아직 없네요.</string>
+
     <!-- ///////////////////////////////// -->
     <!-- 마이페이지 & 설정 -->
     <string name="edit_profile">프로필 편집</string>
     <string name="friend">친구</string>
-    <string name="trash">휴지통</string>
+
     <string name="setting">설정</string>
     <string name="photo">사진</string>
 

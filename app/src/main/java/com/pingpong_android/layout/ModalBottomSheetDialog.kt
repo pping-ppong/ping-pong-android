@@ -35,7 +35,10 @@ class ModalBottomSheetDialog(private var menu : List<String>) : BottomSheetDialo
         super.onViewCreated(view, savedInstanceState)
 
         binding.firstBtn.text = menu[0]
-        binding.secondBtn.text = menu[1]
+        if (menu[1] == "") // bottomSheet : 1개 버튼만 쓰는 경우
+            binding.secondBtn.visibility = View.GONE
+        else
+            binding.secondBtn.text = menu[1]
 
         binding.firstBtn.setOnClickListener {
             dialogInterface.onFirstClickListener()

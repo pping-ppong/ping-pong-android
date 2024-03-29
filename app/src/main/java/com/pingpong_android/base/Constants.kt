@@ -6,6 +6,7 @@ class Constants {
 
         const val FRIEND = "FRIEND"
         const val TODO = "TODO"
+        const val TEAM = "TEAM"
 
         const val INTENT_EXTRA_USER_DTO = "INTENT_EXTRA_USER_DTO"
         const val INTENT_EXTRA_TEAM_DTO = "INTENT_EXTRA_TEAM_DTO"

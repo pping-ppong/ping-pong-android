@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityNoticeBinding
+import com.pingpong_android.model.NoticeDTO
 
 class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_notice) {
 
@@ -57,6 +58,8 @@ class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_not
             if (it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 binding.viewModel!!.requestAllNotice(prefs.getBearerToken())
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -67,5 +70,13 @@ class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_not
 
     fun refuseFriendShip(respondentId : Long) {
         binding.viewModel!!.refuseFriendShip(prefs.getBearerToken(), respondentId)
+    }
+
+    fun acceptTeamInvite(notice : NoticeDTO) {
+        binding.viewModel!!.acceptTeamInvite(prefs.getBearerToken(), notice.teamId, notice.notificationId)
+    }
+
+    fun refuseTeamInvite(notice : NoticeDTO) {
+        binding.viewModel!!.refuseTeamInvite(prefs.getBearerToken(), notice.teamId, notice.notificationId)
     }
 }

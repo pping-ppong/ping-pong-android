@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.Constants.Companion.FRIEND
+import com.pingpong_android.base.Constants.Companion.TEAM
 import com.pingpong_android.base.Constants.Companion.TODO
 import com.pingpong_android.databinding.ItemNoticeBinding
 import com.pingpong_android.model.NoticeDTO
@@ -92,6 +93,47 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
 
                 // 메세지
                 binding.message.text = notice.message
+            } else if (notice.type == TEAM) {
+                if (!notice.isAccepted) {   // 수락 또는 거절 요청 전
+                    // 팀 관련 알림
+                    binding.btnConfirm.visibility = View.VISIBLE
+                    binding.btnReject.visibility = View.VISIBLE
+
+                    // 메세지
+                    binding.message.text = notice.message
+
+                    // 사진 설정
+                    if (notice.profileImage.isNullOrEmpty()) {
+                        binding.defaultImage.visibility = View.VISIBLE
+                        Glide.with(binding.image).clear(binding.image)
+                    } else {
+                        binding.defaultImage.visibility = View.GONE
+
+                        Glide.with(binding.image).load(notice.profileImage)
+                            .into(binding.image)
+                    }
+
+                    binding.btnConfirm.setOnClickListener { activity.acceptTeamInvite(notice) }
+                    binding.btnReject.setOnClickListener { activity.refuseTeamInvite(notice) }
+                } else {
+                    // 팀 관련 알림
+                    binding.btnConfirm.visibility = View.GONE
+                    binding.btnReject.visibility = View.GONE
+
+                    // 메세지
+                    binding.message.text = notice.message
+
+                    // 사진 설정
+                    if (notice.profileImage.isNullOrEmpty()) {
+                        binding.defaultImage.visibility = View.VISIBLE
+                        Glide.with(binding.image).clear(binding.image)
+                    } else {
+                        binding.defaultImage.visibility = View.GONE
+
+                        Glide.with(binding.image).load(notice.profileImage)
+                            .into(binding.image)
+                    }
+                }
             }
         }
     }
