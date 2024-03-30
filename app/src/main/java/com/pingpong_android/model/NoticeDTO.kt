@@ -27,4 +27,8 @@ data class NoticeDTO (
 
     @SerializedName("isAccepted")
     var isAccepted : Boolean = false
+
+    @SerializedName("createdAt")
+    var createdAt : String = ""
+
 }

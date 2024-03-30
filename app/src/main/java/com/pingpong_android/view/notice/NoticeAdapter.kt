@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.Constants.Companion.FRIEND
 import com.pingpong_android.base.Constants.Companion.TEAM
-import com.pingpong_android.base.Constants.Companion.TODO
+import com.pingpong_android.base.Constants.Companion.TO_DO
 import com.pingpong_android.databinding.ItemNoticeBinding
 import com.pingpong_android.model.NoticeDTO
 
@@ -86,7 +86,7 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
                             .into(binding.image)
                     }
                 }
-            } else if (notice.type == TODO) {
+            } else if (notice.type == TO_DO) {
                 // 할일 관련 알림
                 binding.btnConfirm.visibility = View.GONE
                 binding.btnReject.visibility = View.GONE
