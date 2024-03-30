@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <!-- 액션바 색상 -->
         <!-- 상태바 색상 -->
         <item name="colorPrimaryDark">@color/white</item>
@@ -14,6 +13,19 @@
         <!--Status Bar 아이콘의 색상 true:검은 아이콘, false:흰 아이콘-->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Splash 화면의 백그라운드 컬러 지정 -->
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/main_yellow</item>
+        <!-- Splash 화면의 중앙에 위치할 아이콘 Drawable 지정 -->
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@color/main_yellow</item>
+        <!-- Splash 화면 중앙의 아이콘 주변 Background Color 지정 -->
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="s">@color/main_yellow</item>
+        <!-- Splash 화면이 나타나는 시간 지정 -->
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">0</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
