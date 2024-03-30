@@ -23,6 +23,24 @@ android {
         buildConfigField "String", "KAKAO_APP_KEY", '"kakao3e5405729c12a33398cbc5a5e0c9daf8"'
         buildConfigField "String", "KAKAO_LOGIN_APP_KEY", '"3e5405729c12a33398cbc5a5e0c9daf8"'
         buildConfigField "String", "GOOGLE_REQUEST_ID_TOKEN", '"680648046678-tc0qg1j98s58uobt5viegaabomo03e47.apps.googleusercontent.com"'
+
+        // apk naming
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                def apk = output.outputFile
+                def packageName = "PingPong"
+                def versionName = defaultConfig.versionName
+                def newName
+                if (apk != null) {
+                    if (apk.name.startsWith('app-release')) {
+                        newName = apk.name.replace("app-release", packageName + "(" + versionName + ")-release")
+                    } else {
+                        newName = apk.name.replace("app-debug", packageName + "(" + versionName + ")-debug")
+                    }
+                    outputFileName = newName
+                }
+            }
+        }
     }
 
     buildTypes {
