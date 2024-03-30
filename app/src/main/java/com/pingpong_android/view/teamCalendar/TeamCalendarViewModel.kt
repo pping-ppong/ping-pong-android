@@ -146,4 +146,20 @@ class TeamCalendarViewModel : BaseViewModel() {
                     Log.e("Error", "requestJoin")} )
         )
     }
+
+    // 팀 나가기
+    private val _resignResult = MutableLiveData<ResultDTO>()
+    val resignResult : LiveData<ResultDTO>
+        get() = _resignResult
+    fun requestResignTeam(token : String, teamId : Long) {
+        addDisposable(
+            instance!!.resignTeamMember(token, teamId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _resignResult.postValue(it)
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
 }

@@ -62,7 +62,7 @@ class MemberDialog(val memberList : List<MemberDTO>) : DialogFragment() {
     }
 
     fun getSelectMember() : Long {
-        return memberAdapter.getSelectedMember().memberId
+        return memberAdapter.getSelectedMember()!!.memberId
     }
 
     fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {

@@ -121,8 +121,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
         binding.viewModel!!.addImgS3Result.observe(this, Observer {
             if (it.isSuccess && it.imgList.isNotEmpty()) {
                 // 사진 등록 성공 시
-//                binding.viewModel!!.requestImageUrl(it.imgList[0])
-
                 userDTO.profileImage = it.imgList[0]
 
                  binding.profileImg.visibility = View.VISIBLE

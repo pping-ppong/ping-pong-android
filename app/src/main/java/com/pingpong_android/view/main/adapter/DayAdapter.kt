@@ -15,7 +15,7 @@ import java.util.*
 
 class DayAdapter(val activity : MainActivity, val tempMonth:Int, val dayList: MutableList<Date>, val achieveList : MutableList<Double>): RecyclerView.Adapter<DayAdapter.DayView>() {
     val ROW = 6
-    var last_month_days : Int = 0;
+    var last_month_days : Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
         var binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)

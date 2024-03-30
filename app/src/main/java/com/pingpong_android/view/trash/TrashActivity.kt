@@ -81,7 +81,7 @@ class TrashActivity : BaseActivity<ActivityTrashBinding>(R.layout.activity_trash
     }
 
     private fun deleteAllDialog() {
-        val ynDialog = YNDialog("휴지통을 완전히 비우시겠습니까?", listOf("취소", "비우기"))
+        val ynDialog = YNDialog(getString(R.string.empty_trash), listOf(getString(R.string.cancel), getString(R.string.empty)))
         ynDialog.setButtonClickListener(object : YNDialog.OnButtonClickListener{
             override fun onFirstClicked() {
                 // 취소
@@ -99,7 +99,7 @@ class TrashActivity : BaseActivity<ActivityTrashBinding>(R.layout.activity_trash
 
     fun restoreTodo(trash : TrashDTO) {
         if (isHost) {
-            val modalBottomSheet = ModalBottomSheetDialog(listOf("복구하기", "삭제하기"))
+            val modalBottomSheet = ModalBottomSheetDialog(listOf(getString(R.string.restore), getString(R.string.delete)))
             modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
                 override fun onFirstClickListener() {
@@ -117,7 +117,7 @@ class TrashActivity : BaseActivity<ActivityTrashBinding>(R.layout.activity_trash
             })
             modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
         } else {
-            val modalBottomSheet = ModalBottomSheetDialog(listOf("복구하기", ""))
+            val modalBottomSheet = ModalBottomSheetDialog(listOf(getString(R.string.restore), ""))
             modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
                 override fun onFirstClickListener() {

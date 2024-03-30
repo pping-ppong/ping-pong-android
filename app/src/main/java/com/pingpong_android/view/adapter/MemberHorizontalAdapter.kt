@@ -1,5 +1,6 @@
 package com.pingpong_android.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,14 @@ import com.pingpong_android.R
 import com.pingpong_android.databinding.ItemImageWithTextBinding
 import com.pingpong_android.model.MemberDTO
 
-class MemberHorizontalAdapter(private val memberList: List<MemberDTO>, val forSelect : Boolean) : RecyclerView.Adapter<MemberHorizontalAdapter.MembersViewHolder>() {
+class MemberHorizontalAdapter(private var memberList: List<MemberDTO>, val forSelect : Boolean) : RecyclerView.Adapter<MemberHorizontalAdapter.MembersViewHolder>() {
 
-    private var selectedMemberDTO: MemberDTO = memberList.get(0)
+    private var selectedMemberDTO: MemberDTO? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
-        var binding = ItemImageWithTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemImageWithTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        if (forSelect)
+            selectedMemberDTO = memberList.get(0)
         return MembersViewHolder(binding)
     }
 
@@ -22,10 +25,17 @@ class MemberHorizontalAdapter(private val memberList: List<MemberDTO>, val forSe
         return memberList.size
     }
 
-    fun getSelectedMember() : MemberDTO {
+    @SuppressLint("NotifyDataSetChanged")
+    fun addList(memberList: List<MemberDTO>) {
+        this.memberList = memberList
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedMember() : MemberDTO? {
         return selectedMemberDTO
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MembersViewHolder, position: Int) {
         holder.bind(memberList.get(position), position)
 
@@ -51,7 +61,7 @@ class MemberHorizontalAdapter(private val memberList: List<MemberDTO>, val forSe
                 Glide.with(binding.image).clear(binding.image)
             }
 
-            if (forSelect && memberDTO.memberId == selectedMemberDTO.memberId) {
+            if (forSelect && memberDTO.memberId == selectedMemberDTO?.memberId) {
                 binding.selectBorder.visibility = View.VISIBLE
             } else {
                 binding.selectBorder.visibility = View.GONE

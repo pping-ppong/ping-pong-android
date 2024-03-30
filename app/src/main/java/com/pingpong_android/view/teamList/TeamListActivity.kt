@@ -27,8 +27,12 @@ class TeamListActivity : BaseActivity<ActivityTeamListBinding>(R.layout.activity
         initAdapter()
         subscribeTeamListInfo()
         setClickListener()
+    }
 
+    override fun onResume() {
+        super.onResume()
         binding.viewModel!!.requestUserTeamList(prefs.getBearerToken())
+
     }
 
     private fun setClickListener() {

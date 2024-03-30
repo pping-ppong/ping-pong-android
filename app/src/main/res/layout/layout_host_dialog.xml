@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingVertical="10dp"
-        android:background="@drawable/back_white_round_top_16dp">
+        android:background="@drawable/back_white_16dp">
         <TextView
             android:id="@+id/member_nm"
             android:layout_width="match_parent"

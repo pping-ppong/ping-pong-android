@@ -260,6 +260,7 @@ interface RetrofitService {
     ) : Single<TodoResultDTO>
 
     // 멤버 방출하기
+    @FormUrlEncoded
     @PATCH("/api/teams/{teamId}/emit")
     fun emitMember(
         @Header("Authorization") accessToken : String,
@@ -268,6 +269,7 @@ interface RetrofitService {
     ) : Single<TeamResultDTO>
 
     // 방장 위임하기
+    @FormUrlEncoded
     @PATCH("/api/teams/{teamId}/host")
     fun changeTeamHost(
         @Header("Authorization") accessToken : String,
@@ -308,6 +310,13 @@ interface RetrofitService {
     // 할 일 전체 삭제하기 (only 방장)
     @DELETE("/api/teams/{id}/all-trash")
     fun deleteAllPlan(
+        @Header("Authorization") accessToken : String,
+        @Path("id") teamId : Long
+    ) : Single<ResultDTO>
+
+    // 팀 삭제하기
+    @DELETE("/api/teams/{id}")
+    fun deleteTeamForever(
         @Header("Authorization") accessToken : String,
         @Path("id") teamId : Long
     ) : Single<ResultDTO>

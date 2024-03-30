@@ -43,7 +43,7 @@ class HostDialog(private var menus : List<String>, private val member : MemberDT
         binding.firstBtn.setOnClickListener { buttonClickListener.onFirstClicked() }
         binding.secondBtn.setOnClickListener { buttonClickListener.onSecondClicked() }
 
-        binding.memberNm.text = member.nickName + "님"
+        binding.memberNm.text = member.nickName
         binding.firstBtn.text = menus[0]
         binding.secondBtn.text = menus[1]
     }

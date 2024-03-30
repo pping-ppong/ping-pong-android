@@ -87,7 +87,7 @@ class DateMemberSetDialog(val memberList : List<MemberDTO>, val date : LocalDate
     }
 
     fun getSelectMember() : MemberDTO {
-        return memberAdapter.getSelectedMember()
+        return memberAdapter.getSelectedMember()!!
     }
 
     // 클릭 이벤트 설정

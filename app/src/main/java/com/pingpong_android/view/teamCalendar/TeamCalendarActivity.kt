@@ -3,12 +3,17 @@ package com.pingpong_android.view.teamCalendar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,8 +23,10 @@ import com.pingpong_android.base.Constants
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_TEAM_DTO
 import com.pingpong_android.databinding.ActivityTeamCalendarBinding
 import com.pingpong_android.layout.DateMemberSetDialog
+import com.pingpong_android.layout.HostDialog
 import com.pingpong_android.layout.MemberDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
+import com.pingpong_android.layout.YNDialog
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.TodoDTO
@@ -29,6 +36,13 @@ import com.pingpong_android.view.teamCalendar.adapter.TeamCalendarAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamTodoAdapter
 import com.pingpong_android.view.teamMemList.TeamMemberActivity
 import com.pingpong_android.view.trash.TrashActivity
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.lang.NullPointerException
 import java.time.LocalDate
 import java.time.ZoneId
@@ -42,6 +56,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
     private var monthListAdapter = TeamCalendarAdapter()
     private var todoListAdapter = TeamTodoAdapter()
+    private var memberHorizontalAdapter = MemberHorizontalAdapter(emptyList(), false)
 
     var myMemberId : Long = 0
     private var date_for_cal: LocalDate = LocalDate.now().withDayOfMonth(1)
@@ -51,6 +66,9 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     private var todoTxtCheck : Boolean = false
     private var todoMemberCheck : Boolean = false
     private var todoDateCheck : Boolean = false
+    private var isHost : Boolean = false
+
+    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +80,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         initView()
         initSubscribe()
         initAdapter()
+        onActivityResult()
     }
 
     override fun onResume() {
@@ -69,9 +88,22 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         initRequest()
     }
 
+    private fun onActivityResult() {
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                if (it.data != null) {
+                    val members = it.data!!.getSerializableExtra(Constants.INTENT_EXTRA_MEMBER_LIST) as List<MemberDTO>
+                    isHost = members[0].hostId == prefs.getId().toLong()
+                    memberHorizontalAdapter.addList(members)
+                }
+            }
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun initView() {
         teamDTO = intent.getSerializableExtra(INTENT_EXTRA_TEAM_DTO) as TeamDTO
+        isHost = teamDTO.hostId == prefs.getId().toLong()
 
         binding.topPanel.setTitle(teamDTO.teamName)
         binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
@@ -119,7 +151,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
 
         // 멤버
         val membersLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val memberHorizontalAdapter = MemberHorizontalAdapter(teamDTO.memberList, false)
+        memberHorizontalAdapter.addList(teamDTO.memberList)
 
         binding.memberRv.apply {
             layoutManager = membersLayoutManager
@@ -134,6 +166,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         subscribeAddTodo()
         subscribeDelete()
         subscribePass()
+        subscribeResign()
     }
 
     // 달성률 - request 결과
@@ -155,6 +188,9 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     private fun subscribePlans() {
         binding.viewModel!!.plansResult.observe(this, androidx.lifecycle.Observer {
             if (it.isSuccess && !it.team.planList.isNullOrEmpty()) {
+                teamDTO = it.team
+                isHost = teamDTO.hostId == prefs.getId().toLong()
+
                 todoListAdapter.addPlanList(it.team.planList)
             } else {
                 todoListAdapter.addPlanList(emptyList())
@@ -198,6 +234,16 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
                 startDate = date_for_cal,
                 endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
             binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
+        })
+    }
+
+    private fun subscribeResign() {
+        binding.viewModel!!.resignResult.observe(this, androidx.lifecycle.Observer {
+            if(it.isSuccess && it.type == "SUCCESS_RESIGN_TEAM") {
+                onBackPressed()
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -367,20 +413,41 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     }
 
     fun showTopMenuBottomSheet() {
-        val modalBottomSheet = ModalBottomSheetDialog(listOf("그룹 관리", "휴지통"))
-        modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
-        modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
-            override fun onFirstClickListener() {
-                Toast.makeText(applicationContext, "그룹 관리", Toast.LENGTH_SHORT).show()
-                modalBottomSheet.dismiss()
-            }
+        if (isHost) {
+            val modalBottomSheet = ModalBottomSheetDialog(listOf("그룹 관리", "휴지통"))
+            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+            modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
+                override fun onFirstClickListener() {
+                    // 그룹 관리
+                    Toast.makeText(applicationContext, "그룹 관리", Toast.LENGTH_SHORT).show()
+                    modalBottomSheet.dismiss()
+                }
 
-            override fun onSecondClickListener() {
-                goToTrash()
-                modalBottomSheet.dismiss()
-            }
-        })
-        modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+                override fun onSecondClickListener() {
+                    // 휴지통
+                    goToTrash()
+                    modalBottomSheet.dismiss()
+                }
+            })
+            modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+        } else {
+            val modalBottomSheet = ModalBottomSheetDialog(listOf("그룹 나가기", "휴지통"))
+            modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+            modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
+                override fun onFirstClickListener() {
+                    // 그룹 나가기
+                    showResignTeamDialog()
+                    modalBottomSheet.dismiss()
+                }
+
+                override fun onSecondClickListener() {
+                    // 휴지통
+                    goToTrash()
+                    modalBottomSheet.dismiss()
+                }
+            })
+            modalBottomSheet.show(supportFragmentManager, ModalBottomSheetDialog.TAG)
+        }
     }
 
     fun showMemberDialog(planId: Long) {
@@ -401,10 +468,27 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         memberDialog.show(supportFragmentManager, MemberDialog.TAG)
     }
 
+    fun showResignTeamDialog() {
+        val ynDialog = YNDialog(getString(R.string.resign_team), listOf(getString(R.string.cancel), getString(R.string.out)))
+        ynDialog.setButtonClickListener(object : YNDialog.OnButtonClickListener{
+            override fun onFirstClicked() {
+                // 취소
+                ynDialog.dismiss()
+            }
+
+            override fun onSecondClicked() {
+                // 비우기
+                binding.viewModel!!.requestResignTeam(prefs.getBearerToken(), teamDTO.teamId)
+                ynDialog.dismiss()
+            }
+        })
+        ynDialog.show(supportFragmentManager, HostDialog.TAG)
+    }
+
     fun goToTeamMember() {
         val intent = Intent(this, TeamMemberActivity::class.java)
         intent.putExtra(Constants.INTENT_EXTRA_TEAM_DTO, teamDTO)
-        startActivity(intent)
+        activityResultLauncher.launch(intent)
     }
 
     fun goToTrash() {

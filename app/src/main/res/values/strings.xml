@@ -55,9 +55,14 @@
     <string name="invite_complete">신청 완료</string>
 
     <string name="trash">휴지통</string>
+    <string name="empty">비우기</string>
     <string name="no_trash">버린 할 일이 아직 없네요.</string>
+    <string name="empty_trash">휴지통을 완전히 비우시겠습니까?</string>
 
     <string name="pass">넘기기</string>
+    <string name="change_member">%1$s 님께 방장을 넘기시겠습니까?</string>
+    <string name="emit_member">%1$s 님을 내보내시겠습니까?</string>
+    <string name="resign_team">그룹을 나가시겠습니까?</string>
 
     <!-- ///////////////////////////////// -->
     <!-- 마이페이지 & 설정 -->
@@ -96,8 +101,12 @@
     <!-- 레이아웃 -->
     <string name="confirm">확인</string>
     <string name="cancel">취소</string>
+    <string name="out">나가기</string>
     <string name="date">날짜</string>
     <string name="manager">담당자</string>
+    <string name="get_rid_of">내보내기</string>
+    <string name="restore">복구하기</string>
+    <string name="delete">삭제하기</string>
 
 
 </resources>

@@ -18,7 +18,6 @@ class TeamMemberAdapter(private var memberList : List<MemberDTO>) : RecyclerView
 
     fun setTeamMemberActivity(activity: TeamMemberActivity) {
         this.activity = activity
-        this.isHost = activity.isHost
     }
 
     override fun onCreateViewHolder(
@@ -39,6 +38,7 @@ class TeamMemberAdapter(private var memberList : List<MemberDTO>) : RecyclerView
     @SuppressLint("NotifyDataSetChanged")
     fun addList(members : List<MemberDTO>) {
         memberList = members
+        isHost = members[0].hostId == activity.myId
         notifyDataSetChanged()
     }
 
@@ -47,7 +47,7 @@ class TeamMemberAdapter(private var memberList : List<MemberDTO>) : RecyclerView
         fun bind(user : MemberDTO, position : Int) {
             profileImg(user)
 
-            if (position == 0)
+            if (user.memberId == user.hostId)
                 binding.icHost.visibility = View.VISIBLE
             else
                 binding.icHost.visibility = View.GONE
