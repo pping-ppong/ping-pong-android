@@ -96,6 +96,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         monthListAdapter.setMainActivity(this)
         monthListAdapter.setDateToCalendar(date_for_cal)
         monthListAdapter.addAchieveList(emptyList())
+        monthListAdapter.setPickedDate(date_for_day.dayOfMonth)
 
         binding.calender.apply {
             layoutManager = monthListManager
@@ -273,6 +274,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                           .atZone(ZoneId.systemDefault())
                           .toLocalDate()
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+        monthListAdapter.setPickedDate(date_for_day.dayOfMonth)
     }
 
     // 할 일 완료/미완료 처리

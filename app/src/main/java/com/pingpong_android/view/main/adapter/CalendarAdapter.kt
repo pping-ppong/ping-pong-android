@@ -20,6 +20,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
     private lateinit var activity : MainActivity
     private var achieveList : List<AchieveDTO> = emptyList()
     private var last_month_days = 0
+    private var picked_day = 1
 
     fun setMainActivity(activity: MainActivity) {
         this.activity = activity
@@ -27,6 +28,11 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
 
     fun addAchieveList(achieveList: List<AchieveDTO>) {
         this.achieveList = achieveList
+    }
+
+    fun setPickedDate(day : Int) {
+        picked_day = day
+        notifyDataSetChanged()
     }
 
     fun setDateToCalendar(date: LocalDate) {
@@ -50,26 +56,27 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
     inner class CalendarViewHolder(val binding: ItemCalendarMonthBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(position: Int) {
+            val tmp_calendar = Calendar.getInstance(calendar.timeZone)
             // 날짜 adapter
             last_month_days = 0
-            binding.monthInfo.text = "${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월"
-            val tempMonth = calendar.get(Calendar.MONTH)
+            binding.monthInfo.text = "${tmp_calendar.get(Calendar.YEAR)}년 ${tmp_calendar.get(Calendar.MONTH) + 1}월"
+            val tempMonth = tmp_calendar.get(Calendar.MONTH)
 
             var dayList: MutableList<Date> = MutableList(6 * 7) { Date() }
             for(i in 0..5) {
                 for(k in 0..6) {
-                    calendar.add(Calendar.DAY_OF_MONTH, (1-calendar.get(Calendar.DAY_OF_WEEK)) + k)
-                    dayList[i * 7 + k] = calendar.time
+                    tmp_calendar.add(Calendar.DAY_OF_MONTH, (1-tmp_calendar.get(Calendar.DAY_OF_WEEK)) + k)
+                    dayList[i * 7 + k] = tmp_calendar.time
 
-                    if (i == 0 && calendar.time.month != tempMonth) {
+                    if (i == 0 && tmp_calendar.time.month != tempMonth) {
                         last_month_days += 1
                     }
                 }
-                calendar.add(Calendar.WEEK_OF_MONTH, 1)
+                tmp_calendar.add(Calendar.WEEK_OF_MONTH, 1)
             }
 
             val dayListManager = GridLayoutManager(activity, 7)
-            val dayListAdapter = DayAdapter(activity, tempMonth, dayList, getAchieve(dayList))
+            val dayListAdapter = DayAdapter(activity, tempMonth, dayList, getAchieve(dayList), picked_day)
 
             binding.dateRv.apply {
                 layoutManager = dayListManager
@@ -79,9 +86,11 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
             // 버튼 이벤트
             binding.lastMonth.setOnClickListener {
                 activity.requestCalAchieveNow(-1)
+                picked_day = 1
             }
             binding.nextMonth.setOnClickListener {
                 activity.requestCalAchieveNow(1)
+                picked_day = 1
             }
         }
 

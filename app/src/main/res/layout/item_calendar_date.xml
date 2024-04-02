@@ -3,14 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <LinearLayout
         android:id="@+id/date_layout"
-        android:layout_width="38dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_gravity="center"
-        android:paddingVertical="4dp"
+        android:paddingBottom="4dp"
         android:orientation="vertical">
 
         <ImageView
@@ -18,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_pop1"
-            android:layout_marginBottom="2dp"
             android:visibility="gone" />
 
         <ImageView
@@ -26,13 +24,14 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_margin="4dp"
-            android:layout_marginBottom="2dp"
             android:visibility="visible"
             android:background="@drawable/circle_0" />
 
         <TextView
             android:id="@+id/day_tv"
             style="@style/textBlack12"
-            android:text="1" />
+            android:layout_marginTop="2dp"
+            android:text="1"
+            android:padding="2dp" />
     </LinearLayout>
 </layout>
