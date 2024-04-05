@@ -87,7 +87,7 @@ class DayAdapter(
 
                 // 선택된 날짜
                 if (day.date == picked_day)
-                    binding.dayTv.background = activity.getDrawable(R.drawable.back_light_yellow_16dp)
+                    binding.dayTv.background = activity.getDrawable(R.drawable.back_white_underline_yellow)
                 else
                     binding.dayTv.background = null
             }

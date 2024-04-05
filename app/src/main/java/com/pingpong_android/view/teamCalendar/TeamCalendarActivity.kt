@@ -132,6 +132,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         monthListAdapter.setDateToCalendar(date_for_cal)
         monthListAdapter.addAchieveList(emptyList())
         monthListAdapter.setActivity(this)
+        monthListAdapter.setPickedDate(date_for_day.dayOfMonth)
 
         binding.calender.apply {
             layoutManager = monthListManager
@@ -188,7 +189,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     private fun subscribePlans() {
         binding.viewModel!!.plansResult.observe(this, androidx.lifecycle.Observer {
             if (it.isSuccess && !it.team.planList.isNullOrEmpty()) {
-                teamDTO = it.team
+                teamDTO.hostId = it.team.hostId
                 isHost = teamDTO.hostId == prefs.getId().toLong()
 
                 todoListAdapter.addPlanList(it.team.planList)
@@ -274,6 +275,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
                         .toLocalDate()
         date_for_plan = date_for_day.toString()
         binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
+        monthListAdapter.setPickedDate(date_for_day.dayOfMonth)
     }
 
     // 할 일 완료/미완료 처리

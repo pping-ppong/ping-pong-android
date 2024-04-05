@@ -100,14 +100,15 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     private fun subscribeBadgeList() {
         binding.viewModel!!.badgeList.observe(this, Observer {
+            // todo : 뱃지
             if (it.isSuccess && !it.badgeList.isEmpty()) {
                 binding.noBadgeList.visibility = View.GONE
                 binding.badgeRv.visibility = View.VISIBLE
-                // todo
+
             } else {
                 binding.noBadgeList.visibility = View.VISIBLE
                 binding.badgeRv.visibility = View.GONE
-                // todo
+
             }
         })
     }

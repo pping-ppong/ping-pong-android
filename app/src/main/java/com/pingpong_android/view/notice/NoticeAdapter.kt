@@ -45,6 +45,8 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
 
     inner class NoticeViewHolder(val binding : ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(notice : NoticeDTO, position: Int) {
+            binding.date.text = notice.createdAt
+
             if (notice.type == FRIEND) {
                 if (!notice.isAccepted) {   // 수락 또는 거절 요청 전
                     // 친구 관련 알림

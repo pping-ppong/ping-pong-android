@@ -79,14 +79,6 @@ interface RetrofitService {
         @Query("name") name : String
     ) : Single<ResultDTO>
 
-    //S3 사진 삭제
-    // 기본적으로 프로필 업데이트 시 사진 삭제됨
-    @FormUrlEncoded
-    @HTTP(method="DELETE", hasBody=true, path="/api/s3/file")
-    fun deleteImage(
-        @Field("name") name : String
-    ): Response<ResponseBody>
-
     // 뱃지 조회하기
     @GET("/api/members/{id}/badges")
     fun requestAllBadges (
@@ -187,13 +179,6 @@ interface RetrofitService {
         @Header("Authorization") accessToken : String,
         @Body team : HashMap<String, Any>
     ) : Single<TeamResultDTO>
-
-    // 팀 삭제
-    @DELETE("/api/teams/{id}")
-    fun deleteTeam(
-        @Header("Authorization") accessToken : String,
-        @Path("id") teamId: Long
-    ) : Single<ResultDTO>
 
     // 팀멤버 모두 조회
     @GET("api/teams/{id}/members")

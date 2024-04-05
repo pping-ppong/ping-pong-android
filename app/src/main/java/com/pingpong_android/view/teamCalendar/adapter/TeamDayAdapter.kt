@@ -10,7 +10,14 @@ import com.pingpong_android.view.main.MainActivity
 import com.pingpong_android.view.teamCalendar.TeamCalendarActivity
 import java.util.*
 
-class TeamDayAdapter(val activity : TeamCalendarActivity, val tempMonth:Int, val dayList: MutableList<Date>, val achieveList : MutableList<Double>): RecyclerView.Adapter<TeamDayAdapter.DayView>() {
+class TeamDayAdapter(
+    val activity : TeamCalendarActivity,
+    val tempMonth:Int,
+    val dayList: MutableList<Date>,
+    val achieveList : MutableList<Double>,
+    val picked_day : Int
+): RecyclerView.Adapter<TeamDayAdapter.DayView>() {
+
     val ROW = 6
     var last_month_days : Int = 0;
 
@@ -74,6 +81,12 @@ class TeamDayAdapter(val activity : TeamCalendarActivity, val tempMonth:Int, val
                     activity.requestPlans(day)
                 }
                 binding.dayTv.text = day.date.toString()
+
+                // 선택된 날짜
+                if (day.date == picked_day)
+                    binding.dayTv.background = activity.getDrawable(R.drawable.back_white_underline_yellow)
+                else
+                    binding.dayTv.background = null
             }
         }
     }

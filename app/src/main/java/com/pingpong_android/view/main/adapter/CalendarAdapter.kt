@@ -13,10 +13,12 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
     private var calendar = Calendar.getInstance()
+    private lateinit var date: LocalDate
     private lateinit var activity : MainActivity
     private var achieveList : List<AchieveDTO> = emptyList()
     private var last_month_days = 0
@@ -36,8 +38,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
     }
 
     fun setDateToCalendar(date: LocalDate) {
-        calendar.clear()
-        calendar.set(date.year, date.monthValue-1, 1)
+        this.date = date
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -56,23 +57,23 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>
     inner class CalendarViewHolder(val binding: ItemCalendarMonthBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(position: Int) {
-            val tmp_calendar = Calendar.getInstance(calendar.timeZone)
+            calendar.set(date.year, date.monthValue-1, 1)
             // 날짜 adapter
             last_month_days = 0
-            binding.monthInfo.text = "${tmp_calendar.get(Calendar.YEAR)}년 ${tmp_calendar.get(Calendar.MONTH) + 1}월"
-            val tempMonth = tmp_calendar.get(Calendar.MONTH)
+            binding.monthInfo.text = "${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월"
+            val tempMonth = calendar.get(Calendar.MONTH)
 
             var dayList: MutableList<Date> = MutableList(6 * 7) { Date() }
             for(i in 0..5) {
                 for(k in 0..6) {
-                    tmp_calendar.add(Calendar.DAY_OF_MONTH, (1-tmp_calendar.get(Calendar.DAY_OF_WEEK)) + k)
-                    dayList[i * 7 + k] = tmp_calendar.time
+                    calendar.add(Calendar.DAY_OF_MONTH, (1-calendar.get(Calendar.DAY_OF_WEEK)) + k)
+                    dayList[i * 7 + k] = calendar.time
 
-                    if (i == 0 && tmp_calendar.time.month != tempMonth) {
+                    if (i == 0 && calendar.time.month != tempMonth) {
                         last_month_days += 1
                     }
                 }
-                tmp_calendar.add(Calendar.WEEK_OF_MONTH, 1)
+                calendar.add(Calendar.WEEK_OF_MONTH, 1)
             }
 
             val dayListManager = GridLayoutManager(activity, 7)

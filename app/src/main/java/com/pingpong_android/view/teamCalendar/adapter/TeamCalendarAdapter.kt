@@ -14,9 +14,11 @@ import java.util.*
 class TeamCalendarAdapter : RecyclerView.Adapter<TeamCalendarAdapter.CalendarViewHolder>() {
 
     private var calendar = Calendar.getInstance()
+    private lateinit var date: LocalDate
     private lateinit var activity : TeamCalendarActivity
     private var achieveList : List<AchieveDTO> = emptyList()
     private var last_month_days = 0
+    private var picked_day = 1
 
     fun setActivity(activity: TeamCalendarActivity) {
         this.activity = activity
@@ -26,9 +28,13 @@ class TeamCalendarAdapter : RecyclerView.Adapter<TeamCalendarAdapter.CalendarVie
         this.achieveList = achieveList
     }
 
+    fun setPickedDate(day : Int) {
+        picked_day = day
+        notifyDataSetChanged()
+    }
+
     fun setDateToCalendar(date: LocalDate) {
-        calendar.clear()
-        calendar.set(date.year, date.monthValue-1, 1)
+        this.date = date
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -47,6 +53,7 @@ class TeamCalendarAdapter : RecyclerView.Adapter<TeamCalendarAdapter.CalendarVie
     inner class CalendarViewHolder(val binding: ItemCalendarMonthBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(position: Int) {
+            calendar.set(date.year, date.monthValue-1, 1)
             // 날짜 adapter
             last_month_days = 0
             binding.monthInfo.text = "${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월"
@@ -66,7 +73,7 @@ class TeamCalendarAdapter : RecyclerView.Adapter<TeamCalendarAdapter.CalendarVie
             }
 
             val dayListManager = GridLayoutManager(activity, 7)
-            val dayListAdapter = TeamDayAdapter(activity, tempMonth, dayList, getAchieve(dayList))
+            val dayListAdapter = TeamDayAdapter(activity, tempMonth, dayList, getAchieve(dayList), picked_day)
 
             binding.dateRv.apply {
                 layoutManager = dayListManager
@@ -76,9 +83,11 @@ class TeamCalendarAdapter : RecyclerView.Adapter<TeamCalendarAdapter.CalendarVie
             // 버튼 이벤트
             binding.lastMonth.setOnClickListener {
                 activity.requestCalAchieveNow(-1)
+                picked_day = 1
             }
             binding.nextMonth.setOnClickListener {
                 activity.requestCalAchieveNow(1)
+                picked_day = 1
             }
         }
 

@@ -5,7 +5,7 @@ class Constants {
         const val BASE_URL = "http://3.37.220.80:8080"
 
         const val FRIEND = "FRIEND"
-        const val TODO = "TODO"
+        const val TO_DO = "TODO"
         const val TEAM = "TEAM"
 
         const val INTENT_EXTRA_USER_DTO = "INTENT_EXTRA_USER_DTO"
