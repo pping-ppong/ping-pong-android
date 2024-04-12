@@ -92,7 +92,7 @@ class TeamCalendarAdapter : RecyclerView.Adapter<TeamCalendarAdapter.CalendarVie
         }
 
         private fun getAchieve(days : List<Date>) : MutableList<Double> {
-            var achieves : MutableList<Double> = MutableList(days.size) { 0.0 }
+            var achieves : MutableList<Double> = MutableList(days.size) { -1.0 }
 
             // 달성율 리스트 생성
             for (i in achieveList) {
