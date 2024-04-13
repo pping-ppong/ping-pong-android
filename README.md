@@ -5,7 +5,7 @@
 ```
 
 ![initial](https://github.com/pping-ppong/ping-pong-android/assets/82071369/4a5a6673-7a77-4000-8f41-8806e68a22b2)
-- 스토어 비공개 테스트 심사 완료 ! 프로덕션 출시만 남은 상태 ! 
+#### 스토어 : https://play.google.com/store/apps/details?id=com.pingpong_android
 
 
 ## 💬 App Description
