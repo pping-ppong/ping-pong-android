@@ -10,8 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
+import com.pingpong_android.base.Constants
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_LIST
 import com.pingpong_android.databinding.ActivityAddMemberBinding
+import com.pingpong_android.model.MemberDTO
+import com.pingpong_android.view.editTeam.EditTeamActivity
 import com.pingpong_android.view.makeTeam.MakeTeamActivity
 import java.io.Serializable
 
@@ -35,8 +38,13 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
 
     private fun initAdapter() {
         val friendLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        addMemberAdapter.setActivity(this)
 
+        // 팀 수정에서 넘어온 경우
+        if (intent.getBooleanExtra(Constants.EDIT_TEAM, false)) {
+            addMemberAdapter.addMemberList(intent.getSerializableExtra(Constants.INTENT_EXTRA_MEMBER_LIST) as List<MemberDTO>)
+        }
+
+        addMemberAdapter.setActivity(this)
         binding.memberRv.apply {
             layoutManager = friendLayoutManager
             adapter = addMemberAdapter
@@ -45,8 +53,6 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
     private fun initView() {
         binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
         binding.topPanel.setRightClickListener(listener = {sendSelectedMembers()})
-
-
     }
 
     private fun subscribeFriendList() {
@@ -85,9 +91,17 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
     }
 
      private fun sendSelectedMembers() {
-        val intent = Intent(this, MakeTeamActivity::class.java)
-        intent.putExtra(INTENT_EXTRA_MEMBER_LIST, addMemberAdapter.getSelectedList() as Serializable)
-        setResult(RESULT_OK, intent)
-        if (!isFinishing) finish()
+         // 팀 수정에서 넘어온 경우
+         if (intent.getBooleanExtra(Constants.EDIT_TEAM, false)) {
+             val intent = Intent(this, EditTeamActivity::class.java)
+             intent.putExtra(INTENT_EXTRA_MEMBER_LIST, addMemberAdapter.getSelectedList() as Serializable)
+             setResult(RESULT_OK, intent)
+             if (!isFinishing) finish()
+         } else {
+             val intent = Intent(this, MakeTeamActivity::class.java)
+             intent.putExtra(INTENT_EXTRA_MEMBER_LIST, addMemberAdapter.getSelectedList() as Serializable)
+             setResult(RESULT_OK, intent)
+             if (!isFinishing) finish()
+         }
     }
 }

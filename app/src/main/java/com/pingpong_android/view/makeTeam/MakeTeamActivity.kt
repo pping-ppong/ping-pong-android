@@ -43,6 +43,12 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 if (it.data != null) {
+                    memberList.clear()
+                    val host = MemberDTO(prefs.getId().toLong())
+                    host.nickName = prefs.getNickName()
+                    host.profileImage = prefs.getProfileImg()
+                    memberList.add(host)
+
                     memberList.addAll(it.data!!.getSerializableExtra(INTENT_EXTRA_MEMBER_LIST) as MutableList<MemberDTO>)
                     memberAdapter.addList(memberList.toSet().toList())
                 }
@@ -57,7 +63,6 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
         memberList.add(host)
 
         val memberLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        memberAdapter.setActivity(this)
         memberAdapter.addList(memberList.toList())
 
         binding.memberRv.apply {

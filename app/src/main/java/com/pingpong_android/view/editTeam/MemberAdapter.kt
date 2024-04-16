@@ -1,4 +1,4 @@
-package com.pingpong_android.view.makeTeam
+package com.pingpong_android.view.editTeam
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,8 +9,9 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.MemberDTO
 
-class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adapter<MemberAdapter.MembersViewHolder>() {
+class MemberAdapter(private var memberList: List<MemberDTO>, ) : RecyclerView.Adapter<MemberAdapter.MembersViewHolder>() {
 
+    private var hostId : Long = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         var binding = ItemFriendListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MembersViewHolder(binding)
@@ -30,26 +31,16 @@ class MemberAdapter(private var memberList: List<MemberDTO>) : RecyclerView.Adap
         notifyDataSetChanged()
     }
 
-    fun getMemberId() : List<Long> {
-        if (memberList.size > 1) {  // 유저 자신을 제외한 멤버가 있는지
-            val memberIdList : MutableList<Long> = mutableListOf()
-
-            // 자신 제외 멤버들의 id만
-            for (memberDTO : MemberDTO in memberList.subList(1, memberList.size)) {
-                memberIdList.add(memberDTO.memberId)
-            }
-            return memberIdList
-        } else {
-            return emptyList()
-        }
+    fun setHostId(hostId: Long) {
+        this.hostId = hostId
     }
 
     inner class MembersViewHolder(val binding : ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memberDTO: MemberDTO, position : Int) {
             // 주인장 아이콘
-            if (position == 0) {
+            if (memberDTO.memberId == hostId) {
                 binding.icHost.visibility = View.VISIBLE
-                binding.nickNmEt.text = memberDTO.nickName + " (나)"
+                binding.nickNmEt.text = memberDTO.nickName
             } else {
                 binding.icHost.visibility = View.GONE
                 binding.nickNmEt.text = memberDTO.nickName

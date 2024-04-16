@@ -19,6 +19,7 @@
     <color name="transparent">#00000000</color>
     <color name="system_gray">#9D9FA0</color>
     <color name="light_gray">#E0E3E5</color>
+    <color name="light_gray_opacity">#B3FFFFFF</color>
 
     <color name="pink">#FF607C</color>
     <color name="blue">#2288FF</color>

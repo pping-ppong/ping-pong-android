@@ -299,6 +299,14 @@ interface RetrofitService {
         @Path("id") teamId : Long
     ) : Single<ResultDTO>
 
+    // 팀 수정하기
+    @PATCH("/api/teams/{teamId}")
+    fun editTeam(
+        @Header("Authorization") accessToken : String,
+        @Path("teamId") teamId : Long,
+        @Body plan : HashMap<String, Any>
+    ) : Single<TeamResultDTO>
+
     // 팀 삭제하기
     @DELETE("/api/teams/{id}")
     fun deleteTeamForever(

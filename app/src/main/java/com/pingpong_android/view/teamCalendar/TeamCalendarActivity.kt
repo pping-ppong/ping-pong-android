@@ -3,9 +3,6 @@ package com.pingpong_android.view.teamCalendar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -31,19 +28,11 @@ import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.view.adapter.MemberHorizontalAdapter
-import com.pingpong_android.view.join.JoinActivity
+import com.pingpong_android.view.editTeam.EditTeamActivity
 import com.pingpong_android.view.teamCalendar.adapter.TeamCalendarAdapter
 import com.pingpong_android.view.teamCalendar.adapter.TeamTodoAdapter
 import com.pingpong_android.view.teamMemList.TeamMemberActivity
 import com.pingpong_android.view.trash.TrashActivity
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.lang.NullPointerException
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -68,7 +57,8 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     private var todoDateCheck : Boolean = false
     private var isHost : Boolean = false
 
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    lateinit var activityResultLauncher_member: ActivityResultLauncher<Intent>
+    lateinit var activityResultLauncher_editTeam: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,12 +79,23 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     }
 
     private fun onActivityResult() {
-        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        activityResultLauncher_member = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 if (it.data != null) {
                     val members = it.data!!.getSerializableExtra(Constants.INTENT_EXTRA_MEMBER_LIST) as List<MemberDTO>
                     isHost = members[0].hostId == prefs.getId().toLong()
+                    teamDTO.memberList = members
                     memberHorizontalAdapter.addList(members)
+                }
+            }
+        }
+
+        activityResultLauncher_editTeam = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                if (it.data != null) {
+                    val teamName = it.data!!.getStringExtra(Constants.INTENT_EXTRA_TEAM_NAME)
+                    teamDTO.teamName = teamName.toString()
+                    binding.topPanel.setTitle(teamDTO.teamName)
                 }
             }
         }
@@ -421,7 +422,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
                 override fun onFirstClickListener() {
                     // 그룹 관리
-                    Toast.makeText(applicationContext, "그룹 관리", Toast.LENGTH_SHORT).show()
+                    goToEditMember()
                     modalBottomSheet.dismiss()
                 }
 
@@ -487,15 +488,21 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         ynDialog.show(supportFragmentManager, HostDialog.TAG)
     }
 
+    fun goToEditMember() {
+        val intent = Intent(this, EditTeamActivity::class.java)
+        intent.putExtra(INTENT_EXTRA_TEAM_DTO, teamDTO)
+        activityResultLauncher_editTeam.launch(intent)
+    }
+
     fun goToTeamMember() {
         val intent = Intent(this, TeamMemberActivity::class.java)
         intent.putExtra(Constants.INTENT_EXTRA_TEAM_DTO, teamDTO)
-        activityResultLauncher.launch(intent)
+        activityResultLauncher_member.launch(intent)
     }
 
     fun goToTrash() {
         val intent = Intent(this, TrashActivity::class.java)
-        intent.putExtra(Constants.INTENT_EXTRA_TEAM_DTO, teamDTO)
+        intent.putExtra(INTENT_EXTRA_TEAM_DTO, teamDTO)
         startActivity(intent)
     }
 }

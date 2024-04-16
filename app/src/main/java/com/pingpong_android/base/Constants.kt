@@ -7,9 +7,11 @@ class Constants {
         const val FRIEND = "FRIEND"
         const val TO_DO = "TODO"
         const val TEAM = "TEAM"
+        const val EDIT_TEAM = "EDIT_TEAM"
 
         const val INTENT_EXTRA_USER_DTO = "INTENT_EXTRA_USER_DTO"
         const val INTENT_EXTRA_TEAM_DTO = "INTENT_EXTRA_TEAM_DTO"
+        const val INTENT_EXTRA_TEAM_NAME = "INTENT_EXTRA_TEAM_NAME"
 
         const val INTENT_EXTRA_MEMBER_ID = "INTENT_EXTRA_MEMBER_ID"
         const val INTENT_EXTRA_MEMBER_LIST = "INTENT_EXTRA_MEMBER_LIST"

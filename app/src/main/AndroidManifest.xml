@@ -122,6 +122,10 @@
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
 
+        <activity android:name=".view.editTeam.EditTeamActivity"
+            android:exported="false"
+            android:theme="@style/DefaultTheme"/>
+
         <activity android:name=".view.addMember.AddMemberActivity"
             android:exported="false"
             android:theme="@style/DefaultTheme"/>
