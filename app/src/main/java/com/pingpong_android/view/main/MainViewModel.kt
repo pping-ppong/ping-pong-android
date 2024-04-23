@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
-import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.AchieveResultDTO
+import com.pingpong_android.model.result.NoticeResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamListResultDTO
 import com.pingpong_android.model.result.TodoResultDTO
@@ -16,8 +16,8 @@ import io.reactivex.schedulers.Schedulers
 class MainViewModel : BaseViewModel(){
 
     // 안읽은 알림 확인
-    private val _noticeState = MutableLiveData<ResultDTO>()
-    val noticeState : LiveData<ResultDTO>
+    private val _noticeState = MutableLiveData<NoticeResultDTO>()
+    val noticeState : LiveData<NoticeResultDTO>
         get() = _noticeState
     fun requestUnReadNotice(token : String) {
         addDisposable(

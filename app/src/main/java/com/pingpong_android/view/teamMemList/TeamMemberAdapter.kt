@@ -71,7 +71,7 @@ class TeamMemberAdapter(private var memberList : List<MemberDTO>) : RecyclerView
                         binding.btnFriend.setOnClickListener { null }
                     }
                     Status.WAIT -> {    // 친구 수락 전
-                        binding.btnFriend.text = activity.getString(R.string.invite_complete)
+                        binding.btnFriend.text = activity.getString(R.string.wait)
                         binding.btnFriend.setTextColor(activity.getColor(R.color.black))
                         binding.btnFriend.background =
                             activity.getDrawable(R.drawable.back_white_stroke_gray_30dp)

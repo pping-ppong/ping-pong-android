@@ -78,6 +78,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="@string/friend"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:paddingVertical="4dp"

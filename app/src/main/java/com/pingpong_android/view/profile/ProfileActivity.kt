@@ -63,10 +63,7 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
     private fun subscribeAlarmSend() {
         binding.viewModel!!.alarmResult.observe(this, Observer {
             if (it.isSuccess) {
-//                Toast.makeText(this@ProfileActivity, it.message, Toast.LENGTH_LONG).show()
                 binding.viewModel!!.requestOthersProfile(prefs.getBearerToken(), memberId)
-            } else {
-//                Toast.makeText(this@ProfileActivity, it.message, Toast.LENGTH_LONG).show()
             }
         })
     }

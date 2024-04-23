@@ -15,5 +15,8 @@ data class NoticeResultDTO (
     var message : String,
 
     @SerializedName("result")
-    var noticeList : List<NoticeDTO>
+    var noticeList : List<NoticeDTO>,
+
+    @SerializedName("notificationExists")
+    var notificationExists : Boolean
 )

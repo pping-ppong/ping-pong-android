@@ -28,7 +28,7 @@ import com.pingpong_android.view.addMember.AddMemberActivity
 import com.pingpong_android.view.myPage.MyPageActivity
 import java.io.Serializable
 
-class EditTeamActivity : BaseActivity<ActivityEditTeamBinding>(R.layout.activity_edit_team) {
+class EditTeamActivity : BaseActivity<ActivityEditTeamBinding>(R.layout.activity_edit_team, TransitionMode.RIGHT) {
 
     lateinit var teamDTO: TeamDTO
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>

@@ -107,7 +107,7 @@ interface RetrofitService {
     @GET("/api/notifications/un-read")
     fun requestUnReadNotice(
         @Header("Authorization") accessToken : String
-    ) : Single<ResultDTO>
+    ) : Single<NoticeResultDTO>
 
     // 친구 신청 알림 요청
     @POST ("/api/notifications/friends")
@@ -343,6 +343,12 @@ interface RetrofitService {
     fun requestSearchLog(
         @Header("Authorization") accessToken : String
     ) : Single<LogResultDTO>
+
+    // 유저 검색 로그 삭제하기
+    @DELETE("api/members/search-log")
+    fun requestSearchLogDelete(
+        @Header("Authorization") accessToken : String
+    ) : Single<ResultDTO>
 
     // 타 유저의 프로필 불러오기
     @GET("/api/members/{id}/profile")

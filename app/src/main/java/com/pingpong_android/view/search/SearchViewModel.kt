@@ -59,4 +59,19 @@ class SearchViewModel : BaseViewModel(){
                     Log.e("Error", "requestJoin")} )
         )
     }
+
+    // 검색 키워드 삭제하기
+    fun requestSearchLogDelete(token : String) {
+        addDisposable(
+            instance!!.requestSearchLogDelete(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.isSuccess && it.code == 200) {
+                        requestSearchLog(token)
+                    }
+                },{
+                    Log.e("Error", "requestJoin")} )
+        )
+    }
 }

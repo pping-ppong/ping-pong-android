@@ -149,7 +149,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     }
 
     fun deleteAllSearchLog() {
-
+        binding.viewModel!!.requestSearchLogDelete(prefs.getBearerToken())
     }
 
     private fun goToUserProfile(memberId : Long) {
