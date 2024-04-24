@@ -4,19 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMainBinding
 import com.pingpong_android.layout.MemberDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
-import com.pingpong_android.model.AchieveDTO
-import com.pingpong_android.model.PlanDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.main.adapter.CalendarAdapter
@@ -26,9 +22,7 @@ import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.notice.NoticeActivity
 import com.pingpong_android.view.search.SearchActivity
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Calendar
 import java.util.Date
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {

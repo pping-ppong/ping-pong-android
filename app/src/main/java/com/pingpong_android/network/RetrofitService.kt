@@ -5,8 +5,6 @@ import com.pingpong_android.model.UserDTO
 import com.pingpong_android.model.result.*
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.http.*
 
 

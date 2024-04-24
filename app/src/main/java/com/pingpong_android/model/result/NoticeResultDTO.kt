@@ -1,7 +1,6 @@
 package com.pingpong_android.model.result
 
 import com.google.gson.annotations.SerializedName
-import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.NoticeDTO
 
 data class NoticeResultDTO (
