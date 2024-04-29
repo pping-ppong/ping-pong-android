@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/badge_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/circle_0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:id="@+id/ic_lock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="16dp"
+                android:src="@drawable/ic_lock"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/ic_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_profile_popcorn"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/badge_tv"
+            style="@style/textBlack12"
+            android:layout_width="0dp"
+            android:layout_marginTop="2dp"
+            tools:text="타이틀최대열자입니다"
+            android:padding="2dp"
+            android:maxEms="10"
+            android:gravity="center"
+            android:textColor="@color/system_gray"
+            app:layout_constraintTop_toBottomOf="@+id/badge_layout"
+            app:layout_constraintStart_toStartOf="@id/badge_layout"
+            app:layout_constraintEnd_toEndOf="@+id/badge_layout"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

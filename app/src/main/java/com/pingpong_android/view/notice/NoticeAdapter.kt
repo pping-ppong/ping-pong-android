@@ -29,7 +29,7 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
         return NoticeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: NoticeAdapter.NoticeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
         holder.bind(noticeList.get(position), position)
     }
 

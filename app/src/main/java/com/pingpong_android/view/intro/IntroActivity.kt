@@ -24,6 +24,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
         super.onCreate(savedInstanceState)
         binding.viewModel = IntroViewModel()
         binding.activity = this
+        binding.viewModel!!.setActivity(this)
 
         userDTO = prefs.getUser()
 
@@ -103,6 +104,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(R.layout.activity_intro
                 goToLogin()
             }
         })
+    }
+
+    fun apiError() {
+        Toast.makeText(this, "서버 업데이트 중입니다. 잠시후 다시 시도해주세요:)", Toast.LENGTH_LONG).show()
     }
 
     private fun goToMain() {

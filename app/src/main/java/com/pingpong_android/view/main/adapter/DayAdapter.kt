@@ -88,6 +88,8 @@ class DayAdapter(
                     binding.popColor.visibility = View.GONE
                     binding.icPop.visibility = View.VISIBLE
                     binding.mark.visibility = View.GONE
+
+                    setRandomPop()
                 }
 
                 binding.dateLayout.setOnClickListener {
@@ -100,6 +102,17 @@ class DayAdapter(
                     binding.dayTv.background = activity.getDrawable(R.drawable.back_white_underline_yellow)
                 else
                     binding.dayTv.background = null
+            }
+        }
+
+        private fun setRandomPop() {
+            val num = Random(1).nextInt(5)
+            when (num) {
+                0 -> binding.icPop.setImageResource(R.drawable.ic_pop1)
+                1 -> binding.icPop.setImageResource(R.drawable.ic_pop2)
+                2 -> binding.icPop.setImageResource(R.drawable.ic_pop3)
+                3 -> binding.icPop.setImageResource(R.drawable.ic_pop4)
+                4 -> binding.icPop.setImageResource(R.drawable.ic_pop5)
             }
         }
     }

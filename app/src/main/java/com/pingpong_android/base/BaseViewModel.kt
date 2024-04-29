@@ -5,7 +5,7 @@ import com.pingpong_android.network.RetrofitClient
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel(): ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     val instance = RetrofitClient.getClient(false)
 
@@ -17,5 +17,4 @@ abstract class BaseViewModel: ViewModel() {
         compositeDisposable.clear()
         super.onCleared()
     }
-
 }

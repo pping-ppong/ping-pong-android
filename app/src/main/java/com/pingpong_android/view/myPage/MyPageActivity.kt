@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.pingpong_android.R
@@ -21,6 +22,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     private lateinit var user: UserDTO
     private var teamAdapter = TeamAdapter(emptyList())
+    private var badgeAdapter = BadgeAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     private fun requestMyPageInfo() {
         binding.viewModel!!.requestUserInfo(prefs.getBearerToken())
         binding.viewModel!!.requestUserTeamList(prefs.getBearerToken())
+        binding.viewModel!!.requestBadgeList(prefs.getBearerToken(), user.memberId.toLong())
     }
 
     private fun initSubscribe() {
@@ -51,6 +54,16 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
     }
 
     private fun initAdapter() {
+        // 뱃지
+        val badgeLayoutManager = GridLayoutManager(this, 4)
+        badgeAdapter.setContext(this)
+
+        binding.badgeRv.apply {
+            layoutManager = badgeLayoutManager
+            adapter = badgeAdapter
+        }
+
+        // 팀
         val teamLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         teamAdapter.setContext(this)
 
@@ -100,15 +113,13 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     private fun subscribeBadgeList() {
         binding.viewModel!!.badgeList.observe(this, Observer {
-            // todo : 뱃지
             if (it.isSuccess && !it.badgeList.isEmpty()) {
                 binding.noBadgeList.visibility = View.GONE
                 binding.badgeRv.visibility = View.VISIBLE
-
+                badgeAdapter.addList(it.badgeList)
             } else {
                 binding.noBadgeList.visibility = View.VISIBLE
                 binding.badgeRv.visibility = View.GONE
-
             }
         })
     }

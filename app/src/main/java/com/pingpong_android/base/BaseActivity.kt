@@ -11,7 +11,7 @@ import com.pingpong_android.R
 import com.pingpong_android.utils.PreferenceUtil
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseActivity <B: ViewDataBinding>(@LayoutRes val layoutId: Int, private val transitionMode: TransitionMode = TransitionMode.NONE) : AppCompatActivity(){
+abstract class BaseActivity <B: ViewDataBinding>(@LayoutRes val layoutId: Int, private val transitionMode: TransitionMode = TransitionMode.NONE) : AppCompatActivity() {
     lateinit var binding : B
     private val compositeDisposable = CompositeDisposable()
 
