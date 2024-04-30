@@ -3,6 +3,7 @@ package com.pingpong_android.view.friendList
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pingpong_android.R
@@ -37,6 +38,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
 
     private fun initRequest() {
         subscribeFriendList()
+        subscribeDeleteFriendShip()
         binding.viewModel!!.requestUserFriendList(prefs.getBearerToken())
     }
 
@@ -52,6 +54,19 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
                 binding.noFriendList.visibility = View.VISIBLE
             }
         })
+    }
+
+    private fun subscribeDeleteFriendShip() {
+        binding.viewModel!!.deleteResult.observe(this, Observer {
+            if (it.isSuccess) {
+                binding.viewModel!!.requestUserFriendList(prefs.getBearerToken())
+            }
+            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    fun deleteFriendShip(memberId: Long) {
+        binding.viewModel!!.deleteFriendShip(prefs.getBearerToken(), memberId)
     }
 
     fun goToUserProfile(memberId : Long) {

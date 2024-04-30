@@ -12,9 +12,10 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_ID
 import com.pingpong_android.databinding.ActivitySearchBinding
+import com.pingpong_android.view.myPage.MyPageActivity
 import com.pingpong_android.view.profile.ProfileActivity
 
-class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search){
+class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_search) {
 
     private var searchAdapter = SearchAdapter(emptyList())
     private var logAdapter = LogAdapter(emptyList())
@@ -52,7 +53,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     }
 
     private fun searchEvent() {
-        binding.nickNmEt.setOnEditorActionListener{ textView, action, event ->
+        binding.nickNmEt.setOnEditorActionListener { textView, action, event ->
             var handled = false
             if (action == EditorInfo.IME_ACTION_DONE) {
                 searchKeyword(binding.nickNmEt.text.toString())
@@ -102,7 +103,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         })
     }
 
-    private fun setViewType(beforeSearch : Boolean, hasResult : Boolean) {
+    private fun setViewType(beforeSearch: Boolean, hasResult: Boolean) {
         if (beforeSearch) {
             // 검색 전 뷰
             binding.friendRv.visibility = View.GONE
@@ -132,11 +133,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         }
     }
 
-    fun searchKeyword(keyword : String) {
+    fun searchKeyword(keyword: String) {
         binding.viewModel!!.searchUserWithNickNm(prefs.getBearerToken(), keyword)
     }
 
-    fun addSearchLog(memberId : Long) {
+    fun addSearchLog(memberId: Long) {
         binding.viewModel!!.addSearchLog(prefs.getBearerToken(), memberId)
         goToUserProfile(memberId)
     }
@@ -150,9 +151,15 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
         binding.viewModel!!.requestSearchLogDelete(prefs.getBearerToken())
     }
 
-    private fun goToUserProfile(memberId : Long) {
-        val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra(INTENT_EXTRA_MEMBER_ID, memberId)
-        startActivity(intent)
+    private fun goToUserProfile(memberId: Long) {
+        if (memberId == prefs.getId().toLong()) {
+            // 본인일 떄
+            val intent = Intent(this, MyPageActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra(INTENT_EXTRA_MEMBER_ID, memberId)
+            startActivity(intent)
+        }
     }
 }

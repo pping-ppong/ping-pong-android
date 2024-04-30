@@ -70,8 +70,12 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
 
     private fun subscribeDeleteFriendShip() {
         binding.viewModel!!.deleteResult.observe(this, Observer {
-            if (it.message.isNotEmpty())
+            if (it.isSuccess) { // 친구 삭제 성공
                 Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                binding.viewModel!!.requestOthersProfile(prefs.getBearerToken(), memberId)
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            }
         })
     }
 
@@ -89,24 +93,30 @@ class ProfileActivity  : BaseActivity<ActivityOthersProfileBinding>(R.layout.act
             Glide.with(binding.image).clear(binding.image)
         }
 
-        when (user.friendStatus) {
-            Status.ACTIVE -> {
-                binding.btnFriend.text = getString(R.string.friend)
-                binding.btnFriend.setTextColor(getColor(R.color.black))
-                binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
-                binding.btnFriend.setOnClickListener { deleteFriendShip() }
-            }
-            Status.WAIT -> {
-                binding.btnFriend.text = getString(R.string.wait)
-                binding.btnFriend.setTextColor(getColor(R.color.black))
-                binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
-                binding.btnFriend.setOnClickListener { null }
-            }
-            else -> {
-                binding.btnFriend.text = getString(R.string.add_friend)
-                binding.btnFriend.setTextColor(getColor(R.color.white))
-                binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
-                binding.btnFriend.setOnClickListener{ requestFriendShip() }
+        if (user.memberId == prefs.getId()) {
+            // 자기 자신
+            binding.btnFriend.visibility = View.GONE
+        } else {
+            binding.btnFriend.visibility = View.VISIBLE
+            when (user.friendStatus) {
+                Status.ACTIVE -> {
+                    binding.btnFriend.text = getString(R.string.friend)
+                    binding.btnFriend.setTextColor(getColor(R.color.black))
+                    binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+                    binding.btnFriend.setOnClickListener { deleteFriendShip() }
+                }
+                Status.WAIT -> {
+                    binding.btnFriend.text = getString(R.string.wait)
+                    binding.btnFriend.setTextColor(getColor(R.color.black))
+                    binding.btnFriend.background = getDrawable(R.drawable.back_white_stroke_gray_30dp)
+                    binding.btnFriend.setOnClickListener { null }
+                }
+                else -> {
+                    binding.btnFriend.text = getString(R.string.add_friend)
+                    binding.btnFriend.setTextColor(getColor(R.color.white))
+                    binding.btnFriend.background = getDrawable(R.drawable.back_black_30dp)
+                    binding.btnFriend.setOnClickListener{ requestFriendShip() }
+                }
             }
         }
     }

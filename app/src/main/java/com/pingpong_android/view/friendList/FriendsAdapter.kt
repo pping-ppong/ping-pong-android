@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pingpong_android.R
+import com.pingpong_android.base.Status
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.MemberDTO
 
@@ -57,6 +59,12 @@ class FriendsAdapter(private var friendList : List<MemberDTO>) : RecyclerView.Ad
                 binding.defaultImage.visibility = View.VISIBLE
                 Glide.with(binding.image).clear(binding.image)
             }
+
+            binding.btnFriend.visibility = View.VISIBLE
+            binding.btnFriend.text = activity.getString(R.string.friend)
+            binding.btnFriend.setTextColor(activity.getColor(R.color.black))
+            binding.btnFriend.background = activity.getDrawable(R.drawable.back_white_stroke_gray_30dp)
+            binding.btnFriend.setOnClickListener { activity.deleteFriendShip(user.memberId) }
         }
     }
 }

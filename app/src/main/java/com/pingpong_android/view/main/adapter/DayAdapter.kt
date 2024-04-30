@@ -1,5 +1,6 @@
 package com.pingpong_android.view.main.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +90,7 @@ class DayAdapter(
                     binding.icPop.visibility = View.VISIBLE
                     binding.mark.visibility = View.GONE
 
-                    setRandomPop()
+                    setRandomPop(day.date.toString())
                 }
 
                 binding.dateLayout.setOnClickListener {
@@ -98,21 +99,24 @@ class DayAdapter(
                 binding.dayTv.text = day.date.toString()
 
                 // 선택된 날짜
-                if (day.date == picked_day)
-                    binding.dayTv.background = activity.getDrawable(R.drawable.back_white_underline_yellow)
-                else
-                    binding.dayTv.background = null
+                if (day.date == picked_day) {
+                    binding.dayTvLayout.background = activity.getDrawable(R.drawable.back_black_30dp)
+                    binding.dayTv.setTextColor(activity.getColor(R.color.white))
+                } else {
+                    binding.dayTvLayout.background = null
+                    binding.dayTv.setTextColor(activity.getColor(R.color.black))
+                }
             }
         }
 
-        private fun setRandomPop() {
-            val num = Random(1).nextInt(5)
+        private fun setRandomPop(day : String) {
+            val num = day.substring(day.lastIndex).toInt()
             when (num) {
-                0 -> binding.icPop.setImageResource(R.drawable.ic_pop1)
-                1 -> binding.icPop.setImageResource(R.drawable.ic_pop2)
-                2 -> binding.icPop.setImageResource(R.drawable.ic_pop3)
-                3 -> binding.icPop.setImageResource(R.drawable.ic_pop4)
-                4 -> binding.icPop.setImageResource(R.drawable.ic_pop5)
+                1,6 -> binding.icPop.setImageResource(R.drawable.ic_pop1)
+                2,7 -> binding.icPop.setImageResource(R.drawable.ic_pop2)
+                3,8 -> binding.icPop.setImageResource(R.drawable.ic_pop3)
+                4,9 -> binding.icPop.setImageResource(R.drawable.ic_pop4)
+                5,0 -> binding.icPop.setImageResource(R.drawable.ic_pop5)
             }
         }
     }

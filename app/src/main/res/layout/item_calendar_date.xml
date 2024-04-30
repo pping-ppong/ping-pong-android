@@ -33,12 +33,18 @@
                 android:visibility="visible"
                 android:background="@drawable/circle_0" />
 
-            <TextView
-                android:id="@+id/day_tv"
-                style="@style/textBlack12"
+            <LinearLayout
+                android:id="@+id/day_tv_layout"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginTop="2dp"
-                android:text="1"
-                android:padding="2dp" />
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/day_tv"
+                    style="@style/textBlack12"
+                    tools:text="1"
+                    android:layout_marginBottom="1dp" />
+            </LinearLayout>
         </LinearLayout>
         <TextView
             android:id="@+id/mark"

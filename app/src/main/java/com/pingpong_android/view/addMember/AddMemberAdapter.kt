@@ -12,14 +12,14 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
 
     private lateinit var activity: AddMemberActivity
     private var selectedList : MutableList<MemberDTO> = mutableListOf()
-    private lateinit var memberList : List<MemberDTO>
+    private lateinit var memberList : List<MemberDTO> // 이미 그룹의 멤버 리스트
     private var fromEdit : Boolean = false
 
     fun setActivity(activity: AddMemberActivity) {
         this.activity = activity
     }
 
-    fun addMemberList(memberList: List<MemberDTO>) {
+    fun addMemberList(memberList: List<MemberDTO>) { // 이미 그룹의 멤버 리스트
         this.memberList = memberList
         fromEdit = true
     }
@@ -75,8 +75,8 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
                 // 클릭 이벤트 추가
                 binding.btnCheck.visibility = View.VISIBLE
                 binding.btnCheck.setOnClickListener {
-                    if (!selectedList.contains(friendList[position]))
-                        selectedList.add(friendList[position])
+                    if (!selectedList.contains(memberDTO)) //friendList[position]
+                        selectedList.add(memberDTO) //friendList[position]
                 }
             }
         }

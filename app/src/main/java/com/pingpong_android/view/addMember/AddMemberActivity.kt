@@ -3,6 +3,8 @@ package com.pingpong_android.view.addMember
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -17,10 +19,12 @@ import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.view.editTeam.EditTeamActivity
 import com.pingpong_android.view.makeTeam.MakeTeamActivity
 import java.io.Serializable
+import kotlin.streams.toList
 
 class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activity_add_member) {
 
     private var addMemberAdapter = AddMemberAdapter(emptyList())
+    private lateinit var friendList: List<MemberDTO>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +65,7 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
                 binding.noFriendList.visibility = View.GONE
                 binding.memberRv.visibility = View.VISIBLE
                 addMemberAdapter.addList(it.friendList)
+                friendList = it.friendList
             } else {
                 binding.noFriendList.visibility = View.VISIBLE
                 binding.memberRv.visibility = View.GONE
@@ -71,6 +76,7 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
 
 
     private fun searchEvent() {
+        binding.nickNmEt.addTextChangedListener(textWatcher)
         binding.nickNmEt.setOnEditorActionListener{ textView, action, event ->
             var handled = false
             if (action == EditorInfo.IME_ACTION_DONE) {
@@ -84,10 +90,24 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
             }
             handled
         }
+
+    }
+
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (s.isNullOrEmpty())
+                addMemberAdapter.addList(friendList)
+        }
     }
 
     fun searchKeyword(keyword : String) {
-        // todo : list 중에서 동일한 이름 뽑기
+        addMemberAdapter.addList(friendList.stream().filter { it.nickName.contains(keyword) }.toList())
     }
 
      private fun sendSelectedMembers() {

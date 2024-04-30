@@ -98,11 +98,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-simplexml:$rootProject.ext.retrofit2Version"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2Version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofit2Version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
 
     //Okhttp3
     implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+    implementation 'com.launchdarkly:okhttp-eventsource:4.1.0'
 
     // network
     implementation "com.amitshekhar.android:rx2-android-networking:$rootProject.ext.rx2FastAndroidNetworking"

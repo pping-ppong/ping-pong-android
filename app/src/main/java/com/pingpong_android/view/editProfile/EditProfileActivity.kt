@@ -74,6 +74,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfieBinding>(R.layout.act
             binding.profileImg.visibility = View.VISIBLE
             binding.defaultPhoto.visibility = View.GONE
             Glide.with(this).load(userDTO.profileImage).into(binding.profileImg)
+            binding.nickNmEt.setText(userDTO.nickName.toString())
         } else {
             binding.profileImg.visibility = View.GONE
             binding.defaultPhoto.visibility = View.VISIBLE

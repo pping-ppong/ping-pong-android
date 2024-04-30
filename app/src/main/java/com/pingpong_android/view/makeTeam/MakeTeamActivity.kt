@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -19,6 +20,7 @@ import com.pingpong_android.databinding.ActivityMakeTeamBinding
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.view.addMember.AddMemberActivity
+import java.util.regex.Pattern
 
 class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity_make_team, TransitionMode.RIGHT) {
 
@@ -73,6 +75,7 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
 
     private fun nameEtEvent() {
         binding.groupNameEt.addTextChangedListener(textWatcher)
+        binding.groupNameEt.filters = arrayOf(filterAlphaNumSpaceSpecialChar)
 
         binding.groupNameEt.setOnEditorActionListener{ textView, action, event ->
             var handled = false
@@ -95,10 +98,36 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if (!s.isNullOrEmpty())
-                binding.viewModel!!.isReady.postValue(true)
-            else
+            if (!s.isNullOrEmpty() && checkLength(s)) {
+                    binding.viewModel!!.isReady.postValue(true)
+            } else {
                 binding.viewModel!!.isReady.postValue(false)
+            }
+        }
+    }
+
+    var filterAlphaNumSpaceSpecialChar = InputFilter { source, start, end, dest, dstart, dend ->
+        /*
+            [요약 설명]
+            1. 정규식 패턴 ^[a-z] : 영어 소문자 허용
+            2. 정규식 패턴 ^[A-Z] : 영어 대문자 허용
+            3. 정규식 패턴 ^[ㄱ-ㅣ가-힣] : 한글 허용
+            4. 정규식 패턴 ^[0-9] : 숫자 허용
+            5. 정규식 패턴 ^[ ] or ^[\\s] : 공백 허용
+        */
+        val ps = Pattern.compile("^[ㄱ-ㅣ가-힣a-zA-Z0-9\\s!@#$%^&*()\\-+]+$")
+        if (!ps.matcher(source).matches()) {
+            ""
+        } else source
+    }
+
+    private fun checkLength(s: CharSequence) : Boolean {
+        if (s.length <= 10) {
+            binding.groupNameETLayout.error = null
+            return true
+        } else {
+            binding.groupNameETLayout.error = "10자를 초과할 수 없습니다."
+            return false
         }
     }
 

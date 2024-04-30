@@ -12,11 +12,11 @@ import com.pingpong_android.model.MemberDTO
 
 class MemberHorizontalAdapter(private var memberList: List<MemberDTO>, val forSelect : Boolean) : RecyclerView.Adapter<MemberHorizontalAdapter.MembersViewHolder>() {
 
-    private var selectedMemberDTO: MemberDTO? = null
+    var selectedMemberDTO: MemberDTO? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         val binding = ItemImageWithTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        if (forSelect)
+        if (forSelect && selectedMemberDTO == null)
             selectedMemberDTO = memberList.get(0)
         return MembersViewHolder(binding)
     }
