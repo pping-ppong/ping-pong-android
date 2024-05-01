@@ -240,7 +240,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 if (it.notificationExists)
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_on))
                 else if (!it.notificationExists)
-                    binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
+                    binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
                 else
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
             } else {
