@@ -48,7 +48,7 @@
     <string name="member">멤버</string>
     <string name="invite_member">멤버 초대</string>
     <string name="search_nick">닉네임 검색</string>
-    <string name="todo_hint">입력</string>
+    <string name="todo_hint">최대 18자까지 입력</string>
 
     <string name="wait">대기중</string>
     <string name="invite_refuse">초대 거절</string>

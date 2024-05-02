@@ -293,6 +293,26 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         if (isAdding) {
             binding.textInputLayout.visibility = View.VISIBLE
 
+            date_for_plan = date_for_day.toString()
+            memberDTO = prefs.getMemberDTO()
+
+            // 입력 레이아웃에 날짜, 담당자 반영
+            binding.todoDate.text = date_for_day.monthValue.toString() + "/" + date_for_day.dayOfMonth.toString()
+            binding.todoMemberName.text = memberDTO.nickName
+            if (!memberDTO.profileImage.isNullOrEmpty()) {
+                binding.profileImg.visibility = View.VISIBLE
+                binding.defaultImage.visibility = View.GONE
+                Glide.with(binding.profileImg)
+                    .load(memberDTO.profileImage)
+                    .into(binding.profileImg)
+            } else {
+                binding.profileImg.visibility = View.GONE
+                binding.defaultImage.visibility = View.VISIBLE
+                Glide.with(binding.profileImg)
+                    .clear(binding.profileImg)
+            }
+            checkTodoDateMember()
+
             // 텍스트 작성에 포커스 주기
             binding.todoTxt.requestFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -3,6 +3,7 @@ package com.pingpong_android.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.OauthDTO
 import com.pingpong_android.model.UserDTO
 
@@ -77,5 +78,12 @@ class PreferenceUtil(context: Context) {
 
     fun getProfileImg() : String {
         return prefs.getString("profileImage", null).toString()
+    }
+
+    fun getMemberDTO() :MemberDTO {
+        var member = MemberDTO(prefs.getString("memberId", null).toString().toLong())
+        member.nickName = prefs.getString("nickName", null).toString()
+        member.profileImage = prefs.getString("profileImage", null).toString()
+        return member
     }
 }
