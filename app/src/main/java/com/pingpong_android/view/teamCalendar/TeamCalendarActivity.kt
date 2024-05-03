@@ -36,6 +36,7 @@ import com.pingpong_android.view.trash.TrashActivity
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
+import kotlin.streams.toList
 
 class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.activity_team_calendar, TransitionMode.RIGHT) {
 
@@ -474,14 +475,17 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     }
 
     fun showMemberDialog(planId: Long) {
-        val memberDialog = MemberDialog(teamDTO.memberList)
+        val myId = prefs.getId().toLong()
+        val memberList_without_me = teamDTO.memberList.stream().filter { it.memberId != myId }.toList()
+
+        val memberDialog = MemberDialog(memberList_without_me)
         memberDialog.setButtonClickListener(object : MemberDialog.OnButtonClickListener{
             override fun onCancelClicked() {
                 memberDialog.dismiss()
             }
 
             override fun onConfirmClicked() {
-                var memberId = memberDialog.getSelectMember()
+                val memberId = memberDialog.getSelectMember()
                 binding.viewModel!!.requestPassPlan(prefs.getBearerToken(), teamDTO.teamId, planId,memberId)
                 binding.viewModel!!.requestPassAlarm(prefs.getBearerToken(), planId, memberId)
                 memberDialog.dismiss()

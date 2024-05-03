@@ -24,6 +24,7 @@ import com.pingpong_android.view.search.SearchActivity
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
+import kotlin.streams.toList
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
@@ -301,10 +302,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     fun showMemberDialog(team: TeamDTO, planId: Long) {
-        var tmp = binding.viewModel!!.teamListData.value!!.teamList.toMutableList()
-        var memberList = tmp.get(tmp.indexOf(team)).memberList
+        val myId = prefs.getId().toLong()
+        val tmp = binding.viewModel!!.teamListData.value!!.teamList.toMutableList()
+        val memberList_without_me = tmp.get(tmp.indexOf(team)).memberList.stream().filter { it.memberId != myId }.toList()
 
-        val memberDialog = MemberDialog(memberList)
+        val memberDialog = MemberDialog(memberList_without_me)
         memberDialog.setButtonClickListener(object : MemberDialog.OnButtonClickListener{
             override fun onCancelClicked() {
                 memberDialog.dismiss()
