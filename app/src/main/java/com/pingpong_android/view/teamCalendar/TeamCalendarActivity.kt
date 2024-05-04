@@ -23,8 +23,10 @@ import com.pingpong_android.layout.DateMemberSetDialog
 import com.pingpong_android.layout.HostDialog
 import com.pingpong_android.layout.MemberDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
+import com.pingpong_android.layout.YDialog
 import com.pingpong_android.layout.YNDialog
 import com.pingpong_android.model.MemberDTO
+import com.pingpong_android.model.PlanDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.view.adapter.MemberHorizontalAdapter
@@ -52,7 +54,6 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
     private var date_for_cal: LocalDate = LocalDate.now().withDayOfMonth(1)
     private var date_for_day: LocalDate = LocalDate.now()
 
-    private var menuList : List<String> = listOf("넘기기", "버리기")
     private var todoTxtCheck : Boolean = false
     private var todoMemberCheck : Boolean = false
     private var todoDateCheck : Boolean = false
@@ -228,6 +229,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
                 startDate = date_for_cal,
                 endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))
             binding.viewModel!!.requestPlans(prefs.getBearerToken(), teamDTO.teamId, date_for_day.toString())
+            showDeleteDoneDialog()
         })
     }
 
@@ -416,19 +418,19 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         dateMemberDialog.show(supportFragmentManager, DateMemberSetDialog.TAG)
     }
 
-    fun showBottomSheet(planId: Long) {
-        val modalBottomSheet = ModalBottomSheetDialog(menuList)
+    fun showBottomSheet(plan: PlanDTO) {
+        val modalBottomSheet = ModalBottomSheetDialog(listOf(getString(R.string.pass), getString(R.string.delete_to_trash)))
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
         modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
             override fun onFirstClickListener() {
                 // 넘기기
-                showMemberDialog(planId)
+                showMemberDialog(plan.planId)
                 modalBottomSheet.dismiss()
             }
 
             override fun onSecondClickListener() {
                 // 버리기
-                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamDTO.teamId, planId)
+                showConfirmDeletePlanDialog(plan)
                 modalBottomSheet.dismiss()
             }
 
@@ -510,6 +512,35 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
             }
         })
         ynDialog.show(supportFragmentManager, HostDialog.TAG)
+    }
+
+    fun showConfirmDeletePlanDialog(plan: PlanDTO) {
+        val ynDialog = YNDialog(String.format(getString(R.string.confirm_delete_to_trash), plan.title), listOf(getString(R.string.cancel), getString(R.string.delete_to_trash)))
+        ynDialog.setButtonClickListener(object : YNDialog.OnButtonClickListener{
+            override fun onFirstClicked() {
+                // 취소
+                ynDialog.dismiss()
+            }
+
+            override fun onSecondClicked() {
+                // 버리기
+                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), teamDTO.teamId, plan.planId)
+                ynDialog.dismiss()
+            }
+        })
+        ynDialog.show(supportFragmentManager, HostDialog.TAG)
+    }
+
+    fun showDeleteDoneDialog() {
+        val yDialog = YDialog(getString(R.string.done_delete_to_trash), getString(R.string.confirm))
+        yDialog.setButtonClickListener(object : YDialog.OnButtonClickListener{
+            override fun onBtnClicked() {
+                // 취소
+                yDialog.dismiss()
+            }
+
+        })
+        yDialog.show(supportFragmentManager, HostDialog.TAG)
     }
 
     fun goToEditMember() {

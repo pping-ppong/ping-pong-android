@@ -50,7 +50,7 @@ class PlansAdapter(val activity : MainActivity, val team: TeamDTO, val planList:
                 }
 
                 // bottomSheet
-                binding.btnEtc.setOnClickListener { activity.showBottomSheet(team, planDTO.planId) }
+                binding.btnEtc.setOnClickListener { activity.showBottomSheet(team, planDTO) }
             } else {
                 binding.planLayout.visibility = View.GONE
             }

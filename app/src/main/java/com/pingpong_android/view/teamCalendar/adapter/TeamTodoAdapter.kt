@@ -69,7 +69,7 @@ class TeamTodoAdapter : RecyclerView.Adapter<TeamTodoAdapter.TeamTodoViewHolder>
                     }
 
                     // bottomSheet
-                    binding.btnEtc.setOnClickListener { activity.showBottomSheet(planDTO.planId) }
+                    binding.btnEtc.setOnClickListener { activity.showBottomSheet(planDTO) }
                 } else {
                     binding.btnStar.visibility = View.GONE
                     binding.image.visibility = View.VISIBLE

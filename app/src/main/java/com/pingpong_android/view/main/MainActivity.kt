@@ -11,8 +11,12 @@ import com.bumptech.glide.Glide
 import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.databinding.ActivityMainBinding
+import com.pingpong_android.layout.HostDialog
 import com.pingpong_android.layout.MemberDialog
 import com.pingpong_android.layout.ModalBottomSheetDialog
+import com.pingpong_android.layout.YDialog
+import com.pingpong_android.layout.YNDialog
+import com.pingpong_android.model.PlanDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.model.UserDTO
 import com.pingpong_android.view.main.adapter.CalendarAdapter
@@ -220,6 +224,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             if (it.isSuccess) {
                 requestCalAchieveNow()
                 binding.viewModel!!.requestPlans(prefs.getBearerToken(), date_for_day.toString())
+                showDeleteDoneDialog()
             }
         })
     }
@@ -281,19 +286,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    fun showBottomSheet(team: TeamDTO, planId: Long) {
+    fun showBottomSheet(team: TeamDTO, plan: PlanDTO) {
         val modalBottomSheet = ModalBottomSheetDialog(menuList)
         modalBottomSheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
         modalBottomSheet.setDialogInterface(object : ModalBottomSheetDialog.ModalBottomSheetDialogInterface {
             override fun onFirstClickListener() {
                 // 넘기기
-                showMemberDialog(team, planId)
+                showMemberDialog(team, plan.planId)
                 modalBottomSheet.dismiss()
             }
 
             override fun onSecondClickListener() {
                 // 버리기
-                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), team.teamId, planId)
+                showConfirmDeletePlanDialog(team, plan)
                 modalBottomSheet.dismiss()
             }
 
@@ -321,6 +326,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         })
         memberDialog.show(supportFragmentManager, MemberDialog.TAG)
+    }
+
+    fun showConfirmDeletePlanDialog(team : TeamDTO, plan: PlanDTO) {
+        val ynDialog = YNDialog(String.format(getString(R.string.confirm_delete_to_trash), plan.title), listOf(getString(R.string.cancel), getString(R.string.delete_to_trash)))
+        ynDialog.setButtonClickListener(object : YNDialog.OnButtonClickListener{
+            override fun onFirstClicked() {
+                // 취소
+                ynDialog.dismiss()
+            }
+
+            override fun onSecondClicked() {
+                // 버리기
+                binding.viewModel!!.requestPlanDelete(prefs.getBearerToken(), team.teamId, plan.planId)
+                ynDialog.dismiss()
+            }
+        })
+        ynDialog.show(supportFragmentManager, HostDialog.TAG)
+    }
+
+    fun showDeleteDoneDialog() {
+        val yDialog = YDialog(getString(R.string.done_delete_to_trash), getString(R.string.confirm))
+        yDialog.setButtonClickListener(object : YDialog.OnButtonClickListener{
+            override fun onBtnClicked() {
+                // 취소
+                yDialog.dismiss()
+            }
+
+        })
+        yDialog.show(supportFragmentManager, HostDialog.TAG)
     }
 
     private fun goToMyPage() {

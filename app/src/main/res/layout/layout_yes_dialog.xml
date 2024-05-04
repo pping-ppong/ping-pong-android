@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/back_white_16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/back_white_16dp">
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            style="@style/textBlack14"
+            tools:text="이것은설명을추가하는공간이랍니다 이것은설명을추가하는공간이랍니다"
+            android:textAlignment="center"
+            android:lineSpacingExtra="3dp"
+            android:paddingVertical="48dp"
+            android:paddingHorizontal="48dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/btn"
+                style="@style/textBlackBold14"
+                tools:text="두번째"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:lineSpacingExtra="3dp"
+                android:paddingVertical="16dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -59,6 +59,10 @@
     <string name="no_trash">버린 할 일이 아직 없네요.</string>
     <string name="empty_trash">휴지통을 완전히 비우시겠습니까?</string>
 
+    <string name="delete_to_trash">버리기</string>
+    <string name="confirm_delete_to_trash">할 일 %1$s를 버리시겠습니까?</string>
+    <string name="done_delete_to_trash">할 일을 휴지통에 버렸어요.</string>
+
     <string name="edit_team">그룹 관리</string>
     <string name="delete_team">그룹 삭제하기</string>
     <string name="stop_edit_team">변경된 사항이 반영되지 않습니다. \n그래도 나가시겠습니까?</string>
