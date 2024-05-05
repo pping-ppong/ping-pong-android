@@ -24,6 +24,10 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
         fromEdit = true
     }
 
+    fun addSelectedList(selectedList: MutableList<MemberDTO>) { // 그룹 생성 중 이미 선택한 멤버 있는 경우,
+        this.selectedList = selectedList
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -60,7 +64,7 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
                 binding.image.clipToOutline = true
             } else {
                 binding.defaultImage.visibility = View.VISIBLE
-                Glide.with(binding.image).clear(binding.image)
+                Glide.with(binding.profileImg).clear(binding.profileImg)
             }
 
             // 팀 수정에서 넘어온 경우,
@@ -72,11 +76,19 @@ class AddMemberAdapter(private var friendList : List<MemberDTO>) : RecyclerView.
                 binding.btnCheck.setOnClickListener { null }
             } else {
                 binding.cover.visibility = View.GONE
-                // 클릭 이벤트 추가
                 binding.btnCheck.visibility = View.VISIBLE
+
+                if (selectedList.contains(memberDTO))
+                    binding.btnCheck.isChecked = true
+                else
+                    binding.btnCheck.isChecked = false
+
+                // 클릭 이벤트 추가
                 binding.btnCheck.setOnClickListener {
-                    if (!selectedList.contains(memberDTO)) //friendList[position]
-                        selectedList.add(memberDTO) //friendList[position]
+                    if (!selectedList.contains(memberDTO))
+                        selectedList.add(memberDTO)
+                    else
+                        selectedList.remove(memberDTO)
                 }
             }
         }

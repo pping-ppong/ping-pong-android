@@ -20,6 +20,7 @@ import com.pingpong_android.databinding.ActivityMakeTeamBinding
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.view.addMember.AddMemberActivity
+import java.io.Serializable
 import java.util.regex.Pattern
 
 class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity_make_team, TransitionMode.RIGHT) {
@@ -156,6 +157,7 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
 
     fun goToFriendList() {
         val intent = Intent(this, AddMemberActivity::class.java)
+        intent.putExtra(INTENT_EXTRA_MEMBER_LIST, memberList as Serializable)
         activityResultLauncher.launch(intent)
     }
 }

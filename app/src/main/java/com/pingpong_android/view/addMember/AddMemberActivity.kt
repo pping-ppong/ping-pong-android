@@ -48,6 +48,10 @@ class AddMemberActivity : BaseActivity<ActivityAddMemberBinding>(R.layout.activi
             addMemberAdapter.addMemberList(intent.getSerializableExtra(Constants.INTENT_EXTRA_MEMBER_LIST) as List<MemberDTO>)
         }
 
+        if (intent.getSerializableExtra(INTENT_EXTRA_MEMBER_LIST) != null) {
+            addMemberAdapter.addSelectedList(intent.getSerializableExtra(INTENT_EXTRA_MEMBER_LIST) as MutableList<MemberDTO>)
+        }
+
         addMemberAdapter.setActivity(this)
         binding.memberRv.apply {
             layoutManager = friendLayoutManager
