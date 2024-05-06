@@ -17,6 +17,8 @@ import com.pingpong_android.R
 import com.pingpong_android.base.BaseActivity
 import com.pingpong_android.base.Constants.Companion.INTENT_EXTRA_MEMBER_LIST
 import com.pingpong_android.databinding.ActivityMakeTeamBinding
+import com.pingpong_android.layout.HostDialog
+import com.pingpong_android.layout.YNDialog
 import com.pingpong_android.model.MemberDTO
 import com.pingpong_android.model.TeamDTO
 import com.pingpong_android.view.addMember.AddMemberActivity

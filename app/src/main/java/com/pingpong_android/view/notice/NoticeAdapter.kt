@@ -147,6 +147,24 @@ class NoticeAdapter(private var noticeList: List<NoticeDTO>) : RecyclerView.Adap
                             .into(binding.image)
                     }
                 }
+            } else {
+                // 알림
+                binding.btnConfirm.visibility = View.GONE
+                binding.btnReject.visibility = View.GONE
+
+                // 메세지
+                binding.message.text = notice.message
+
+                // 사진 설정
+                if (notice.profileImage.isNullOrEmpty()) {
+                    binding.defaultImage.visibility = View.VISIBLE
+                    Glide.with(binding.image).clear(binding.image)
+                } else {
+                    binding.defaultImage.visibility = View.GONE
+
+                    Glide.with(binding.image).load(notice.profileImage)
+                        .into(binding.image)
+                }
             }
         }
     }

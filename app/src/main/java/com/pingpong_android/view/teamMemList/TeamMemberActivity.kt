@@ -132,6 +132,7 @@ class TeamMemberActivity : BaseActivity<ActivityTeamMemberBinding>(R.layout.acti
             override fun onSecondClicked() {
                 // 내보내기
                 binding.viewModel!!.requestEmitMember(prefs.getBearerToken(), teamDTO.teamId, member.memberId)
+                binding.viewModel!!.requestEmitAlarm(prefs.getBearerToken(), teamDTO.teamId, member.memberId)
                 ynDialog.dismiss()
             }
         })
@@ -150,7 +151,9 @@ class TeamMemberActivity : BaseActivity<ActivityTeamMemberBinding>(R.layout.acti
 
             override fun onSecondClicked() {
                 // 확인
-                binding.viewModel!!.requestChangeHost(prefs.getBearerToken(), teamDTO.teamId, member.memberId)
+                binding.viewModel!!.requestChangeHost(prefs.getBearerToken(), member.memberId, teamDTO.teamId)
+                binding.viewModel!!.requestGetHostAlarm(prefs.getBearerToken(), member.memberId, teamDTO.teamId)
+
                 ynDialog.dismiss()
             }
         })

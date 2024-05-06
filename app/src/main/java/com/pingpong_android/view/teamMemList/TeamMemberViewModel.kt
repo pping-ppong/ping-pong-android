@@ -47,11 +47,27 @@ class TeamMemberViewModel : BaseViewModel() {
         )
     }
 
+    fun requestEmitAlarm(token : String,  teamId: Long, memberId : Long) {
+        val body = HashMap<String, Long>()
+        body["teamId"] = teamId
+        body["memberId"] = memberId
+
+        addDisposable(
+            instance!!.requestEmitAlarm(token, body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                },{
+                    Log.e("Error", "requestController")} )
+        )
+    }
+
     // 팀원 -> 방장 위임
     private val _changeHostResult = MutableLiveData<TeamResultDTO>()
     val changeHostResult : LiveData<TeamResultDTO>
         get() = _changeHostResult
-    fun requestChangeHost(token : String, teamId : Long, delegatorId : Long) {
+    fun requestChangeHost(token : String, delegatorId : Long, teamId : Long) {
         addDisposable(
             instance!!.changeTeamHost(token, teamId, delegatorId)
                 .subscribeOn(Schedulers.io())
@@ -61,6 +77,22 @@ class TeamMemberViewModel : BaseViewModel() {
                 },{
                     Log.e("Error", "requestController")
                 } )
+        )
+    }
+
+    fun requestGetHostAlarm(token : String, memberId : Long, teamId: Long) {
+        val body = HashMap<String, Long>()
+        body["teamId"] = teamId
+        body["memberId"] = memberId
+
+        addDisposable(
+            instance!!.requestGotHostAlarm(token, body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                },{
+                    Log.e("Error", "requestController")} )
         )
     }
 

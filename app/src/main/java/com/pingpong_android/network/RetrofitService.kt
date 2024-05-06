@@ -105,7 +105,7 @@ interface RetrofitService {
     @GET("/api/notifications/un-read")
     fun requestUnReadNotice(
         @Header("Authorization") accessToken : String
-    ) : Single<NoticeResultDTO>
+    ) : Single<AlarmResultDTO>
 
     // 친구 신청 알림 요청
     @POST ("/api/notifications/friends")
@@ -144,6 +144,20 @@ interface RetrofitService {
     fun requestPassPlanAlarm(
         @Header("Authorization") accessToken : String,
         @Body plan : HashMap<String, Long>
+    ) : Single<ResultDTO>
+
+    // 방장 위임 알림
+    @POST("/api/notifications/host")
+    fun requestGotHostAlarm(
+        @Header("Authorization") accessToken : String,
+        @Body body : HashMap<String, Long>
+    ) : Single<ResultDTO>
+
+    // 방출 알림
+    @POST("/api/notifications/emit")
+    fun requestEmitAlarm(
+        @Header("Authorization") accessToken : String,
+        @Body body : HashMap<String, Long>
     ) : Single<ResultDTO>
 
     /////////////////////////////////////////////////

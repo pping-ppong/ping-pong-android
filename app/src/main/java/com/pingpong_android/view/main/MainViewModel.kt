@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.result.AchieveResultDTO
+import com.pingpong_android.model.result.AlarmResultDTO
 import com.pingpong_android.model.result.NoticeResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamListResultDTO
@@ -16,8 +17,8 @@ import io.reactivex.schedulers.Schedulers
 class MainViewModel : BaseViewModel(){
 
     // 안읽은 알림 확인
-    private val _noticeState = MutableLiveData<NoticeResultDTO>()
-    val noticeState : LiveData<NoticeResultDTO>
+    private val _noticeState = MutableLiveData<AlarmResultDTO>()
+    val noticeState : LiveData<AlarmResultDTO>
         get() = _noticeState
     fun requestUnReadNotice(token : String) {
         addDisposable(
@@ -110,6 +111,7 @@ class MainViewModel : BaseViewModel(){
                     Log.e("Error", "requestJoin")} )
         )
     }
+
     fun requestPlanIncomplete(token : String, teamId : Long, planId : Long) {
         addDisposable(
             instance!!.requestPlanIncomplete(token, teamId, planId)
@@ -157,6 +159,7 @@ class MainViewModel : BaseViewModel(){
                     Log.e("Error", "requestJoin")} )
         )
     }
+
     // 넘기기 알림 보내기
     fun requestPassAlarm(token : String, planId : Long, memberId : Long) {
         val plan = HashMap<String, Long>()

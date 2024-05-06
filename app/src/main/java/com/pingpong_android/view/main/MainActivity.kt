@@ -243,14 +243,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun subscribeNoticeState() {
         binding.viewModel!!.noticeState.observe(this, Observer {
             if (it.isSuccess) {
-                if (it.notificationExists)
+                if (it.result.notificationExists)
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_on))
-                else if (!it.notificationExists)
-                    binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
                 else
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
             } else {
-                binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
+                binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
             }
         })
     }
