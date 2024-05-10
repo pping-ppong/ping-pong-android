@@ -22,8 +22,13 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
         binding.activity = this
 
         initAdapter()
-        initRequest()
+        initSubscribe()
         binding.topPanel.setLeftClickListener(listener = {onBackPressed()})
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.viewModel!!.requestUserFriendList(prefs.getBearerToken())
     }
 
     private fun initAdapter() {
@@ -36,10 +41,9 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>(R.layout.activity_fri
         }
     }
 
-    private fun initRequest() {
+    private fun initSubscribe() {
         subscribeFriendList()
         subscribeDeleteFriendShip()
-        binding.viewModel!!.requestUserFriendList(prefs.getBearerToken())
     }
 
     private fun subscribeFriendList() {

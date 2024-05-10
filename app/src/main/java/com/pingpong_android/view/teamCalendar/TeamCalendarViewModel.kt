@@ -7,6 +7,7 @@ import com.pingpong_android.base.BaseViewModel
 import com.pingpong_android.model.AchieveDTO
 import com.pingpong_android.model.TodoDTO
 import com.pingpong_android.model.result.AchieveResultDTO
+import com.pingpong_android.model.result.FriendListResultDTO
 import com.pingpong_android.model.result.ResultDTO
 import com.pingpong_android.model.result.TeamResultDTO
 import com.pingpong_android.model.result.TodoResultDTO
@@ -15,6 +16,23 @@ import io.reactivex.schedulers.Schedulers
 import java.time.LocalDate
 
 class TeamCalendarViewModel : BaseViewModel() {
+
+    // 팀 멤버 전체 조회
+    private val _teamMemberResult = MutableLiveData<FriendListResultDTO>()
+    val teamMemberResult : LiveData<FriendListResultDTO>
+        get() = _teamMemberResult
+    fun requestTeamMemberList(token : String, teamId : Long) {
+        addDisposable(
+            instance!!.requestTeamAllMember(token, teamId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _teamMemberResult.postValue(it)
+                },{
+                    Log.e("Error", "requestController")
+                } )
+        )
+    }
 
     // 할 일 추가
     private val _addTodoResult = MutableLiveData<TodoResultDTO>()

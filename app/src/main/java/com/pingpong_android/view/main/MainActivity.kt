@@ -248,6 +248,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 else
                     binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_off))
             } else {
+                // api 요청 실패
                 binding.btnAlarm.setImageDrawable(getDrawable(R.drawable.ic_alarm_setting))
             }
         })

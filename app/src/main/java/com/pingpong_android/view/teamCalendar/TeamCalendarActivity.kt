@@ -171,6 +171,7 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         subscribeDelete()
         subscribePass()
         subscribeResign()
+        subscribeAllTeamMember()
     }
 
     // 달성률 - request 결과
@@ -252,7 +253,17 @@ class TeamCalendarActivity : BaseActivity<ActivityTeamCalendarBinding>(R.layout.
         })
     }
 
+    private fun subscribeAllTeamMember() {
+        binding.viewModel!!.teamMemberResult.observe(this, androidx.lifecycle.Observer {
+            if(it.isSuccess && it.friendList.isNotEmpty()) {
+                teamDTO.memberList = it.friendList
+                memberHorizontalAdapter.addList(teamDTO.memberList)
+            }
+        })
+    }
+
     private fun initRequest() {
+        binding.viewModel!!.requestTeamMemberList(prefs.getBearerToken(), teamDTO.teamId)
         binding.viewModel!!.requestMonthAchievement(prefs.getBearerToken(), teamDTO.teamId,
             startDate = date_for_cal,
             endDate = date_for_cal.withDayOfMonth(date_for_cal.lengthOfMonth()))

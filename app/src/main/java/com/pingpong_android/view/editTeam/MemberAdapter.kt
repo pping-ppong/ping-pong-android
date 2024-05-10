@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pingpong_android.databinding.ItemFriendListBinding
 import com.pingpong_android.model.MemberDTO
+import com.pingpong_android.base.Status
 
 class MemberAdapter(private var memberList: List<MemberDTO>, ) : RecyclerView.Adapter<MemberAdapter.MembersViewHolder>() {
 
@@ -56,6 +57,13 @@ class MemberAdapter(private var memberList: List<MemberDTO>, ) : RecyclerView.Ad
             } else {
                 binding.defaultImage.visibility = View.VISIBLE
                 Glide.with(binding.image).clear(binding.image)
+            }
+
+            // 새로 추가된 멤버 - new 표시
+            if (memberDTO.status == Status.ACTIVE) {
+                binding.originalMember.visibility = View.GONE
+            } else {
+                binding.originalMember.visibility = View.VISIBLE
             }
         }
     }

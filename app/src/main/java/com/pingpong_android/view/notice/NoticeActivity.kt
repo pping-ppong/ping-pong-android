@@ -39,11 +39,15 @@ class NoticeActivity : BaseActivity<ActivityNoticeBinding>(R.layout.activity_not
 
     private fun subscribeNotice() {
         binding.viewModel!!.noticeList.observe(this, Observer {
-            if (it.isSuccess && it.noticeList.isNotEmpty()) {
-                binding.noticeRv.visibility = View.VISIBLE
-                binding.noNoticeList.visibility = View.GONE
+            if (it.isSuccess) {
+                if (it.code == 404) {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                } else if (it.noticeList.isNotEmpty()) {
+                    binding.noticeRv.visibility = View.VISIBLE
+                    binding.noNoticeList.visibility = View.GONE
 
-                noticeAdapter.addList(it.noticeList)
+                    noticeAdapter.addList(it.noticeList)
+                }
             } else {
                 binding.noticeRv.visibility = View.GONE
                 binding.noNoticeList.visibility = View.VISIBLE

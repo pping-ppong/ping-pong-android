@@ -31,6 +31,6 @@ data class NoticeDTO (
     @SerializedName("createdAt")
     var createdAt : String = ""
 
-    @SerializedName("result")
+    @SerializedName("notificationExists")
     var notificationExists : Boolean = false
 }

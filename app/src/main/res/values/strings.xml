@@ -77,6 +77,7 @@
     <!-- 마이페이지 & 설정 -->
     <string name="edit_profile">프로필 편집</string>
     <string name="friend">친구</string>
+    <string name="n">N</string>
 
     <string name="setting">설정</string>
     <string name="photo">사진</string>

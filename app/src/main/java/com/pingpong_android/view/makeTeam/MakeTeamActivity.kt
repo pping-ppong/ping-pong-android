@@ -30,6 +30,7 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var memberAdapter = MemberAdapter(emptyList())
     private var memberList : MutableList<MemberDTO> = mutableListOf()
+    private var goBack : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,33 @@ class MakeTeamActivity : BaseActivity<ActivityMakeTeamBinding>(R.layout.activity
 
         onActivityResult()
         binding.topPanel.setLeftClickListener(listener = { onBackPressed() })
+    }
+
+    override fun onBackPressed() {
+        if (binding.viewModel!!.isReady.value!!) {
+            backDialog()
+        } else if (goBack) {
+            super.onBackPressed()
+        } else
+            super.onBackPressed()
+    }
+
+    private fun backDialog() {
+        val ynDialog = YNDialog(getString(R.string.stop_edit_team), listOf(getString(R.string.cancel), getString(R.string.out)))
+        ynDialog.setButtonClickListener(object : YNDialog.OnButtonClickListener{
+            override fun onFirstClicked() {
+                // 취소
+                goBack = false
+                ynDialog.dismiss()
+            }
+
+            override fun onSecondClicked() {
+                // 나가기
+                goBack = true
+                onBackPressed()
+            }
+        })
+        ynDialog.show(supportFragmentManager, HostDialog.TAG)
     }
 
     private fun onActivityResult() {
