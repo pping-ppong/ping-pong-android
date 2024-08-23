@@ -1,21 +1,26 @@
-# [Android] 핑퐁 - 함께 일정을 관리하는 앱
+> 🏓 **할 일을 넘길 수 있는 일정 관리 애플리케이션**
+ 
+🤖 [Google Play](https://play.google.com/store/apps/details?id=com.pingpong_android)  
 
-```
-#Andoid #Kotlin #MVVM #Retrofit2 #Gilde #RxKoltin #Material
-```
-
-![initial](https://github.com/pping-ppong/ping-pong-android/assets/82071369/4a5a6673-7a77-4000-8f41-8806e68a22b2)
-#### 스토어 : https://play.google.com/store/apps/details?id=com.pingpong_android
-
+![핑퐁 메인사진](https://github.com/user-attachments/assets/42e2afaf-80e0-49d6-a60b-b8fc3c5817f9)
 
 ## 💬 App Description
 ```
-가족, 친구, 팀원과 할일을 함께 관리하는 어플 !
-
-[핑 - 퐁 - !]
-
-쉽게 나의 할일을 함께하는 팀원에게 넘길 수 있어요.
-만약 받고 싶지 않다면, 핑-퐁-!하고 또 다른 팀원에게 넘어가요 !
-재밌게 할일을 관리면서
-함께 일상과 일정을 관리해봐요:D
+팀플, 여행, 집안일, ... 다양한 모임의 할 일 어떻게 관리하고 계시나요?
+서로 해야할 일을 파악하고 어려운 일은 다른 사람에게 넘겨요!
+하나씩 주어진 일을 완료할 수록 펑하고 터지는 팝콘, 같이 모아봐요!
 ```
+
+## 🛠️ Stack
+* **Languange** : Kotlin
+* **Library & Framewrok** : Android Studio, Retrofit2, Gilde, RxKoltin, Material
+* **Model** : MVVM
+
+## 🗂️ ERD
+<img width="600" alt="스크린샷 2024-03-20 오후 6 10 19" src="https://github.com/yaezzin/PingPong/assets/97823928/9f685e9d-b0e5-4e41-b5b6-290cffad5a9e">
+
+## Developer
+
+* ```🤖 Android``` **김민지** ([@mingZZ-3](https://github.com/mingZZ-3))
+* ```🍎 iOS```     **성민주** ([@yoogail105](https://github.com/yoogail105))
+* ```🛠 Backend``` **전예진** ([@yaezzin](https://github.com/yaezzin))
