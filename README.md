@@ -13,7 +13,7 @@
 
 ## 🛠️ Stack
 * **Languange** : Kotlin
-* **Library & Framewrok** : Android Studio, Retrofit2, Gilde, RxKoltin, Material
+* **Library & Framewrok** : Android Studio, Retrofit2, Gilde, RxKotlin, Material
 * **Model** : MVVM
 
 ## 🗂️ ERD
